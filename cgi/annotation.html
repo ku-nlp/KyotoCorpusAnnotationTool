@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>reading xml</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+    <input type="file" id="files" name="files[]" multiple />
+    <output id="list"></output>
+
+    <!-- lib -->
+    <script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.dropdownPlain.js" language="javascript"></script>
+    <!-- js -->
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/RelationFrame.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"/>
+    <!--[if lte IE 7]>
+        <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" />
+    <![endif]-->
+
+    <div id="p">
+      <ul class="dropdown">
+	<li><a href="#">ファイル</a>
+          <ul class="sub_menu">
+            <li><a href="#">保存</a></li>
+            <li><a href="#">印刷</a></li>
+            <li><a href="#">終了</a></li>
+          </ul>
+	</li>
+
+	<li><a href="#">編集</a>
+          <ul class="sub_menu">
+            <li><a href="#">次の文に移動</a></li>
+            <li><a href="#">前の文に移動</a></li>
+            <li><a href="#">検索</a></li>
+            <li><a href="#">UNDO</a></li>
+            <li><a href="#">全文再読み込み</a></li>
+          </ul>
+	</li>
+
+	<li><a href="#">ツール</a>
+          <ul class="tool">
+            <li>
+              <a href="#">格追加</a>
+              <ul>
+		<li><a onclick="javascript:addCol('ガ');">ガ</a></li>
+		<li><a onclick="javascript:addCol('ヲ');">ヲ</a></li>
+		<li><a onclick="javascript:addCol('ニ');">ニ</a></li>
+		<li><a onclick="javascript:addCol('ト');">ト</a></li>
+		<li><a onclick="javascript:addCol('デ');">デ</a></li>
+		<li><a onclick="javascript:addCol('カラ');">カラ</a></li>
+		<li><a onclick="javascript:addCol('ヨリ');">ヨリ</a></li>
+		<li><a onclick="javascript:addCol('ヘ');">ヘ</a></li>
+		<li><a onclick="javascript:addCol('マデ');">マデ</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="#">モード設定</a>
+              <ul>
+		<li><a href="#">修正</a></li>
+		<li><a href="#">追加(OR)</a></li>
+		<li><a href="#">追加(AND)</a></li>
+		<li><a href="#">追加(？)</a></li>
+              </ul>
+            </li>
+          </ul>
+	</li>
+      </ul>
+    </div>
+
+    <div id="fileinfo">
+      <span id="comment"></span><span id="memo" contenteditable=true></span>
+    </div>
+    
+    <button type="button" onClick="preSentence()">前へ</button>
+    <button type="button" onClick="nextSentence()">次へ</button>
+
+    <div id="out"></div>
+
+    <section>
+      <div id="container">
+	<!-- <div contenteditable>My epic novel that I don't want to lose.</div> -->
+	<input type="text" value="MyFile.txt" placeholder="filename.txt">
+	<button onclick="downloadFile()">Create file</button> <output></output>
+      </div>
+    </section>
+
+    <script type="text/javascript" src="js/save.js"></script>
+
+  </body>
+</html>
