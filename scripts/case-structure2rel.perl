@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# KNPの格解析結果(-anaphora)から新アノテーションツールの書式に変換する
+# KNPの述語項構造(-anaphora)から新アノテーションツールの書式に変換する
 # knp -caseを使う場合は --case をつける
 
 use strict;
@@ -111,8 +111,7 @@ sub process_tag_line {
     chomp($line);
     my $addf;
 
-    # 格解析結果
-    if ($line =~ /<格解析結果:[^:>]+:[^:>]+:([^>]+)/) {
+    if ($line =~ /<述語項構造:[^:>]+:[^:>]+:([^>]+)/) {
 	my $str = $1;
 	my %added_types;
 	for my $fstr (split(';', $str)) {
