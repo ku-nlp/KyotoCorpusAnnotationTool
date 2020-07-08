@@ -43,7 +43,7 @@ BnstAnotherColor = '#D0E9AB';
 WmrphMenuArray = [{ "title" : "" },
              { "title" : "表記" },
              { "title" : "読み" },
-             { "title" : "原型" },
+             { "title" : "原形" },
              { "title" : "品詞" },
              { "title" : "活用形" },
              { "title" : "" },
