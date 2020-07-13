@@ -3,14 +3,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
   Array.from(document.getElementsByTagName('select'), s => {
     const key = prefix + s.name;
-    const current = localStorage.getItem(key);
+    const current = window.localStorage.getItem(key);
     if (current !== null) {
       s.value = current;
     }
 
     s.addEventListener("change", e => {
       console.log(e, e.target.value)
-      localStorage.setItem(key, e.target.value);
+      window.localStorage.setItem(key, e.target.value);
     });
   })
 });
