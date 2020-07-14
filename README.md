@@ -15,7 +15,6 @@
     - デフォルトは``data/files``
 - データを設置する
     - ``/path/to/txt-files``以下に``.txt``という拡張子をもつテキストファイルを置く
-    - (1ファイルを文書ごとに分割する場合は``scripts/split2docs.py``を使う)
     - 以下の手順で、テキストファイルからデータを生成 (日本語の場合; JUMAN/KNPが必要)
 ```
 mkdir data/files/foo
