@@ -142,7 +142,7 @@ var WmrphFrame = function() {
         myRelationFrame.mrph_data_all[m_num][9] = myRelationFrame.mrph_data_all[m_num][9].replace(/\(.*\)$/, "");
         myRelationFrame.mrph_data_all[m_num][10] = j;
 
-        // 原型の（例えば）「な」を「だ」に置き換える
+        // 原形の（例えば）「な」を「だ」に置き換える
         var m2 = myJumanGrammer.conj_data[i][j].match(/\((.*)\)/);
         if(!m2) {
             return;
@@ -609,7 +609,7 @@ var WmrphFrame = function() {
                 current_modify_flag = '*';
                 
                 if (clearflag) {
-                	// 表記、読み、原型をクリア
+                	// 表記、読み、原形をクリア
                 	for (var i = 0; i < 3; i++) {
                 	    myRelationFrame.mrph_data_all[m_num][i] = "";
                 	}
