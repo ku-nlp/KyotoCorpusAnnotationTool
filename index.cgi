@@ -23,6 +23,7 @@ print <<EOF;
   <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>関係コーパス ログイン</title>
+        <script type="text/javascript" src="./js/login_default.js"></script>
   </head>
 
   <body>
