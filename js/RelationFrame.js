@@ -1424,31 +1424,31 @@ var RelationFrame = function() {
                     $("div#" + si + "_" + i + ".title_bnst").css('background-color', BnstAnotherColor);
                 }
 
-	            if (bnst_data_type[i] == 'P') {
-		            para_row = 1;
-	            } else {
-		            para_row = 0;
-	            }
+                if (bnst_data_type[i] == 'P') {
+                    para_row = 1;
+                } else {
+                    para_row = 0;
+                }
 
-	            if (orig_bnst_data_end[i] == 0) {
-		            bmark = 1;
-	            }
-	            else {
-		            bmark = 0;
-	            }
+                if (orig_bnst_data_end[i] == 0) {
+                    bmark = 1;
+                }
+                else {
+                    bmark = 0;
+                }
 
-	            for (var j = i + 1; j < bnst_num; j++) {
-		            crossflag = 0;
-		            var id = "#prev_" + sid + "_" + i + "_" + j;
-		            var elem = $(id)[0];
+                for (var j = i + 1; j < bnst_num; j++) {
+                    crossflag = 0;
+                    var id = "#prev_" + sid + "_" + i + "_" + j;
+                    var elem = $.escapeSelector(id)[0];
 
-		            if (j < bnst_data_dpnd[i]) {
+                    if (j < bnst_data_dpnd[i]) {
 
-		                if (active_column[j] == 2) {
-			                crossflag = 1;
-			                if (para_row == 1) {
-			                    elem.innerHTML = "╋";
-			                    elem.className = "tree vertical";
+                        if (active_column[j] == 2) {
+                            crossflag = 1;
+                            if (para_row == 1) {
+                                elem.innerHTML = "╋";
+                                elem.className = "tree vertical";
                                 elem.style.backgroundColor = BnstAnotherColor;
 			                } else {
 			                    elem.innerHTML = "╂";
