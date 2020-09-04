@@ -463,6 +463,7 @@ var WmrphFrame = function() {
             return function() {
                 modify_flag = '*';
                 current_modify_flag = '*';
+                this.value = this.value.replace(/^\s+|\s+$/g, '');
                 myRelationFrame.mrph_data_all[m_num][11] = this.value === '' ? "NIL" : this.value;
             };
         };
