@@ -1439,8 +1439,8 @@ var RelationFrame = function() {
 
                 for (var j = i + 1; j < bnst_num; j++) {
                     crossflag = 0;
-                    var id = "#prev_" + sid + "_" + i + "_" + j;
-                    var elem = $.escapeSelector(id)[0];
+                    var id = "#prev_" + $.escapeSelector(sid) + "_" + i + "_" + j;
+                    var elem = $(id)[0];
 
                     if (j < bnst_data_dpnd[i]) {
 
