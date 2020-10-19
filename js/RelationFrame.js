@@ -1262,6 +1262,20 @@ var RelationFrame = function() {
             title.innerHTML = "S-ID:" + sid + "(" + senid + "文目)";
             title.className = "sid";
             title.id = "title-" + sid;
+            title.dataset.sid = sid;
+            title.onclick=function(){
+                const diff = inputFileList.indexOf(this.dataset.sid) - myRelationFrame.currentShowIndex;
+                if(diff>0){
+                    for(let j=0; j<diff; ++j){
+                        nextSentence();
+                    }
+                }else if (diff<0){
+                    for(let j=0; j< -diff; ++j){
+                        preSentence();
+                    }
+                }
+            }
+            title.style.cursor = 'pointer';
             elem.appendChild(title);
 
             elem.appendChild(table);
