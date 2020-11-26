@@ -2711,6 +2711,16 @@ var RelationFrame = function() {
                 }
             }
 
+            // Automatically fix orig_bnst_data_dpnd.
+            for (var i = 0; i < this.orig_bnst_data_dpnd.length - 1; i++) {
+                if (this.orig_bnst_data_dpnd[i] == '-1') {
+                    this.orig_bnst_data_dpnd[i] = '' + (this.orig_bnst_data_dpnd.length - 1);
+                }
+                else if (this.orig_bnst_data_dpnd[i] == '' + i) {
+                    this.orig_bnst_data_dpnd[i] = '' + (i + 1);
+                }
+            }
+
             // date = strftime("%Y/%m/%d", localtime);
             var date = new Date();  
             var year = date.getFullYear();  
