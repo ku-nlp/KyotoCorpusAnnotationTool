@@ -2607,12 +2607,12 @@ var RelationFrame = function() {
 	        }
 	        var re = new RegExp(mrph + "$");
 	        ne = ne.replace(re,"");
-            if (this.mrph_data_all[my_mrph_num].length > 12)
+            if (this.mrph_data_all[my_mrph_num].length > 12 && this.mrph_data_all[my_mrph_num][12])
                 this.mrph_data_all[my_mrph_num][12] = this.mrph_data_all[my_mrph_num][12].replace(/\<(NE:[^\>]+)\>/,"");
             // Originally, only element 12 was updated.
             // For some data though, it's also needed to cleanup element 11 to remove all traces
             // of the NE tag.
-            if (this.mrph_data_all[my_mrph_num].length > 11)
+            if (this.mrph_data_all[my_mrph_num].length > 11 && this.mrph_data_all[my_mrph_num][11])
                 this.mrph_data_all[my_mrph_num][11] = this.mrph_data_all[my_mrph_num][11].replace(/\<(NE:[^\>]+)\>/,"");
 
 	        my_mrph_num--;
