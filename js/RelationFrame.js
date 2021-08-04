@@ -2390,6 +2390,13 @@ var RelationFrame = function() {
 		            break;
 		        }
 	        }
+                for (var a = stop; a >= start; a--) {
+                    if (!m_d_all[a][3].match(/^(特殊)$/)) {
+                        stop = a;
+                        break;
+                    }
+                }
+
 	        
 	        // 要素の作成
 	        for (var a = start; a <= stop; a++) {
