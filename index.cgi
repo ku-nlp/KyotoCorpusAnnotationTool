@@ -6,7 +6,7 @@ our ($rootdir, $ext, $annot_path, $image_path);
 require './cgi/cgi.conf';
 
 my $cgi = new CGI;
-print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
+print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
 
 use File::Basename qw/basename dirname/;
 my $options = "";

@@ -8,12 +8,12 @@ our ($rootdir, $ext, $annot_path, $image_path);
 require './cgi_en.conf';
 my %PASSWD = (annotator_a => 'password_a', annotator_b => 'password_b');
 my $cgi = new CGI;
-print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
+print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
 
 print <<EOF;
 <html>
 <head>
-<meta http-equiv="content-style-type" content="text/css; charset=euc-jp">
+<meta http-equiv="content-style-type" content="text/css; charset=utf-8">
 <title>コーパス 管理ページ</title>
 <style>
 <!--

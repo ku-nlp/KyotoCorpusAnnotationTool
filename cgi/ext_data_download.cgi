@@ -117,7 +117,7 @@ sub default_page {
     print $cgi->header({type => 'text/xml', charset => 'utf-8', expires => '-1d'});
     print "<def>error</def>";
 
-    # print $cgi->start_html({title => '記事データ ダウンロード', lang => 'ja', encoding => 'euc-jp'});
+    # print $cgi->start_html({title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8'});
     # print "<h1>関係コーパス 記事データダウンロード</h1><br>\n";
     # print "<p>名前を入力してください。</p>\n" unless $annotator_id;
     # print "<p>記事$article_idがみつかりません。</p>\n" unless -f $filepath;
