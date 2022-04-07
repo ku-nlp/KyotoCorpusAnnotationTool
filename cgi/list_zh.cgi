@@ -3,7 +3,7 @@
 use strict;
 use CGI;
 
-# ¥Õ¥¡¥¤¥ë¤òÃÖ¤¯¥ë¡¼¥È¥Ç¥£¥ì¥¯¥È¥ê¤ÎÀßÄê
+# ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç½®ããƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®è¨­å®š
 our ($rootdir, $ext, $annot_path, $image_path);
 require './cgi_zh.conf';
 my %PASSWD = (annotator_a => 'password_a', annotator_b => 'password_b');
@@ -14,7 +14,7 @@ print <<EOF;
 <html>
 <head>
 <meta http-equiv="content-style-type" content="text/css; charset=euc-jp">
-<title>¥³¡¼¥Ñ¥¹ ´ÉÍı¥Ú¡¼¥¸</title>
+<title>ã‚³ãƒ¼ãƒ‘ã‚¹ ç®¡ç†ãƒšãƒ¼ã‚¸</title>
 <style>
 <!--
 body {
@@ -48,9 +48,9 @@ td, th {
 <body>
 EOF
 
-print "<h3>¥³¡¼¥Ñ¥¹ ´ÉÍı¥Ú¡¼¥¸</h3>\n";
+print "<h3>ã‚³ãƒ¼ãƒ‘ã‚¹ ç®¡ç†ãƒšãƒ¼ã‚¸</h3>\n";
 
-# ºî¶È¼Ô¤ò¥Á¥§¥Ã¥¯
+# ä½œæ¥­è€…ã‚’ãƒã‚§ãƒƒã‚¯
 my ($annotator_id, $password, $corpus_set_id);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
@@ -59,19 +59,19 @@ if ($cgi->param('annotator_id')) {
     $password = $cgi->param('password');
     if (!defined($PASSWD{$annotator_id}) || 
 	$password ne $PASSWD{$annotator_id}) {
-	print "<p>¥Ñ¥¹¥ï¡¼¥É¤¬°ã¤¤¤Ş¤¹¡£</p>\n";
+	print "<p>ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™ã€‚</p>\n";
 	print $cgi->end_html;
 	exit 1;
     }
 }
 else {
-    print "<p>¤Ş¤º¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
+    print "<p>ã¾ãšãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãã ã•ã„ã€‚</p>\n";
     print $cgi->end_html;
     exit 1;
 }
 
 print "<table>\n";
-print "<tr><th>ID</th><th>µ­»öID</th><th>¥µ¥¤¥º</th><th>ºÇ½ª¹¹¿·Æü»ş</th><th>¥¢¥Î¥Æ¡¼¥¿</th><th>¥¢¥Î¥Æ¡¼¥¿¥á¥â</th><th>¥À¥¦¥ó¥í¡¼¥É<th>HTML</th><th>ÊÔ½¸</th></th><th>¥¹¥Æ¡¼¥¿¥¹</th></tr>";
+print "<tr><th>ID</th><th>è¨˜äº‹ID</th><th>ã‚µã‚¤ã‚º</th><th>æœ€çµ‚æ›´æ–°æ—¥æ™‚</th><th>ã‚¢ãƒãƒ†ãƒ¼ã‚¿</th><th>ã‚¢ãƒãƒ†ãƒ¼ã‚¿ãƒ¡ãƒ¢</th><th>ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰<th>HTML</th><th>ç·¨é›†</th></th><th>ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹</th></tr>";
 
 my $dircount = 0;
 my $skip = $cgi->param('skip');
@@ -92,12 +92,12 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
 	open(INFO, $infoname);
 	($annotator, $lastdate) = split(/\t/, <INFO>);
     # print "$infoname 2\n";
-	if ($annotator =~ s/^\* //) { # ÊÔ½¸Ãæ¤Î¤È¤­
+	if ($annotator =~ s/^\* //) { # ç·¨é›†ä¸­ã®ã¨ã
 	    $editing_flag = 1;
 	    $current_annotator = $annotator;
-	    # ($annotator, $lastdate) = split(/\t/, <INFO>); # ºÇ½ª¹¹¿·
+	    # ($annotator, $lastdate) = split(/\t/, <INFO>); # æœ€çµ‚æ›´æ–°
 	    if ($annotator =~ s/^\* //) {
-		print "<p>¥¨¥é¡¼¤¬µ¯¤³¤ê¤Ş¤·¤¿¡£</p>\n";
+		print "<p>ã‚¨ãƒ©ãƒ¼ãŒèµ·ã“ã‚Šã¾ã—ãŸã€‚</p>\n";
 		print $cgi->end_html;
 	    }
 	}
@@ -130,13 +130,13 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
 
     my $memo_print = join(" ", @memolines);
 	my $skip_flag=0;
-	if($memo_print =~ /¡ú/ || $memo_print =~ /ÉÔÅ¬/ )
+	if($memo_print =~ /â˜…/ || $memo_print =~ /ä¸é©/ )
 	{
 		$skip_flag =1;
 	}
     $memo_print = substr($memo_print, 0, 36 - length(" ...")) . " ..." if (length($memo_print) > 36);
 
-	if ($annotator !~ s/^\* //) { # ÊÔ½¸Ãæ¤Ç¤Ê¤¤»ş
+	if ($annotator !~ s/^\* //) { # ç·¨é›†ä¸­ã§ãªã„æ™‚
 		if($skip && $skip_flag ==1)
 		{
 			next;
@@ -156,7 +156,7 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
     }
     print qq(<td align="right">$filesize</td><td>$lastdate</td><td>$annotator</td>);
 
-    # ¥á¥â
+    # ãƒ¡ãƒ¢
     print qq(<td><form method=POST action="memo.cgi">);
     print qq(<input type="hidden" name="annotator_id" value="$annotator_id">);
     print qq(<input type="hidden" name="corpus_set_id" value="$corpus_set_id">);
@@ -184,14 +184,14 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
     print qq(<input type="image" src="$image_path/html_of.png" onmouseover="this.src='$image_path/html_on.png'" onmouseout="this.src='$image_path/html_of.png'" value="HTML">);
     print qq(</form></td>);
 
-    # ¥¢¥Î¥Æ¡¼¥·¥ç¥ó¥Ä¡¼¥ëµ¯Æ°
-    print qq(<td><input type="image" src="$image_path/edit_of.png" onmouseover="this.src='$image_path/edit_on.png'" onmouseout="this.src='$image_path/edit_of.png'" value="ÊÔ½¸" onClick="window.open('$annot_path?article_id=$dirname&corpus_set_id=$corpus_set_id&annotator_id=$annotator_id&password=$password&skip=$skip','newWin')">);
+    # ã‚¢ãƒãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ãƒ„ãƒ¼ãƒ«èµ·å‹•
+    print qq(<td><input type="image" src="$image_path/edit_of.png" onmouseover="this.src='$image_path/edit_on.png'" onmouseout="this.src='$image_path/edit_of.png'" value="ç·¨é›†" onClick="window.open('$annot_path?article_id=$dirname&corpus_set_id=$corpus_set_id&annotator_id=$annotator_id&password=$password&skip=$skip','newWin')">);
 
     print qq(</td>);
 
-    # ¥¹¥Æ¡¼¥¿¥¹
+    # ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹
     if ($editing_flag) {
-	print qq(<td>${current_annotator}¤¬ÊÔ½¸Ãæ</td>);
+	print qq(<td>${current_annotator}ãŒç·¨é›†ä¸­</td>);
     }
     else {
 	print qq(<td><br></td>);

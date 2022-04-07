@@ -1,11 +1,11 @@
-�����ѥ������ڡ������ (2008-11-26 Ryohei Sasano)
+コーパス管理ページメモ (2008-11-26 Ryohei Sasano)
 
--�Ȥ���
- ��cgi.conf��Ŭ�����Խ�
+-使い方
+ ・cgi.confを適当に編集
 
- ��cgi.conf�ǻ��ꤷ���ǥ��쥯�ȥ�ˡ������������ǡ����򥳥ԡ�
+ ・cgi.confで指定したディレクトリに、管理したいデータをコピー
 
- ��html.cgi��Ŭ�����Խ�
-    -html�ե�������������뤿��ΰ���ե��������Ϥ���ǥ��쥯�ȥ�
-     (�ǥե���ȤǤ�$out_html = "$rootdir/../out-html")
-    -CorpusProject/scripts/manage.pl�Υѥ�������������
+ ・html.cgiを適当に編集
+    -htmlファイルを生成するための一時ファイルを出力するディレクトリ
+     (デフォルトでは$out_html = "$rootdir/../out-html")
+    -CorpusProject/scripts/manage.plのパスを正しく設定

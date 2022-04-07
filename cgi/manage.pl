@@ -1,18 +1,18 @@
 #!/usr/bin/env perl
 
-# KNP���Ϸ�̤�ʸñ�̤�ʬ��ȡ����δ����ե�����(fileinfos)�κ���
+# KNP解析結果を文単位に分割と，その管理ファイル(fileinfos)の作成
 
-# ������ file �ξ�� : 1. (�ʤ����)directory�κ�����directory��õ�
-#		       2. ������ؤΥե�����ʬ�䡤
-# 		       3. fileinfos�κ���
+# 引数が file の場合 : 1. (なければ)directoryの作成，directory内消去
+#		       2. その中へのファイル分割，
+# 		       3. fileinfosの作成
 #
-# ������ directory + �ξ�� : directory��Υե������ޤȤ�� .knp ��
+# 引数が directory + の場合 : directory内のファイルをまとめて .knp に
 #
-# ������ directory �ξ�� : fileinfos�ι���
+# 引数が directory の場合 : fileinfosの更新
 
 @fileinfos = ();
 
-# ������file�ξ��
+# 引数がfileの場合
 
 if (-f $ARGV[0] && $ARGV[0] =~ /([^\/\\]+)\.knp.*$/) {
 
@@ -34,7 +34,7 @@ if (-f $ARGV[0] && $ARGV[0] =~ /([^\/\\]+)\.knp.*$/) {
             print OUTPUT;
 	    close(OUTPUT);
 	} elsif (/^;;/) {
-	    ; # ��Υ��顼��å������ϼ�����
+	    ; # 種々のエラーメッセージは取り除く
 	} else {
 	    print OUTPUT;
 	}
@@ -42,7 +42,7 @@ if (-f $ARGV[0] && $ARGV[0] =~ /([^\/\\]+)\.knp.*$/) {
     close(INPUT);
 }
 
-# ������directory�ξ�� : �ե�����ΤޤȤᡤ�ޤ���fileinfos�ι���
+# 引数がdirectoryの場合 : ファイルのまとめ，またはfileinfosの更新
 
 elsif (-d $ARGV[0]) {
 
@@ -61,7 +61,7 @@ else {
     die;
 }
 
-# fileinfos�ι���
+# fileinfosの更新
 
 $file_num = 0;
 opendir(DIR, $dir);

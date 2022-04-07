@@ -11,13 +11,13 @@ my $corpus_set_id = $cgi->param('corpus_set_id');
 $rootdir .= "/$corpus_set_id";
 my $skip = $cgi->param('skip');
 
-# CGI¥Ø¥Ã¥À¤Î½ĞÎÏ
+# CGIãƒ˜ãƒƒãƒ€ã®å‡ºåŠ›
 print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
 print <<EOF;
 <html>
 <head>
 <meta http-equiv="content-style-type" content="text/css; charset=euc-jp">
-<title>¥¢¥Î¥Æ¡¼¥¿¥á¥â¥Ú¡¼¥¸</title>
+<title>ã‚¢ãƒãƒ†ãƒ¼ã‚¿ãƒ¡ãƒ¢ãƒšãƒ¼ã‚¸</title>
 <style>
 <!--
 
@@ -49,11 +49,11 @@ body {
 <body>
 EOF
 
-print "<h3>¥¢¥Î¥Æ¡¼¥¿¥á¥â¥Ú¡¼¥¸</h3>\n";
+print "<h3>ã‚¢ãƒãƒ†ãƒ¼ã‚¿ãƒ¡ãƒ¢ãƒšãƒ¼ã‚¸</h3>\n";
 
-print $cgi->start_html({title => '¥¢¥Î¥Æ¡¼¥¿¥á¥â', lang => 'ja', encoding => 'euc-jp'});
+print $cgi->start_html({title => 'ã‚¢ãƒãƒ†ãƒ¼ã‚¿ãƒ¡ãƒ¢', lang => 'ja', encoding => 'euc-jp'});
 
-# ºî¶È¼Ô¤ò¥Á¥§¥Ã¥¯
+# ä½œæ¥­è€…ã‚’ãƒã‚§ãƒƒã‚¯
 my ($annotator_id, $password);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
@@ -61,36 +61,36 @@ if ($cgi->param('annotator_id')) {
 }
 
 unless ($annotator_id && $password) {
-    print "<p>¤Ş¤º¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
+    print "<p>ã¾ãšãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãã ã•ã„ã€‚</p>\n";
     print $cgi->end_html;
     exit 1;
 }
 
-# ¥Õ¥¡¥¤¥ëÌ¾
+# ãƒ•ã‚¡ã‚¤ãƒ«å
 my ($file);
 if ($cgi->param('file')) {
     $file = $cgi->param('file');
 }
 
 unless ($file) {
-    print "<p>annotator_memo¥Õ¥¡¥¤¥ë¤ò»ØÄê¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
+    print "<p>annotator_memoãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚</p>\n";
     print $cgi->end_html;
     exit 1;
 }
 
-# ¿·¤·¤¤¥á¥â
+# æ–°ã—ã„ãƒ¡ãƒ¢
 my ($newmemo);
 if ($cgi->param('newmemo')) {
     $newmemo = $cgi->param('newmemo');
 }
 
-# ¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹ş¤ß
+# ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã¿
 unless(-f $file && not -w $file){
     open(MEMO, ">$file");
     print MEMO $newmemo;
     close MEMO;
 
-    print "<div id='fileinfo'>$file¤Ë°Ê²¼¤ÎÆâÍÆ¤ò½ñ¤­¹ş¤ß¤Ş¤·¤¿¡£</div>";
+    print "<div id='fileinfo'>$fileã«ä»¥ä¸‹ã®å†…å®¹ã‚’æ›¸ãè¾¼ã¿ã¾ã—ãŸã€‚</div>";
     print "<p class='a_memo'>$newmemo</p>";
 
     print "<form method=POST action=\"list.cgi\">\n";
@@ -101,7 +101,7 @@ unless(-f $file && not -w $file){
     print qq(<input type="hidden" name="corpus_set_id" value="$corpus_set_id">);
     print "</form>\n";
 }else{
-    print "<p>$file¤Ë½ñ¤­¹ş¤á¤Ş¤»¤ó¡£</p>\n";
+    print "<p>$fileã«æ›¸ãè¾¼ã‚ã¾ã›ã‚“ã€‚</p>\n";
     print $cgi->end_html;
     exit 1;
 }

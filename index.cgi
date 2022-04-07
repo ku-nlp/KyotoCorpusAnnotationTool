@@ -22,20 +22,20 @@ print <<EOF;
 
   <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>´Ø·¸¥³¡¼¥Ñ¥¹ ¥í¥°¥¤¥ó</title>
+	<title>é–¢ä¿‚ã‚³ãƒ¼ãƒ‘ã‚¹ ãƒ­ã‚°ã‚¤ãƒ³</title>
         <script type="text/javascript" src="./js/login_default.js"></script>
   </head>
 
   <body>
 
-	<h3>´Ø·¸¥³¡¼¥Ñ¥¹ ¥í¥°¥¤¥ó</h3>
+	<h3>é–¢ä¿‚ã‚³ãƒ¼ãƒ‘ã‚¹ ãƒ­ã‚°ã‚¤ãƒ³</h3>
 	<br>
 
 	<form method=POST action="cgi/list.cgi">
 	  <table>
 		<tr>
 		  <th align=left>
-			Ì¾Á°
+			åå‰
 		  </th>
 		  <td>
 			<select name="annotator_id">
@@ -47,7 +47,7 @@ print <<EOF;
 		</tr>
 		<tr>
 		  <th align=left>
-			¥Ñ¥¹¥ï¡¼¥É
+			ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 		  </th>
 		  <td>
 			<input type="password" name="password" size="10" maxlength="8">
@@ -55,7 +55,7 @@ print <<EOF;
 		</tr>
 		<tr>
 		  <th align=left>
-			µ­»ö¥»¥Ã¥È
+			è¨˜äº‹ã‚»ãƒƒãƒˆ
 		  </th>
 		  <td>
 			<select name="corpus_set_id">
@@ -65,16 +65,16 @@ print <<EOF;
 		</tr>
 		<tr>
 		  <th align=left>
-			µ­»ö¥»¥Ã¥È
+			è¨˜äº‹ã‚»ãƒƒãƒˆ
 		  </th>
 		  <td>
-			<input TYPE="checkbox" NAME="skip" VALUE="skip">ÉÔÅ¬µ­»ö¤òÉ½¼¨¤·¤Ê¤¤
+			<input TYPE="checkbox" NAME="skip" VALUE="skip">ä¸é©è¨˜äº‹ã‚’è¡¨ç¤ºã—ãªã„
 		  </td>
 		</tr>
 		<th>
 		</th>
 		<td>
-		  <input type="submit" value="Á÷¿®">
+		  <input type="submit" value="é€ä¿¡">
 		</td>
 </tr>
 </table>
