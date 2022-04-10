@@ -57,14 +57,12 @@ if ($cgi->param('annotator_id')) {
     $corpus_set_id = $cgi->param('corpus_set_id');
     $rootdir .= "/$corpus_set_id";
     $password = $cgi->param('password');
-    if (!defined($PASSWD{$annotator_id}) || 
-	$password ne $PASSWD{$annotator_id}) {
-	print "<p>パスワードが違います。</p>\n";
-	print $cgi->end_html;
-	exit 1;
+    if (!defined($PASSWD{$annotator_id}) || $password ne $PASSWD{$annotator_id}) {
+        print "<p>パスワードが違います。</p>\n";
+        print $cgi->end_html;
+        exit 1;
     }
-}
-else {
+} else {
     print "<p>まずログインしてください。</p>\n";
     print $cgi->end_html;
     exit 1;
@@ -85,69 +83,64 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
     my $infoname = "$dir/dirinfo";
     my ($annotator, $lastdate, $editing_flag, $current_annotator);
     if (-f $infoname) {
-	open(INFO, $infoname);
-	($annotator, $lastdate) = split(/\t/, <INFO>);
-	if ($annotator =~ s/^\* //) { # 編集中のとき
-	    $editing_flag = 1;
-	    $current_annotator = $annotator;
-	    # ($annotator, $lastdate) = split(/\t/, <INFO>); # 最終更新
-	    if ($annotator =~ s/^\* //) {
-		print "<p>エラーが起こりました。</p>\n";
-		print $cgi->end_html;
-	    }
-	}
-	close(INFO);
+        open(INFO, $infoname);
+        ($annotator, $lastdate) = split(/\t/, <INFO>);
+        if ($annotator =~ s/^\* //) { # 編集中のとき
+            $editing_flag = 1;
+            $current_annotator = $annotator;
+            # ($annotator, $lastdate) = split(/\t/, <INFO>); # 最終更新
+            if ($annotator =~ s/^\* //) {
+                print "<p>エラーが起こりました。</p>\n";
+                print $cgi->end_html;
+            }
+        }
+        close(INFO);
     }
 
     my ($charged);
     my $chargename = "$dir/charge";
     if (-f $chargename) {
-	open(INFO, $chargename);
-	$charged = <INFO>;
-	chomp($charged);
-	close(INFO);
+        open(INFO, $chargename);
+        $charged = <INFO>;
+        chomp($charged);
+        close(INFO);
     }
-	
 
     my $annotator_memo_name = "$dir/annotator_memo";
     my @memolines = ();
     my $memo;
-    if (-f $annotator_memo_name){
-	open(MEMO, $annotator_memo_name);
-	while (<MEMO>){
-	    $memo .= $_;
-	    chomp;
-	    push(@memolines, $_);
-	}
-	close MEMO;
+    if (-f $annotator_memo_name) {
+        open(MEMO, $annotator_memo_name);
+        while (<MEMO>) {
+            $memo .= $_;
+            chomp;
+            push(@memolines, $_);
+        }
+        close MEMO;
     }
-	$dircount++;
+    $dircount++;
 
     my $memo_print = join(" ", @memolines);
-	my $skip_flag=0;
-	if($memo_print =~ /★/ || $memo_print =~ /不適/ )
-	{
-		$skip_flag =1;
-	}
+    my $skip_flag=0;
+    if($memo_print =~ /★/ || $memo_print =~ /不適/ ) {
+        $skip_flag =1;
+    }
     $memo_print = substr($memo_print, 0, 36 - length(" ...")) . " ..." if (length($memo_print) > 36);
 
-	if ($annotator !~ s/^\* //) { # 編集中でない時
-		if($skip && $skip_flag ==1)
-		{
-			next;
-		}
-	}
-	
+    if ($annotator !~ s/^\* //) { # 編集中でない時
+        if($skip && $skip_flag ==1) {
+            next;
+        }
+    }
 
     print qq(<tr valign="top">);
     print qq(<td align="right">$dircount</td>);
     # $dircount++;
 
     if ($annotator_id eq $charged) {
-	print qq(<td><span style="color: red">$dirname</span></td>);
-    }
-    else {
-	print qq(<td>$dirname</td>);
+        print qq(<td><span style="color: red">$dirname</span></td>);
+    } else {
+        print qq(<td>$dirname</td>);
     }
     print qq(<td align="right">$filesize</td><td>$lastdate</td><td>$annotator</td>);
 
@@ -186,10 +179,9 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
 
     # ステータス
     if ($editing_flag) {
-	print qq(<td>${current_annotator}が編集中</td>);
-    }
-    else {
-	print qq(<td><br></td>);
+        print qq(<td>${current_annotator}が編集中</td>);
+    } else {
+        print qq(<td><br></td>);
     }
     print "</tr>";
 }
