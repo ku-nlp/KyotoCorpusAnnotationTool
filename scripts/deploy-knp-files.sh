@@ -7,6 +7,20 @@ DEPLOY_DIR="$2"
 PROJECT_DIR="$(dirname "$(realpath "$(dirname "$0")")")"
 export DEPLOY_DIR PROJECT_DIR
 
+help() {
+cat << EOD
+Usage: $0 <knp_dir> <deploy_dir>
+Arguments:
+  <knp_dir>    knp directory where parsed knp files exist
+  <deploy_dir> the root directory under which the annotation tool manipulates files
+EOD
+}
+
+if [[ $# -ne 2 ]]; then
+  help
+  exit 1
+fi
+
 deploy-single-file() {
   knp_file="$1"
   doc_id="$(basename "${knp_file}" .knp)"
