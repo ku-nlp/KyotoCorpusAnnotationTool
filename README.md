@@ -10,7 +10,7 @@
 ``public_html``以下の任意のディレクトリ（以下、``annot``とする）に``git clone``などで取得したパッケージを配置する。
 
 ## コーパスデータ設定
-   
+
 - ``cgi/cgi.confのrootdir``変数に、管理したいデータのパスを設定する。
     - デフォルトは``data/files``
 - データを設置する
@@ -24,7 +24,7 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 - ``$rootdir/../out-html`` というディレクトリを作っておく。
     - デフォルトは``data/out-html``
 - ``left/right dependency``対応版の、言語ごとの設定は``cgi/cgi_{ja,en,zh}.conf``に入力する。
-   
+
 ## UI設定
 
 必要に応じて、下記ファイルを編集してバージョンごとのUI設定を変更する（カスタマイズが特に必要なければ設定不要）。
@@ -33,7 +33,7 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 - ``js/setting_{ja,en,zh}.js``
 
 ## 起動
-1.  
+1.
     - right dependency、日本語のみに対応したツールは``http://xxx/<username>/annot/`` からアクセスする。
     - left/right dependencyの日本語、英語、中国語に対応したツールは``http://xxx/<username>/annot/{ja,en,zh}.html``からアクセスする
 2. ユーザ名、パスワードを入力し、データセットを選択する。
@@ -69,7 +69,7 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 - タグ選択/キャンセル
 
 ### 形態素・文節操作フレーム
-- フレーム区切りの真ん中のボタン(close)を押すとフレームを閉じる。 
+- フレーム区切りの真ん中のボタン(close)を押すとフレームを閉じる。
 - 完了ボタンを押すとフレームを閉じる。
   フレーム自体を非表示にするだけでこの時はデータの保存処理を行わないので、
   再度開くとデータは残った状態。
