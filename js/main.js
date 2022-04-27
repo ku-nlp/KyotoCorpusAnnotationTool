@@ -142,7 +142,7 @@ function save() {
         innerLayout.close("south");
     }
     ;
-    myRelationFrame.write_sentense();
+    myRelationFrame.write_sentence();
 }
 
 // 終了

@@ -113,7 +113,7 @@
                         $(this).dialog('close');
                     },
                     "保存して次の文へ移動": function () {
-                        myRelationFrame.write_sentense()
+                        myRelationFrame.write_sentence()
                         <!-- 編集フラグが更新された=アップデート完了 -->
                         var checkDone = function () {
                             if (modify_flag == "*") {
@@ -149,7 +149,7 @@
                         $(this).dialog('close');
                     },
                     "保存して前の文へ移動": function () {
-                        myRelationFrame.write_sentense()
+                        myRelationFrame.write_sentence()
                         <!-- 編集フラグが更新された=アップデート完了 -->
                         var checkDone = function () {
                             if (modify_flag == "*") {
@@ -185,7 +185,7 @@
                         $(this).dialog('close');
                     },
                     "保存して終了": function () {
-                        if (myRelationFrame.write_sentense()) {
+                        if (myRelationFrame.write_sentence()) {
                             <!-- 編集フラグが更新された=アップデート完了 -->
                             var checkDone = function () {
                                 if (modify_flag == "*") {

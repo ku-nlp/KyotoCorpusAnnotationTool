@@ -2695,7 +2695,7 @@ var RelationFrame = function () {
   ///////////////////////
   // 出力
   //////////////////////
-  this.write_sentense = function (ii, jj) {
+  this.write_sentence = function (ii, jj) {
     try {
 
       var root_count = 0;
@@ -2792,7 +2792,7 @@ var RelationFrame = function () {
             tline = tline + " " + this.bnst_data_f[j];
           }
           if (tline.indexOf("undef") != -1) {
-            alert("不正基本区データのため保存できません：" + tline);
+            alert("不正基本句データのため保存できません：" + tline);
             return false;
           }
           output_lines.push(tline);

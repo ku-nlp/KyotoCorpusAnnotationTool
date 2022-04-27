@@ -95,8 +95,8 @@ function parseString(strData) {
                     bnst_data_type[bnst_num] = 'D';
                 }
 
-                // 文節のdependencyがundefinedになっていれば基本区を-1に設定しておく。
-                // 基本区がルートでなくれば画面上depedencyが未設定（緑色）になり、
+                // 文節のdependencyがundefinedになっていれば基本句を-1に設定しておく。
+                // 基本句がルートでなくれば画面上depedencyが未設定（緑色）になり、
                 // 保存時にエラーメッセージが表示される。
                 if (orig_bnst_data_end[bnst_num] == 1) {
                     var b_i = orig_bnst_data_num[bnst_num]; //before(orig_bnst_num)
