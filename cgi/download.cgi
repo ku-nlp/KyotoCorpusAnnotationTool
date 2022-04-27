@@ -36,8 +36,7 @@ my $filepath = "$rootdir/$article_id/$filename";
 my ($annotator_id);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
-}
-else {
+} else {
     &default_page();
     exit 1;
 }
@@ -57,13 +56,13 @@ while (<F>) {
 close(F);
 
 # 記事情報の更新
-my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
 my $infoname = "$rootdir/$article_id/dirinfo";
 my (@buf);
 if (-f $infoname) {
     open(INFO, $infoname);
     while (<INFO>) {
-	push(@buf, $_);
+        push(@buf, $_);
     }
     close(INFO);
 }
@@ -73,7 +72,7 @@ if ($buf[0] !~ /^\* /) {
     open(INFO, "> $infoname");
     print INFO "\* $annotator_id\t$date\n";
     for my $line (@buf) {
-	print INFO $line;
+        print INFO $line;
     }
     close(INFO);
 }
@@ -83,8 +82,8 @@ exit 0;
 
 sub default_page {
     # CGIヘッダの出力
-    print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
-    print $cgi->start_html({title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8'});
+    print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
+    print $cgi->start_html({ title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8' });
     print "<h1>関係コーパス 記事データダウンロード</h1><br>\n";
     print "<p>名前を入力してください。</p>\n" unless $annotator_id;
     print "<p>記事$article_idがみつかりません。</p>\n" unless -f $filepath;

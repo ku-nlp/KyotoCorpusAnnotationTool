@@ -64,11 +64,11 @@ if ($annotator_id ne $info_annotator) {
     &default_page("権限がありません。");
 }
 
-if($quitFlg) {
+if ($quitFlg) {
     # 記事情報を更新
     my ($buf);
     open(INFO, "> $infoname");
-    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     my $skipped = 0;
     for my $line (@buf) {
         # skip lines starting by '*' at the beginning of the file
@@ -105,7 +105,7 @@ if($quitFlg) {
     # 記事情報を更新
     my ($buf);
     open(INFO, "> $infoname");
-    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     print INFO "* $annotator_id\t$date\n";
     print INFO "$annotator_id\t$date\n";
     for my $line (@buf) {
@@ -117,7 +117,7 @@ if($quitFlg) {
 
 # 成功
 # CGIヘッダの出力
-print $cgi->header({type => 'text/xml', charset => 'utf-8', expires => '-1d'});
+print $cgi->header({ type => 'text/xml', charset => 'utf-8', expires => '-1d' });
 print "<result>ok</result>";
 
 sub default_page {

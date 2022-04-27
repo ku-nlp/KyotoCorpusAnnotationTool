@@ -9,35 +9,35 @@ our ($rootdir, $ext, $annot_path, $image_path);
 require './cgi.conf';
 
 # CGIヘッダの出力
-print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
+print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
 print <<EOF;
 <html>
 <head>
-<meta http-equiv="content-style-type" content="text/css; charset=utf-8">
-<title>コーパス 管理ページ</title>
-<style>
-<!--
+    <meta http-equiv="content-style-type" content="text/css; charset=utf-8">
+    <title>コーパス 管理ページ</title>
+    <style>
+        <!--
 
-body {
-    font:bold 16px;
-    color:#444444;
-    background-color:#eee;
-    margin:20px;
-}
+        body {
+            font:bold 16px;
+            color:#444444;
+            background-color:#eee;
+            margin:20px;
+        }
 
-.button {
-    margin-right:10px;
-}
+        .button {
+            margin-right:10px;
+        }
 
--->
-</style>
+        -->
+    </style>
 </head>
 <body>
 EOF
 
 print "<h3>アノテータメモ入力ページ</h3>\n";
 
-print $cgi->start_html({title => 'アノテータメモ', lang => 'ja', encoding => 'utf-8'});
+print $cgi->start_html({ title => 'アノテータメモ', lang => 'ja', encoding => 'utf-8' });
 
 # 作業者をチェック
 my ($annotator_id, $password, $corpus_set_id);

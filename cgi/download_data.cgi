@@ -29,11 +29,11 @@ if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
 
     # ヘッダー出力
-    print $cgi->header({type => 'text/xml', charset => 'utf-8', expires => '-1d'});
+    print $cgi->header({ type => 'text/xml', charset => 'utf-8', expires => '-1d' });
     print "<result>";
 
     # ロックユーザーかチェック
-    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     my $infoname = "$rootdir/$article_id/dirinfo";
     my (@buf);
     if (-f $infoname) {
@@ -73,7 +73,7 @@ unless (-f $filepath) {
 # バックアップファイル作成
 if ($cgi->param('backupFlag')) {
     my $backupFlag = $cgi->param('backupFlag');
-    if($backupFlag == 1) {
+    if ($backupFlag == 1) {
         &save_old_file($filepath, $annotator_id);
     }
 }
@@ -89,7 +89,7 @@ unless ($tar->read($filepath)) {
 # 読み込み対象のファイルの内容を返却
 my $info = $tar->get_content("$article_id/$fileinfo");
 for (split /^/, $info) {
-    if($_ =~ /# S-ID:(\S+)/) {
+    if ($_ =~ /# S-ID:(\S+)/) {
         # archiveからフィイル内容取得
         my $content = $tar->get_content("$article_id/$1");
         print "<file>";
@@ -108,7 +108,7 @@ sub default_page {
 }
 
 sub save_old_file {
-    my $date = sprintf("%d%02d%02d%02d%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+    my $date = sprintf("%d%02d%02d%02d%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     my ($file, $annotator_id) = @_;
     my $suffix = "$date" . "_" . "$annotator_id";
     my $prefix = $file;

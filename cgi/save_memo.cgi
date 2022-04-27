@@ -12,46 +12,46 @@ $rootdir .= "/$corpus_set_id";
 my $skip = $cgi->param('skip');
 
 # CGIヘッダの出力
-print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
+print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
 print <<EOF;
 <html>
 <head>
-<meta http-equiv="content-style-type" content="text/css; charset=utf-8">
-<title>アノテータメモページ</title>
-<style>
-<!--
+    <meta http-equiv="content-style-type" content="text/css; charset=utf-8">
+    <title>アノテータメモページ</title>
+    <style>
+        <!--
 
-body {
-    margin:20px;
-    font:bold 16px;
-    color:#444444;
-    background-color:#eee;
-}
+        body {
+            margin:20px;
+            font:bold 16px;
+            color:#444444;
+            background-color:#eee;
+        }
 
-#fileinfo{
-    margin-top:20px;
-    border:1px solid #EEEEEE;
-    padding:10px 15px;
-    background-color:#DDDDDD;
-}
+        #fileinfo{
+            margin-top:20px;
+            border:1px solid #EEEEEE;
+            padding:10px 15px;
+            background-color:#DDDDDD;
+        }
 
-.a_memo{
-    margin-top:20px;
-}
+        .a_memo{
+            margin-top:20px;
+        }
 
-.mng {
-  # margin:20px;
-}
+        .mng {
+            # margin:20px;
+        }
 
--->
-</style>
+        -->
+    </style>
 </head>
 <body>
 EOF
 
 print "<h3>アノテータメモページ</h3>\n";
 
-print $cgi->start_html({title => 'アノテータメモ', lang => 'ja', encoding => 'utf-8'});
+print $cgi->start_html({ title => 'アノテータメモ', lang => 'ja', encoding => 'utf-8' });
 
 # 作業者をチェック
 my ($annotator_id, $password);
@@ -85,7 +85,7 @@ if ($cgi->param('newmemo')) {
 }
 
 # ファイルに書き込み
-unless(-f $file && not -w $file){
+unless (-f $file && not -w $file) {
     open(MEMO, ">$file");
     print MEMO $newmemo;
     close MEMO;
@@ -100,7 +100,7 @@ unless(-f $file && not -w $file){
     print "<input type=\"hidden\" name=\"skip\" value=\"$skip\">";
     print qq(<input type="hidden" name="corpus_set_id" value="$corpus_set_id">);
     print "</form>\n";
-}else{
+} else {
     print "<p>$fileに書き込めません。</p>\n";
     print $cgi->end_html;
     exit 1;

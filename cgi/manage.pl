@@ -25,7 +25,7 @@ if (-f $ARGV[0] && $ARGV[0] =~ /([^\/\\]+)\.knp.*$/) {
     }
 
     open(INPUT, $ARGV[0]);
-    while ( <INPUT> ) {
+    while (<INPUT>) {
         if (/^# S\-ID:([^ ]+)/) {
             $file_name = $1;
             open(OUTPUT, "> $dir/$file_name") || die;
@@ -55,9 +55,7 @@ elsif (-d $ARGV[0]) {
     } else {
         $merge_p = 0;
     }
-}
-
-else {
+} else {
     die;
 }
 
@@ -69,7 +67,7 @@ foreach $file_name (&make_list()) {
     open(FILE, "$dir/$file_name");
 
     if ($merge_p) {
-        while ( <FILE> ) {
+        while (<FILE>) {
             $_ .= "\n" unless /\n$/;
             print OUT;
         }
@@ -126,7 +124,7 @@ sub extract_sid {
     my ($sid) = @_;
 
     #my ($id) = ($sid =~ /(\d+)$/);
-    my ($id_1,$id_2,$id_3) = ($sid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
+    my ($id_1, $id_2, $id_3) = ($sid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
     if ($id_3 =~ /^0/ && $id_1) {
         return $id_1;
     } else {
@@ -137,7 +135,7 @@ sub extract_sid {
 
 sub extract_pid {
     my ($pid) = @_;
-    my ($id_1,$id_2,$id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
+    my ($id_1, $id_2, $id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
     if ($id_3 =~ /^0/ && $id_1) {
         return $id_2;
     } else {
@@ -148,7 +146,7 @@ sub extract_pid {
 
 sub extract_tid {
     my ($pid) = @_;
-    my ($id_1,$id_2,$id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
+    my ($id_1, $id_2, $id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
     if ($id_3 =~ /^0/ && $id_1) {
         return $id_3;
     } else {

@@ -19,8 +19,7 @@ my $out_html = "$rootdir/../out-html";
 my ($annotator_id);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
-}
-else {
+} else {
     &default_page();
     exit 1;
 }
@@ -33,8 +32,8 @@ unless (-f $filepath) {
 `tar -C $out_html -zxf $filepath`;
 `cd $out_html; perl $rootdir/../../cgi/manage.pl $out_html/$article_id +`;
 my $html = `perl $rootdir/../../cgi/kc_annotation_per-article.perl $out_html/$article_id.knp`;
-print $cgi->header({type => 'text/html', charset => 'UTF-8', expires => '-1d'});
-print $cgi->start_html({title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8'});
+print $cgi->header({ type => 'text/html', charset => 'UTF-8', expires => '-1d' });
+print $cgi->start_html({ title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8' });
 print $html;
 print $cgi->end_html;
 
@@ -42,8 +41,8 @@ exit 0;
 
 sub default_page {
     # CGIヘッダの出力
-    print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
-    print $cgi->start_html({title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8'});
+    print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
+    print $cgi->start_html({ title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8' });
     print "<h1>関係コーパス 記事データダウンロード</h1><br>\n";
     print "<p>名前を入力してください。</p>\n" unless $annotator_id;
     print "<p>記事$article_idがみつかりません。</p>\n" unless -f $filepath;

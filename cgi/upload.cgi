@@ -10,8 +10,8 @@ require './cgi.conf';
 my $cgi = new CGI;
 
 # CGIヘッダの出力
-print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
-print $cgi->start_html({title => '記事データ アップロード', lang => 'ja', encoding => 'utf-8'});
+print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
+print $cgi->start_html({ title => '記事データ アップロード', lang => 'ja', encoding => 'utf-8' });
 
 # 記事IDをチェック
 my ($article_id);
@@ -57,7 +57,8 @@ if ($annotator_id ne $info_annotator) {
 
 # アップロードされたファイルの情報を取得する
 my ($fh);
-unless ($fh = $cgi->upload('upfile')) {      # ファイルハンドル
+unless ($fh = $cgi->upload('upfile')) {
+    # ファイルハンドル
     print "<p>提出するファイルを選んでください。</p>\n";
     &default_page();
     exit 1;
@@ -69,7 +70,7 @@ my $filetype = $cgi->uploadInfo($filename)->{'Content-Type'};
 # ファイルを書き出す
 unless (open OUT, "> $filepath") {
     print "<p>ファイルを処理中にエラーが発生しました。</p>\n",
-	$cgi->end_html;
+        $cgi->end_html;
     exit 1;
 }
 
@@ -83,7 +84,7 @@ close OUT;
 
 if ($size == 0) {
     print "<p>ファイルが読み込めませんでした。</p>\n",
-	$cgi->end_html;
+        $cgi->end_html;
     exit 1;
 }
 
@@ -91,7 +92,7 @@ if ($size == 0) {
 
 # 記事情報を更新
 open(INFO, "> $infoname");
-my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
 print INFO "$annotator_id\t$date\n";
 for my $line (@buf) {
     print INFO $line;
@@ -140,7 +141,7 @@ sub save_old_file {
     my $suffix = 1;
 
     while (-f "$file.$suffix") {
-	$suffix++;
+        $suffix++;
     }
     rename($file, "$file.$suffix");
 }
