@@ -1,18 +1,17 @@
-
 // fh = 出力ファイルハンドラ
 // phrase = 処理対象の単語
 // mark = 単語の前に出力するべき罫線の履歴
 // b = 木を1単語ずつ入れるための配列へのリファレンス
 // ast = 無視してください
 
-var Tree = function() {
+var Tree = function () {
 
     var root = 0;
 
-    this.print_dtree = function(tree_lines, node, mark, b) {
+    this.print_dtree = function (tree_lines, node, mark, b) {
         var local_buffer = "";
         var children = [];
-        
+
         //var mark = marks.join("");
 
         // 前の子の表示
@@ -44,7 +43,7 @@ var Tree = function() {
                 // } else if (node.type == "A") {
                 //     local_buffer += '<span class="dtree" id="'+ index +'" style="color:blue">'; 
                 // } else {
-                local_buffer += '<span class="treeCorner" id="treeCorner'+ index +'">';
+                local_buffer += '<span class="treeCorner" id="treeCorner' + index + '">';
                 // }
                 if (marks[m] == "L") {
                     local_buffer += '┌';
@@ -57,8 +56,8 @@ var Tree = function() {
             } else {
                 if (marks[m] == "l" ||
                     marks[m] == "r" ||
-                    (marks[m] == "L" && (marks[m+1] == "r" || marks[m+1] == "R")) ||
-                    (marks[m] == "R" && (marks[m+1] == "l" || marks[m+1] == "L"))) {
+                    (marks[m] == "L" && (marks[m + 1] == "r" || marks[m + 1] == "R")) ||
+                    (marks[m] == "R" && (marks[m + 1] == "l" || marks[m + 1] == "L"))) {
                     local_buffer += '│';
                 } else {
                     local_buffer += '　';
@@ -66,7 +65,7 @@ var Tree = function() {
             }
         }
 
-        local_buffer += node.content; 
+        local_buffer += node.content;
 
         if (b.length > 0) {
             var p_num = b.length;
@@ -95,25 +94,25 @@ var Tree = function() {
             }
             this.print_dtree(tree_lines, last_child, mark + "R", b);
         }
-        
+
         //return output_str;
     }
 
-    this.format_dtree = function(dpnd, bnsts, types) {
-        
+    this.format_dtree = function (dpnd, bnsts, types) {
+
         var nodes = [];
-        
+
         // dpnd_ref, pre_children_ref, post_children_refを作る
         var num_of_nodes = dpnd.length;
         var multiple_root = false;
         var current_root = -1;
         for (var i = 0; i < num_of_nodes; i++) {
             nodes.push({
-                id : i,
-                content : bnsts[i],
-                type : types[i], 
-                pre_children : [],
-                post_children : []
+                id: i,
+                content: bnsts[i],
+                type: types[i],
+                pre_children: [],
+                post_children: []
             });
             //nodes[i].num = i;
         }
@@ -141,6 +140,6 @@ var Tree = function() {
         //console.log(nodes);
         return nodes;
     }
-        
+
 }
 
