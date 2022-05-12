@@ -11,7 +11,7 @@ body {
 }
 
 h3 {
-    margin: 20px 20px 0px;
+    margin: 20px 20px 0;
     font-weight: bold;
     font-size: 16px;
     color: #444444;
@@ -213,7 +213,7 @@ p {
 }
 
 .sid {
-    margin: 0px;
+    margin: 0;
     border: 1px solid #EEEEEE;
     padding: 10px 15px;
     background-color: #DDDDDD;
@@ -290,7 +290,7 @@ p {
 
 .nil {
     float: left;
-    width: 0px;
+    width: 0;
 }
 
 .kaku {
@@ -481,8 +481,7 @@ button {
     left: -1px;
     /* Pop-Up */
     bottom: 0;
-    margin: 0;
-    margin-bottom: 1.55em;
+    margin: 0 0 1.55em;
 }
 
 .ui-layout-south ul ul li {
@@ -526,8 +525,7 @@ ul.popup ul ul {
     left: 100%;
     bottom: 0;
     top: 0;
-    margin: 0;
-    margin-bottom: 1.55em;
+    margin: 0 0 1.55em;
 }
 
 ul.popup li:hover > ul {
@@ -546,7 +544,7 @@ ul.popup li:hover > ul {
 }
 
 #wmrph-table tr, th, td {
-    border: 0px;
+    border: 0;
     padding: 2px 5px;
     vertical-align: middle;
 }
