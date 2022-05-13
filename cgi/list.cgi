@@ -35,9 +35,9 @@ print <<EOF;
 
         th {
             font-size: 10pt;
-            font:bold 16px;
-            color:#444444;
-            background-color:#c6c6c6;
+            font: bold 16px;
+            color: #444444;
+            background-color: #c6c6c6;
         }
 
         td, th {
