@@ -1,3 +1,7 @@
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 // RelationFrameクラス
 var RelationFrame = function () {
 
@@ -1764,7 +1768,7 @@ var RelationFrame = function () {
 
     // 特殊タグを含むかどうかによって色を設定
     color = this.check_have_extra_tag(this.contextinfo, bnst_index, kaku) ? 'red' : 'black';
-    $(`#${tag_id}> span`).css("color", color);
+    $(`#${tag_id} > span`).css("color", color);
 
   };
 
@@ -1842,7 +1846,7 @@ var RelationFrame = function () {
 
     // 表示文字列の更新
     this.make_string(i, kaku);
-    $(`#${tag_id}> span`).css("color", color);
+    $(`#${tag_id} > span`).css("color", color);
   };
 
   // 格追加
@@ -1874,8 +1878,8 @@ var RelationFrame = function () {
         newCell.id = `tag${i - 1}_${col}`;
         newCell.setAttribute("class", "tag");
         newCell.innerHTML = isMemo ? `<input type="text" name="name" id="${i - 1}`
-        + '" style="width: 80%" class="memo_tag text ui-widget-content ui-corner-all" value="'
-        + '" onblur="memo_tag_blur(this)"/>' : "<span></span>";
+          + '" style="width: 80%" class="memo_tag text ui-widget-content ui-corner-all" value="'
+          + '" onblur="memo_tag_blur(this)"/>' : "<span></span>";
       }
     }
   };
@@ -1895,9 +1899,9 @@ var RelationFrame = function () {
   // weak_suffixのチェック
   this.check_weak_suffix = function (m) {
     if (m[3] == '接尾辞' && (!m[2].match(STRONG_SUFFIX) &&
-    m[5] != '名詞性名詞助数辞' &&
-    m[5] != '形容詞性述語接尾辞' &&
-    m[5] != '動詞性接尾辞')) {
+      m[5] != '名詞性名詞助数辞' &&
+      m[5] != '形容詞性述語接尾辞' &&
+      m[5] != '動詞性接尾辞')) {
       return 1;
     }
     return 0;
@@ -1949,7 +1953,7 @@ var RelationFrame = function () {
       return;
     }
 
-    const sentence_id = inputFileList[this.currentShowIndex];
+    // const sentence_id = inputFileList[this.currentShowIndex];
     const tag_id = this.currentCellId;
     const m = tag_id.match(/tag(.*)_(.*)/);
     const i = parseInt(m[1], 10);// + 1;
@@ -1967,8 +1971,7 @@ var RelationFrame = function () {
 
     if (netag) {
       // 変更なし
-      if ((input == oldtext && netag == oldtag) ||
-        (!input && !oldtext)) {
+      if ((input === oldtext && netag === oldtag) || (!input && !oldtext)) {
         return;
       }
 
@@ -1979,28 +1982,29 @@ var RelationFrame = function () {
       let my_i = i;
       // 入力文字列が選択中の形態素に含まれている場合、入力を許可する
       const selected_mrph = $("#ne_button_0").val();
-      if (selected_mrph && selected_mrph.indexOf(check) == -1) {
+      if (selected_mrph && selected_mrph.indexOf(check) === -1) {
         // 対象文節中の形態素で終っているかをチェック
-        let re = new RegExp(`${mrph}$`);
-        while (check.search(re) == -1 && my_mrph_num >= 1 && my_mrph_num >= this.bnst_data_start[i]) {
+        let re = new RegExp(`${escapeRegExp(mrph)}$`);
+        while (check.search(re) === -1 && my_mrph_num >= 1 && my_mrph_num >= this.bnst_data_start[i]) {
           my_mrph_num--;
           mrph = this.mrph_data_all[my_mrph_num][0];
-          re = new RegExp(`${mrph}$`);
+          re = new RegExp(`${escapeRegExp(mrph)}$`);
         }
         if (my_mrph_num < this.bnst_data_start[i] && input) {
           alert('終了文字が不正です');
           return;
         }
         // 形態素区切りで始まっているかをチェック
-        re = new RegExp(`${mrph}$`);
+        re = new RegExp(`${escapeRegExp(mrph)}$`);
         while (mrph && check.search(re) >= 0) {
+          console.log(check);
           check = check.replace(re, "");
           my_mrph_num--;
           if (my_mrph_num < 0) {
             break;
           }
           mrph = this.mrph_data_all[my_mrph_num][0];
-          re = new RegExp(`${mrph}$`);
+          re = new RegExp(`${escapeRegExp(mrph)}$`);
           if (!this.mrph_data_start[my_mrph_num + 1]) {
             continue;
           }
@@ -2015,6 +2019,7 @@ var RelationFrame = function () {
           }
         }
         if (check) {
+          console.log(check);
           alert('開始文字が不正です');
           return;
         }
@@ -2028,7 +2033,7 @@ var RelationFrame = function () {
       //this.renew_flag_for_ne(i, j, oldtext, 1);
       this.delete_mrph_feature_for_ne(i, oldtext);
       delete this.contextinfo[i][kaku];
-      $(`#${tag_id}> span`).css("color", 'black');
+      $(`#${tag_id} > span`).css("color", 'black');
 
       if (oldtag.search("OPTIONAL") >= 0) {
         this.renew_ne_opt(i, kaku);
@@ -2106,11 +2111,11 @@ var RelationFrame = function () {
 
     let my_mrph_num = this.bnst_data_start[current_bnst + 1] - 1;
     let mrph = this.mrph_data_all[my_mrph_num][0];
-    var re = new RegExp(`${mrph}$`);
+    var re = new RegExp(`${escapeRegExp(mrph)}$`);
     while (my_mrph_num > 0 && ne.search(re) == -1) { // TODO added my_mrph_num >= 0. Is it ok?
       my_mrph_num--;
       mrph = this.mrph_data_all[my_mrph_num][0];
-      re = new RegExp(`${mrph}$`);
+      re = new RegExp(`${escapeRegExp(mrph)}$`);
     }
 
     this.mrph_data_all[my_mrph_num][12] += ne == mrph ?
@@ -2119,7 +2124,7 @@ var RelationFrame = function () {
     if (my_mrph_num <= 0) {
       return;
     }
-    var re = new RegExp(`${mrph}$`);
+    var re = new RegExp(`${escapeRegExp(mrph)}$`);
     ne = ne.replace(re, "");
     my_mrph_num--;
     mrph = this.mrph_data_all[my_mrph_num][0];
@@ -2128,7 +2133,7 @@ var RelationFrame = function () {
       this.mrph_data_all[my_mrph_num][12] += ne == mrph ?
         `<NE:${tag}:head>` : `<NE:${tag}:middle>`;
 
-      re = new RegExp(`${mrph}$`);
+      re = new RegExp(`${escapeRegExp(mrph)}$`);
       ne = ne.replace(re, "");
       my_mrph_num--;
       if (my_mrph_num < 0) {
@@ -2191,8 +2196,8 @@ var RelationFrame = function () {
       if ((this.mrph_data_all[mrph_tail_num][3].search(/^(名詞|接尾辞)$/)) == -1) {
         continue;
       }
-          let mrph_start_num = mrph_tail_num;
-          let mrph = "";
+      let mrph_start_num = mrph_tail_num;
+      let mrph = "";
 
       while (0 <= mrph_start_num) {
         mrph = this.mrph_data_all[mrph_start_num][0] + mrph;
@@ -2222,7 +2227,7 @@ var RelationFrame = function () {
       color = 'black';
     }
     const tag_id = this.currentCellId;
-    $(`#${tag_id}> span`).css("color", color);
+    $(`#${tag_id} > span`).css("color", color);
     // var j = this.bnst_num+this.caseBox[kaku];
 
     let mark = -1;
@@ -2307,8 +2312,8 @@ var RelationFrame = function () {
     if (mark > -1) {
       // すでについているタグを削除 (上書き時のみ)
       if (!undelete && this.modifyMode == MODIFY_MODE.OVERWRITE && (this.contextinfo[current_bnst]
-      && this.contextinfo[current_bnst][kaku]
-      && this.contextinfo[current_bnst][kaku].Data)) {
+        && this.contextinfo[current_bnst][kaku]
+        && this.contextinfo[current_bnst][kaku].Data)) {
         this.contextinfo[current_bnst][kaku].Data.length = 0;
       }
 
@@ -2345,8 +2350,8 @@ var RelationFrame = function () {
 
         var sentence = tagData.dependant == -1 ? "" : tagData.SID;
         this.bnst_data_f[current_bnst] += sentence ? `<rel type="${kaku}${equalStr}${mode}`
-        + '" target="' + tagData.data + '" sid="' + sentence + '" id="' + tagData.dependant + '"/>' : `<rel type="${kaku}${equalStr}${mode}`
-        + '" target="' + tagData.data + '"/>';
+          + '" target="' + tagData.data + '" sid="' + sentence + '" id="' + tagData.dependant + '"/>' : `<rel type="${kaku}${equalStr}${mode}`
+          + '" target="' + tagData.data + '"/>';
       }
     }
     //console.log("rewritten: " + this.bnst_data_f[current_bnst]);
@@ -2465,17 +2470,17 @@ var RelationFrame = function () {
   this.delete_mrph_feature_for_ne = function (current_bnst, ne) {
     let my_mrph_num = this.bnst_data_start[current_bnst + 1] - 1;
     let mrph = this.mrph_data_all[my_mrph_num][0];
-    var re = new RegExp(`${mrph}$`);
+    var re = new RegExp(`${escapeRegExp(mrph)}$`);
     while (ne.search(re) == -1 && my_mrph_num > 0) {
       my_mrph_num--;
       mrph = this.mrph_data_all[my_mrph_num][0];
-      var re = new RegExp(`${mrph}$`);
+      var re = new RegExp(`${escapeRegExp(mrph)}$`);
     }
     while (ne) {
       if (ne.search(mrph) == -1) { //不正なタグへの対処
         break;
       }
-      var re = new RegExp(`${mrph}$`);
+      var re = new RegExp(`${escapeRegExp(mrph)}$`);
       ne = ne.replace(re, "");
       if (this.mrph_data_all[my_mrph_num].length > 12 && this.mrph_data_all[my_mrph_num][12])
         this.mrph_data_all[my_mrph_num][12] = this.mrph_data_all[my_mrph_num][12].replace(/\<(NE:[^\>]+)\>/, "");
@@ -2742,6 +2747,4 @@ var RelationFrame = function () {
       scrollTop: targetPositionTop
     }, 200);
   };
-
-
 };
