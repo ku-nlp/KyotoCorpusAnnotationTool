@@ -41,5 +41,4 @@ $(document).ready(function () {
 
     $("#wmrph_buttons").hide();
 
-});    
-
+});
