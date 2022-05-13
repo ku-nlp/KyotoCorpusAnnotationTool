@@ -558,7 +558,7 @@ var WmrphFrame = function () {
                 modify_flag = '*';
                 current_modify_flag = '*';
 
-                for (var i = b_num + 1; i <= myRelationFrame.bnst_num; i++) {
+                for (let i = b_num + 1; i <= myRelationFrame.bnst_num; i++) {
                     myRelationFrame.bnst_data_start[i]++;
                 }
 
@@ -583,15 +583,15 @@ var WmrphFrame = function () {
                     m_num = myRelationFrame.bnst_data_start[b_num] + flag;
 
                     const new_array = [];
-                    for (var i = 0, l = myRelationFrame.mrph_data_all[m_num - 1].length; i < l; i++) {
+                    for (let i = 0, l = myRelationFrame.mrph_data_all[m_num - 1].length; i < l; i++) {
                         new_array[i] = myRelationFrame.mrph_data_all[m_num - 1][i];
                     }
 
                     myRelationFrame.mrph_data_all.splice(m_num, 0, new_array);
                     myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
 
-                    var b_num_start = me.active_b_num_start;
-                    var b_num_end = me.active_b_num_end;
+                    const b_num_start = me.active_b_num_start;
+                    const b_num_end = me.active_b_num_end;
 
                     me.active_b_num_start = -1;
 
@@ -643,8 +643,8 @@ var WmrphFrame = function () {
                     myRelationFrame.mrph_data_start.splice(m_num, 1);
                 }
 
-                var b_num_start = me.active_b_num_start;
-                var b_num_end = me.active_b_num_end;
+                const b_num_start = me.active_b_num_start;
+                const b_num_end = me.active_b_num_end;
                 me.active_b_num_start = -1;
 
                 me.removeContent();
@@ -663,9 +663,9 @@ var WmrphFrame = function () {
     this.reset_bnst = function () {
         try {
 
-            var start = myRelationFrame.bnst_data_start[this.active_b_num_start];
-            var end = myRelationFrame.bnst_data_start[this.active_b_num_end + 1];
-            var count = 0;
+            const start = myRelationFrame.bnst_data_start[this.active_b_num_start];
+            const end = myRelationFrame.bnst_data_start[this.active_b_num_end + 1];
+            let count = 0;
 
             // clearされた形態素
             for (var i = 0; i < myRelationFrame.mrph_num; i++) {
@@ -674,8 +674,6 @@ var WmrphFrame = function () {
                 }
             }
 
-            // 表示範囲内の文節の個数 (新)
-            var orig_count = 0;
             for (i = start; i < end; i++) {
                 if (myRelationFrame.mrph_data_start[i] == 1) {
                     count++;
@@ -683,7 +681,7 @@ var WmrphFrame = function () {
             }
 
             // 文節数の差
-            var diff = count - (this.active_b_num_end - this.active_b_num_start + 1);
+            const diff = count - (this.active_b_num_end - this.active_b_num_start + 1);
 
             // なくなった形態素の処理
             for (i = 0; i < myRelationFrame.mrph_num; i++) {
@@ -697,7 +695,7 @@ var WmrphFrame = function () {
             }
 
             // 文節開始位置(形態素番号)の修正
-            var old_bnst_num = myRelationFrame.bnst_num;
+            const old_bnst_num = myRelationFrame.bnst_num;
             myRelationFrame.bnst_num = 0;
             for (i = 0; i < myRelationFrame.mrph_num; i++) {
                 if (myRelationFrame.mrph_data_start[i] == 1) {
@@ -720,14 +718,14 @@ var WmrphFrame = function () {
             if (diff != 0) {
 
                 // 格のdependencyを修正
-                var curSntIndex = myRelationFrame.currentShowIndex;
-                for (var si = curSntIndex; si < inputFileList.length; si++) {
+                const curSntIndex = myRelationFrame.currentShowIndex;
+                for (let si = curSntIndex; si < inputFileList.length; si++) {
                     for (i = 0; i < old_bnst_num; i++) {
-                        var sid = inputFileList[si];
-                        var contextInfo = inputDataList[sid].contextinfo[i];
-                        for (var kaku in contextInfo) {
+                        const sid = inputFileList[si];
+                        const contextInfo = inputDataList[sid].contextinfo[i];
+                        for (const kaku in contextInfo) {
                             for (j = 0; j < contextInfo[kaku].Data.length; j++) {
-                                var data = contextInfo[kaku].Data[j];
+                                const data = contextInfo[kaku].Data[j];
                                 if (data.dependant
                                     && data.dependant > this.active_b_num_start
                                     && data.SID == inputFileList[curSntIndex]) {
@@ -747,16 +745,7 @@ var WmrphFrame = function () {
                     if (i != this.active_b_num_start
                         && this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]
                         && myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
-                        if (TREE_MODE == 'R') {
-                            myRelationFrame.bnst_data_dpnd[i] = -1;
-                        } else {
-                            myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
-                            // if (this.active_b_num_end < myRelationFrame.bnst_num - 1) {
-                            //     myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_end + 1;
-                            // } else {
-                            //     myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start - 1;;
-                            // }
-                        }
+                        myRelationFrame.bnst_data_dpnd[i] = TREE_MODE == 'R' ? -1 : this.active_b_num_start;
                     }
                     // 表示中の文節列より後に係る場合
                     else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end) {
@@ -771,11 +760,7 @@ var WmrphFrame = function () {
                          i < myRelationFrame.bnst_num; i++) {
                         // ルートをずらさない
                         if (TREE_MODE == 'R') {
-                            if (myRelationFrame.bnst_data_dpnd[i - diff] == -1) {
-                                myRelationFrame.bnst_data_dpnd[i] = -1;
-                            } else {
-                                myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + parseInt(diff, 10);
-                            }
+                            myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + parseInt(diff, 10);
                         } else {
                             myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff];
                         }
@@ -794,11 +779,7 @@ var WmrphFrame = function () {
                     if (TREE_MODE == 'R') {
                         for (i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + diff + 1); i--) {
                             // ルートをずらさない
-                            if (myRelationFrame.bnst_data_dpnd[i - diff] == -1) {
-                                myRelationFrame.bnst_data_dpnd[i] = -1;
-                            } else {
-                                myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + parseInt(diff, 10);
-                            }
+                            myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + parseInt(diff, 10);
                             myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
                             myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
                             myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i - diff];
@@ -834,46 +815,40 @@ var WmrphFrame = function () {
                             myRelationFrame.bnst_data_dpnd[i] = i + 1;
                             //}
                         }
-                    } else {
-                        if (isRoot) {
-                            myRelationFrame.bnst_data_dpnd[this.active_b_num_start] = -1;
-                            for (i = this.active_b_num_start + 1;
-                                 i <= (this.active_b_num_end + diff); i++) {
-                                myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
-                            }
-                        } else {
-                            //myRelationFrame.bnst_data_dpnd[this.active_b_num_end + diff] -= diff;
-                            // for (i = this.active_b_num_start;
-                            //      i <= (this.active_b_num_end + diff); i++) {
-                            //     //if (myRelationFrame.bnst_data_dpnd[i] != -1) {
-                            //     myRelationFrame.bnst_data_dpnd[i] = i + 1;
-                            //     //}
-                            // }
+                    } else if (isRoot) {
+                        myRelationFrame.bnst_data_dpnd[this.active_b_num_start] = -1;
+                        for (i = this.active_b_num_start + 1;
+                             i <= (this.active_b_num_end + diff); i++) {
+                            myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
                         }
+                    } else {
+                        //myRelationFrame.bnst_data_dpnd[this.active_b_num_end + diff] -= diff;
+                        // for (i = this.active_b_num_start;
+                        //      i <= (this.active_b_num_end + diff); i++) {
+                        //     //if (myRelationFrame.bnst_data_dpnd[i] != -1) {
+                        //     myRelationFrame.bnst_data_dpnd[i] = i + 1;
+                        //     //}
+                        // }
                     }
                 }
             }
 
             // 対象文節中のマーク (*, +)
-            var bnst_num = 0;
-            var modify_bnst = {};
+            let bnst_num = 0;
+            const modify_bnst = {};
             for (i = 0; i < myRelationFrame.mrph_num; i++) {
                 if (myRelationFrame.mrph_data_start[i] == 1) {
-                    if (bnst_num >= this.active_b_num_start && bnst_num <= this.active_b_num_end + diff) {
-                        // btype
-                        if (myRelationFrame.bnst_data_btype[bnst_num] != this.bnst_data_btype_new_m[i]) {
-                            myRelationFrame.bnst_data_btype[bnst_num] = this.bnst_data_btype_new_m[i];
-                            var b_i = myRelationFrame.orig_bnst_num[bnst_num];
-                            modify_bnst[b_i] = true;
-                        }
-
+                    if (bnst_num >= this.active_b_num_start && bnst_num <= this.active_b_num_end + diff && myRelationFrame.bnst_data_btype[bnst_num] != this.bnst_data_btype_new_m[i]) {
+                        myRelationFrame.bnst_data_btype[bnst_num] = this.bnst_data_btype_new_m[i];
+                        var b_i = myRelationFrame.orig_bnst_num[bnst_num];
+                        modify_bnst[b_i] = true;
                     }
                     bnst_num++;
                 }
             }
 
             // 基本句行と文節行のマッピングの更新
-            var orig_bnst_num = 0;
+            let orig_bnst_num = 0;
             myRelationFrame.orig_bnst_data_num = {}; //初期化
             for (i = 0; i < bnst_num; i++) {
                 if (myRelationFrame.bnst_data_btype[i] == "*") {
@@ -895,7 +870,7 @@ var WmrphFrame = function () {
                 myRelationFrame.bnst_data_dpnd.pop();
             }
 
-            var orig_diff = orig_bnst_num - myRelationFrame.orig_bnst_num; //文節の差分
+            const orig_diff = orig_bnst_num - myRelationFrame.orig_bnst_num; //文節の差分
             if (orig_diff != 0) {
 
                 // 係先(文節番号)の修正
@@ -912,19 +887,13 @@ var WmrphFrame = function () {
                         myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
                         if ((myRelationFrame.orig_bnst_data_end[i] == 1) &&
                             (myRelationFrame.bnst_data_dpnd[i] == -1)) {
-                            if (TREE_MODE == 'R') {
-                                myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
-                            } else {
-                                myRelationFrame.orig_bnst_data_dpnd[b_i] = this.active_b_num_end;
-                            }
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] = TREE_MODE == 'R' ? -1 : this.active_b_num_end;
                         }
                     }
                     // 表示中の文節列より後に係る場合
-                    else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end) {
-                        if (myRelationFrame.orig_bnst_data_end[i] == 1) {
-                            myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + parseInt(orig_diff, 10);
-                            // console.log(b_i + " " + myRelationFrame.orig_bnst_data_dpnd[b_i]);
-                        }
+                    else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end && myRelationFrame.orig_bnst_data_end[i] == 1) {
+                        myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + parseInt(orig_diff, 10);
+                        // console.log(b_i + " " + myRelationFrame.orig_bnst_data_dpnd[b_i]);
                     }
                 }
 
@@ -952,11 +921,7 @@ var WmrphFrame = function () {
                         if (myRelationFrame.bnst_data_btype[i] == "*") {
                             var b_i = myRelationFrame.orig_bnst_data_num[i]; //基本句番号iに対応する文節番号
                             var b_i_diff = parseInt(b_i, 10) - parseInt(orig_diff, 10);
-                            if (myRelationFrame.orig_bnst_data_dpnd[b_i_diff] == -1) {
-                                myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
-                            } else {
-                                myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + parseInt(orig_diff, 10);
-                            }
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] = myRelationFrame.orig_bnst_data_dpnd[b_i_diff] == -1 ? -1 : parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + parseInt(orig_diff, 10);
                             myRelationFrame.orig_bnst_data_type[b_i] = myRelationFrame.orig_bnst_data_type[b_i_diff] || "D";
                             myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
                             myRelationFrame.orig_bnst_data_f[b_i_diff] = '';
@@ -978,12 +943,10 @@ var WmrphFrame = function () {
                 if ((myRelationFrame.orig_bnst_data_end[i] == 1) &&
                     (myRelationFrame.bnst_data_dpnd[i] == -1)) {
                     myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
-                } else {
-                    if (myRelationFrame.orig_bnst_data_end[i] == 1) {
-                        var j = myRelationFrame.bnst_data_dpnd[i]; //かかりうけ先
-                        var b_j = myRelationFrame.orig_bnst_data_num[j]; //jの文節番号
-                        myRelationFrame.orig_bnst_data_dpnd[b_i] = b_j;
-                    }
+                } else if (myRelationFrame.orig_bnst_data_end[i] == 1) {
+                    var j = myRelationFrame.bnst_data_dpnd[i]; //かかりうけ先
+                    var b_j = myRelationFrame.orig_bnst_data_num[j]; //jの文節番号
+                    myRelationFrame.orig_bnst_data_dpnd[b_i] = b_j;
                 }
             }
 

@@ -1,11 +1,11 @@
-var inset50 = {
+const inset50 = {
     top: 50
     , bottom: 50
     , left: 50
     , right: 50
 };
 
-var layoutOptions = {
+const layoutOptions = {
     west__size: 400,
     center__childOptions: {
         inset: {
@@ -19,8 +19,8 @@ var layoutOptions = {
     }
 };
 
-var outerLayout;
-var innerLayout;
+let outerLayout;
+let innerLayout;
 
 $(document).ready(function () {
     outerLayout = $('body').layout(layoutOptions);
