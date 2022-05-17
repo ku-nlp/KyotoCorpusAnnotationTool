@@ -14,7 +14,7 @@ var Tree = function () {
 
         // 前の子の表示
         // print pre-children
-        const pre_children = node.pre_children;
+        const { pre_children } = node;
         const pre_children_count = pre_children.length;
         for (var i = 0; i < pre_children_count; i++) {
             children.push(pre_children[i]);
@@ -75,7 +75,7 @@ var Tree = function () {
         // print post-children
         children = [];
 
-        const post_children = node.post_children;
+        const { post_children } = node;
         const post_children_count = post_children.length;
         for (var i = 0; i < post_children_count; i++) {
             children.push(post_children[i]);

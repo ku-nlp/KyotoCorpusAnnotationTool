@@ -1,9 +1,9 @@
-const inset50 = {
-    top: 50
-    , bottom: 50
-    , left: 50
-    , right: 50
-};
+// const inset50 = {
+//     top: 50
+//     , bottom: 50
+//     , left: 50
+//     , right: 50
+// };
 
 const layoutOptions = {
     west__size: 400,

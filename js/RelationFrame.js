@@ -1139,9 +1139,7 @@ var RelationFrame = function () {
         for (let si = 0; si < inputFileList.length; si++) {
             const sid = inputFileList[si]; // センテンスIDを取得
 
-            const bnst_num = inputDataList[sid].bnst_num;
-            const mrph_data_all = inputDataList[sid].mrph_data_all;
-            const mrph_data_start = inputDataList[sid].mrph_data_start;
+            const { bnst_num, mrph_data_all, mrph_data_start } = inputDataList[sid];
 
             const sentence_table = [];
             var j = 0;
@@ -1245,9 +1243,7 @@ var RelationFrame = function () {
         for (let si = 0; si < inputFileList.length; si++) {
             const sid = inputFileList[si]; // センテンスIDを取得
 
-            const bnst_num = inputDataList[sid].bnst_num;
-            const mrph_data_all = inputDataList[sid].mrph_data_all;
-            const mrph_data_start = inputDataList[sid].mrph_data_start;
+            const { bnst_num, mrph_data_all, mrph_data_start } = inputDataList[sid];
 
             const sentence_table = [];
             var j = 0;
@@ -1366,15 +1362,17 @@ var RelationFrame = function () {
         for (let si = 0; si < inputFileList.length; si++) {
             const sid = inputFileList[si]; // センテンスIDを取得
 
-            const bnst_data_btype = inputDataList[sid].bnst_data_btype;
-            const bnst_data_dpnd = inputDataList[sid].bnst_data_dpnd;
-            const bnst_data_start = inputDataList[sid].bnst_data_start;
-            const bnst_data_type = inputDataList[sid].bnst_data_type;
-            const bnst_data_f = inputDataList[sid].bnst_data_f;
-            const bnst_num = inputDataList[sid].bnst_num;
-            const orig_bnst_data_end = inputDataList[sid].orig_bnst_data_end;
-            const mrph_data_all = inputDataList[sid].mrph_data_all;
-            const mrph_data_start = inputDataList[sid].mrph_data_start;
+            const {
+              bnst_data_btype,
+              bnst_data_dpnd,
+              bnst_data_start,
+              bnst_data_type,
+              bnst_data_f,
+              bnst_num,
+              orig_bnst_data_end,
+              mrph_data_all,
+              mrph_data_start
+            } = inputDataList[sid];
 
             //構文木の線引き
             let para_row;
