@@ -459,7 +459,7 @@ var WmrphFrame = function () {
         tr.appendChild(td);
         //        }
 
-                // 意味情報
+        // 意味情報
         const imi = document.createElement("div");
         imi.className = "imi";
         // genkei.innerHTML = myRelationFrame.mrph_data_all[m_num][2];
@@ -549,8 +549,8 @@ var WmrphFrame = function () {
 
                 // 固有表現中であれば追加を許可しない
                 if (myRelationFrame.mrph_data_all[m_num - 1] && myRelationFrame.mrph_data_all[m_num] && (myRelationFrame.mrph_data_all[m_num - 1][12] && myRelationFrame.mrph_data_all[m_num][12]) && (flag && myRelationFrame.mrph_data_all[m_num - 1][12].match(/\<NE:[^\>]+\>/) ||
-                myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:middle\>/) ||
-                myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:tail\>/))) {
+                    myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:middle\>/) ||
+                    myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:tail\>/))) {
                     alert('固有表現タグをはずしてから編集してください');
                     return;
                 }
