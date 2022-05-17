@@ -11,7 +11,7 @@ my $cgi = new CGI;
 print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
 
 print <<EOF;
-<html>
+<html lang="ja">
 <head>
     <meta http-equiv="content-style-type" content="text/css; charset=utf-8">
     <title>コーパス 管理ページ</title>
@@ -35,7 +35,6 @@ print <<EOF;
 
         th {
             font-size: 10pt;
-            font:bold 16px;
             color:#444444;
             background-color:#c6c6c6;
         }
@@ -181,7 +180,7 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
     print qq(</td>);
 
     # ステータス
-    if ($editing_flag) {
+    if ($editing_flag == 1) {
         print qq(<td>${current_annotator}が編集中</td>);
     } else {
         print qq(<td><br></td>);
