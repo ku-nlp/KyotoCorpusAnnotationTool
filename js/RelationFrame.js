@@ -270,9 +270,9 @@ var RelationFrame = function () {
         this.edit_i -= 1;
         this.bnst_data_dpnd = jQuery.extend(true, [], this.bnst_data_dpnd_back[this.edit_i]);
         this.orig_bnst_data_dpnd = jQuery.extend(true, [], this.orig_bnst_data_dpnd_back[this.edit_i]);
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.draw_matrix_ja();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             this.draw_matrix_en();
         }
         this.updateUndoRedoBtn();
@@ -284,9 +284,9 @@ var RelationFrame = function () {
         this.orig_bnst_data_dpnd = jQuery.extend(true, [], this.orig_bnst_data_dpnd_back[this.edit_i]);
         // this.bnst_data_dpnd = this.bnst_data_dpnd_back[this.edit_i];
         // this.orig_bnst_data_dpnd = this.orig_bnst_data_dpnd_back[this.edit_i];
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.draw_matrix_ja();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             this.draw_matrix_en();
         }
         this.updateUndoRedoBtn();
@@ -300,14 +300,14 @@ var RelationFrame = function () {
         inputDataList[sid]["caseBoxNum"] = this.caseBoxNum;
 
         // 係わり受けの編集をしないLRモードでは、全文表示を更新する
-        const removePrev = TREE_MODE == 'LR' ? false : true;
+        const removePrev = TREE_MODE === 'LR' ? false : true;
         this.removeContent(removePrev);
         // 構文木文節テーブルの表示
         this.makeCaseTable();
         // 構文木の線引き
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.draw_matrix_ja();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             this.draw_matrix_en();
         }
         //this.draw_matrix();
@@ -1085,9 +1085,9 @@ var RelationFrame = function () {
             this.orig_bnst_data_type[b_i] = type;
         }
 
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.draw_matrix_ja();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             this.draw_matrix_en();
         }
 
@@ -1102,33 +1102,33 @@ var RelationFrame = function () {
 
 
     this.show_prev_sentence = function () {
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.show_prev_sentence_ja();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             this.show_prev_sentence_en();
         }
     }
 
     this.draw_matrix = function () {
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.draw_matrix_ja();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             //this.draw_matrix_en();
         }
     }
 
     this.draw_matrix_prev = function () {
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.draw_matrix_prev_ja();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             //this.draw_matrix_en();
         }
     }
 
     this.makeCaseTable = function () {
-        if (TREE_MODE == 'R') {
+        if (TREE_MODE === 'R') {
             this.makeCaseTableJa();
-        } else if (TREE_MODE == 'LR') {
+        } else if (TREE_MODE === 'LR') {
             this.makeCaseTableEn();
         }
     }
@@ -2454,7 +2454,7 @@ var RelationFrame = function () {
         this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(re, "");
 
         //re = new RegExp("\<省略処理なし-" + kaku + "\>");
-        //this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(re,"");
+        //this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(re, "");
     };
 
     // NEタグ 文節feature削除
@@ -2626,7 +2626,7 @@ var RelationFrame = function () {
                     var tline = null;
                     //  文節行
                     if (this.bnst_data_btype[j] == '*') {
-                        if (TREE_MODE == 'LR' || j != (this.bnst_num - 1)) {
+                        if (TREE_MODE === 'LR' || j != (this.bnst_num - 1)) {
                             var b_id = this.orig_bnst_data_num[j];
                             bline = `* ${this.orig_bnst_data_dpnd[b_id]}${this.orig_bnst_data_type[b_id]}`;
                         } else {
@@ -2644,7 +2644,7 @@ var RelationFrame = function () {
                         output_lines.push(bline);
                     }
 
-                    tline = TREE_MODE == 'LR' || j != (this.bnst_num - 1) ? `+ ${this.bnst_data_dpnd[j]}${this.bnst_data_type[j]}` : "+ -1D";
+                    tline = TREE_MODE === 'LR' || j != (this.bnst_num - 1) ? `+ ${this.bnst_data_dpnd[j]}${this.bnst_data_type[j]}` : "+ -1D";
 
                     if (this.bnst_data_f[j]) {
                         tline = `${tline} ${this.bnst_data_f[j]}`;

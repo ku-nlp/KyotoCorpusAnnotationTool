@@ -2,7 +2,7 @@ function removeSpaces(inputObj) {
     inputObj.value = inputObj.value.replace(/ +/g, "");
 }
 
-var WmrphFrame = function () {
+let WmrphFrame = function () {
 
     this.title = "";
     this.active_b_num_start = -1;
@@ -147,12 +147,12 @@ var WmrphFrame = function () {
         const v = m2[1];
         for (let k = 0; k < myJumanGrammer.conj_data.length; k++) {
             if (myJumanGrammer.conj_data[i][k]) {
-                var m3 = myJumanGrammer.conj_data[i][k].match(/^基本形\((.*)\)$/);
+                const m3 = myJumanGrammer.conj_data[i][k].match(/^基本形\((.*)\)$/);
                 if (m3) {
-                    var orig = m3[1];
-                    var genkei_id = `#genkei-${m_num}`;
-                    var genkei = $(genkei_id).val();
-                    var replaced = new RegExp(`${v}$`);
+                    const orig = m3[1];
+                    const genkei_id = `#genkei-${m_num}`;
+                    let genkei = $(genkei_id).val();
+                    const replaced = new RegExp(`${v}$`);
                     genkei = genkei.replace(replaced, orig);
                     $(genkei_id).val(genkei);
                     myRelationFrame.mrph_data_all[m_num][2] = genkei;
@@ -208,8 +208,8 @@ var WmrphFrame = function () {
             table.appendChild(thead);
             $("#wmrph_content").append(table);
 
-            for (var i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num + 1]; i++) {
-                if (TREE_MODE == 'R') {
+            for (let i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num + 1]; i++) {
+                if (TREE_MODE === 'R') {
                     this.show_mrph(i, b_num, i == myRelationFrame.bnst_data_start[b_num] ? myRelationFrame.bnst_data_btype[b_num] : '', "top");
                 } else {
                     this.show_mrph(i, b_num, myRelationFrame.bnst_data_btype[b_num], "top");
@@ -218,7 +218,7 @@ var WmrphFrame = function () {
 
         } else if (b_num == this.active_b_num_end + 1) {
             this.active_b_num_end = b_num;
-            for (i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num + 1]; i++) {
+            for (let i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num + 1]; i++) {
                 this.show_mrph(i, b_num, i == myRelationFrame.bnst_data_start[b_num] ? myRelationFrame.bnst_data_btype[b_num] : '', "top");
             }
         } else {
@@ -241,7 +241,7 @@ var WmrphFrame = function () {
         row.className = "row";
         $("#wmrph_content").append(row);
 
-        var label;
+        // var label;
         let suffix;
 
         this.bnst_data_btype_new_m[m_num] = b_type;
@@ -368,7 +368,7 @@ var WmrphFrame = function () {
         td.appendChild(hyoki);
         tr.appendChild(td);
 
-        if (myRelationFrame.mrph_data_all[m_num][12] && myRelationFrame.mrph_data_all[m_num][12].match(/NE:[^\>]+\>/)) {
+        if (myRelationFrame.mrph_data_all[m_num][12] && myRelationFrame.mrph_data_all[m_num][12].match(/NE:[^>]+>/)) {
             // 背景をColorNeにして編集できないようにする
             input.disabled = true;
             input.style.backgroundColor = ColorNE;
@@ -423,7 +423,7 @@ var WmrphFrame = function () {
         tr.appendChild(td);
 
         // 品詞
-        var label = "&nbsp;";
+        let label = "&nbsp;";
         if ((myRelationFrame.mrph_data_all[m_num][5] != undefined) && (myRelationFrame.mrph_data_all[m_num][3] != undefined)) {
             label = myRelationFrame.mrph_data_all[m_num][5] == '*' ? myRelationFrame.mrph_data_all[m_num][3] : `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
         }
@@ -512,7 +512,7 @@ var WmrphFrame = function () {
         });
 
         delBtn.className = "delete";
-        delBtn.onclick = this.delete_mrph(b_num, m_num, false); //第3引数が偽ならdelete
+        delBtn.onclick = this.delete_mrph(b_num, m_num, false); // 第3引数が偽ならdelete
         td = document.createElement("td");
         td.appendChild(delBtn);
         tr.appendChild(td);
@@ -527,7 +527,7 @@ var WmrphFrame = function () {
             this.src = `${IMAGE_PATH}clear_of.png`;
         });
 
-        clBtn.onclick = this.delete_mrph(b_num, m_num, true); //第3引数が真ならclear
+        clBtn.onclick = this.delete_mrph(b_num, m_num, true); // 第3引数が真ならclear
         td = document.createElement("td");
         td.appendChild(clBtn);
         tr.appendChild(td);
@@ -549,8 +549,8 @@ var WmrphFrame = function () {
 
                 // 固有表現中であれば追加を許可しない
                 if (myRelationFrame.mrph_data_all[m_num - 1] && myRelationFrame.mrph_data_all[m_num] && (myRelationFrame.mrph_data_all[m_num - 1][12] && myRelationFrame.mrph_data_all[m_num][12]) && (flag && myRelationFrame.mrph_data_all[m_num - 1][12].match(/\<NE:[^\>]+\>/) ||
-                    myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:middle\>/) ||
-                    myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:tail\>/))) {
+                    myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^:]+:middle>/) ||
+                    myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^:]+:tail>/))) {
                     alert('固有表現タグをはずしてから編集してください');
                     return;
                 }
@@ -572,7 +572,7 @@ var WmrphFrame = function () {
                     myRelationFrame.mrph_data_all.splice(m_num, 0, ['', '', '', '', '', '', '', '*', 0, '*', 0, "", ""]);
                     myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
 
-                    if (TREE_MODE == 'R') {
+                    if (TREE_MODE === 'R') {
                         me.show_mrph(m_num, b_num, '', "top");
                     } else {
                         me.show_mrph(m_num, b_num, '*', "top");
@@ -606,7 +606,6 @@ var WmrphFrame = function () {
             } catch (e) {
                 alert(e);
             }
-
         };
     };
 
@@ -615,7 +614,7 @@ var WmrphFrame = function () {
         return function () {
             try {
                 if (myRelationFrame.mrph_data_all[m_num][12]
-                    && myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^\>]+\>/)) {
+                    && myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^>]+>/)) {
                     alert('固有表現タグをはずしてから編集してください');
                     return;
                 }
@@ -625,14 +624,14 @@ var WmrphFrame = function () {
 
                 if (clearflag) {
                     // 表記、読み、原形をクリア
-                    for (var i = 0; i < 3; i++) {
+                    for (let i = 0; i < 3; i++) {
                         myRelationFrame.mrph_data_all[m_num][i] = "";
                     }
                 } else {
                     // 削除
                     modify_flag2 = '*';
 
-                    for (var i = b_num + 1; i <= myRelationFrame.bnst_num; i++) {
+                    for (let i = b_num + 1; i <= myRelationFrame.bnst_num; i++) {
                         myRelationFrame.bnst_data_start[i]--;
                     }
 
@@ -662,19 +661,18 @@ var WmrphFrame = function () {
     // 形態素・文節 修正結果反映
     this.reset_bnst = function () {
         try {
-
             const start = myRelationFrame.bnst_data_start[this.active_b_num_start];
             const end = myRelationFrame.bnst_data_start[this.active_b_num_end + 1];
             let count = 0;
 
             // clearされた形態素
-            for (var i = 0; i < myRelationFrame.mrph_num; i++) {
+            for (let i = 0; i < myRelationFrame.mrph_num; i++) {
                 if (!myRelationFrame.mrph_data_all[i][0]) {
                     myRelationFrame.mrph_data_start[i] = 0;
                 }
             }
 
-            for (i = start; i < end; i++) {
+            for (let i = start; i < end; i++) {
                 if (myRelationFrame.mrph_data_start[i] == 1) {
                     count++;
                 }
@@ -684,7 +682,7 @@ var WmrphFrame = function () {
             const diff = count - (this.active_b_num_end - this.active_b_num_start + 1);
 
             // なくなった形態素の処理
-            for (i = 0; i < myRelationFrame.mrph_num; i++) {
+            for (let i = 0; i < myRelationFrame.mrph_num; i++) {
                 if (!myRelationFrame.mrph_data_all[i][0]) {
                     myRelationFrame.mrph_data_all[i] = undefined;
                     myRelationFrame.mrph_data_all.splice(i, 1);
@@ -697,7 +695,7 @@ var WmrphFrame = function () {
             // 文節開始位置(形態素番号)の修正
             const old_bnst_num = myRelationFrame.bnst_num;
             myRelationFrame.bnst_num = 0;
-            for (i = 0; i < myRelationFrame.mrph_num; i++) {
+            for (let i = 0; i < myRelationFrame.mrph_num; i++) {
                 if (myRelationFrame.mrph_data_start[i] == 1) {
                     myRelationFrame.bnst_data_start[myRelationFrame.bnst_num] = i;
                     myRelationFrame.bnst_num++;
@@ -706,25 +704,25 @@ var WmrphFrame = function () {
 
             myRelationFrame.bnst_data_start[myRelationFrame.bnst_num] = myRelationFrame.mrph_num; // 末尾の印
 
-            var isRoot = false;
-            for (i = this.active_b_num_start; i <= this.active_b_num_end; i++) {
+            let isRoot = false;
+            for (let i = this.active_b_num_start; i <= this.active_b_num_end; i++) {
                 if (myRelationFrame.bnst_data_dpnd[i] == -1) {
-                    var isRoot = true;
+                    isRoot = true;
                     break;
                 }
             }
 
             // 係先(文節番号)の修正
-            if (diff != 0) {
+            if (diff !== 0) {
 
                 // 格のdependencyを修正
                 const curSntIndex = myRelationFrame.currentShowIndex;
                 for (let si = curSntIndex; si < inputFileList.length; si++) {
-                    for (i = 0; i < old_bnst_num; i++) {
+                    for (let i = 0; i < old_bnst_num; i++) {
                         const sid = inputFileList[si];
                         const contextInfo = inputDataList[sid].contextinfo[i];
                         for (const kaku in contextInfo) {
-                            for (j = 0; j < contextInfo[kaku].Data.length; j++) {
+                            for (let j = 0; j < contextInfo[kaku].Data.length; j++) {
                                 const data = contextInfo[kaku].Data[j];
                                 if (data.dependant
                                     && data.dependant > this.active_b_num_start
@@ -736,31 +734,30 @@ var WmrphFrame = function () {
                     }
                 }
 
-                for (i = 0;
-                     (TREE_MODE == 'R' && i < this.active_b_num_start) ||
-                     (TREE_MODE == 'LR' && i < old_bnst_num);
+                for (let i = 0;
+                     (TREE_MODE === 'R' && i < this.active_b_num_start) ||
+                     (TREE_MODE === 'LR' && i < old_bnst_num);
                      i++) {
 
                     // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
                     if (i != this.active_b_num_start
                         && this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]
                         && myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
-                        myRelationFrame.bnst_data_dpnd[i] = TREE_MODE == 'R' ? -1 : this.active_b_num_start;
+                        myRelationFrame.bnst_data_dpnd[i] = TREE_MODE === 'R' ? -1 : this.active_b_num_start;
                     }
                     // 表示中の文節列より後に係る場合
                     else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end) {
-                        myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i], 10) + parseInt(diff, 10);
+                        myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i], 10) + diff;
                     }
                 }
 
                 // 文節をくっつけたとき
                 if (diff < 0) {
                     // 後から前にずらす
-                    for (i = (this.active_b_num_end + diff + 1);
-                         i < myRelationFrame.bnst_num; i++) {
+                    for (let i = (this.active_b_num_end + diff + 1); i < myRelationFrame.bnst_num; i++) {
                         // ルートをずらさない
-                        if (TREE_MODE == 'R') {
-                            myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + parseInt(diff, 10);
+                        if (TREE_MODE === 'R') {
+                            myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + diff;
                         } else {
                             myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff];
                         }
@@ -774,21 +771,27 @@ var WmrphFrame = function () {
 
                 // 文節を分割したとき
                 else {
-                    // console.log("diff > 0");
                     // 前から後にずらす
-                    if (TREE_MODE == 'R') {
-                        for (i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + diff + 1); i--) {
-                            // ルートをずらさない
-                            myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + parseInt(diff, 10);
-                            myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
-                            myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
-                            myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i - diff];
-                            myRelationFrame.bnst_data_f[i - diff] = '';
-                            myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i - diff]);
-                            myRelationFrame.contextinfo[i - diff] = '';
+                    if (TREE_MODE === 'R') {
+                        for (let i = (myRelationFrame.bnst_num - 1); i > this.active_b_num_end; i--) {
+                            if (i - diff > this.active_b_num_end) {
+                                // ルートをずらさない
+                                myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + diff;
+                                myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
+                                myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
+                                myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i - diff];
+                                myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i - diff]);
+                            } else {
+                                myRelationFrame.bnst_data_dpnd[i] = -1;
+                                myRelationFrame.bnst_data_type[i] = null;
+                                myRelationFrame.bnst_data_btype[i] = '';
+                                myRelationFrame.bnst_data_f[i] = '';
+                                myRelationFrame.contextinfo[i] = '';
+                            }
                         }
                     } else {
-                        for (i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + diff + 1); i--) {
+                        // TREE_MODE === 'R' の場合と同様に修正したほうがいい？
+                        for (let i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + diff + 1); i--) {
                             myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10);
                             myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
                             myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
@@ -799,26 +802,22 @@ var WmrphFrame = function () {
                         }
                     }
                 }
-                if (TREE_MODE == 'R') {
-                    for (i = this.active_b_num_start;
-                         i <= (this.active_b_num_end + diff); i++) {
+                if (TREE_MODE === 'R') {
+                    for (let i = this.active_b_num_start; i <= (this.active_b_num_end + diff); i++) {
                         myRelationFrame.bnst_data_dpnd[i] = -1;
                         // myRelationFrame.bnst_data_f[i] = ''; // タグ情報をクリアしない
                     }
                 } else {
-                    var i;
                     if (diff > 0) {
                         myRelationFrame.bnst_data_dpnd[this.active_b_num_end + diff] = myRelationFrame.bnst_data_dpnd[this.active_b_num_start];
-                        for (i = this.active_b_num_start;
-                             i < (this.active_b_num_end + diff); i++) {
+                        for (let i = this.active_b_num_start; i < (this.active_b_num_end + diff); i++) {
                             //if (myRelationFrame.bnst_data_dpnd[i] != -1) {
                             myRelationFrame.bnst_data_dpnd[i] = i + 1;
                             //}
                         }
                     } else if (isRoot) {
                         myRelationFrame.bnst_data_dpnd[this.active_b_num_start] = -1;
-                        for (i = this.active_b_num_start + 1;
-                             i <= (this.active_b_num_end + diff); i++) {
+                        for (let i = this.active_b_num_start + 1; i <= (this.active_b_num_end + diff); i++) {
                             myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
                         }
                     } else {
@@ -836,11 +835,11 @@ var WmrphFrame = function () {
             // 対象文節中のマーク (*, +)
             let bnst_num = 0;
             const modify_bnst = {};
-            for (i = 0; i < myRelationFrame.mrph_num; i++) {
+            for (let i = 0; i < myRelationFrame.mrph_num; i++) {
                 if (myRelationFrame.mrph_data_start[i] == 1) {
                     if (bnst_num >= this.active_b_num_start && bnst_num <= this.active_b_num_end + diff && myRelationFrame.bnst_data_btype[bnst_num] != this.bnst_data_btype_new_m[i]) {
                         myRelationFrame.bnst_data_btype[bnst_num] = this.bnst_data_btype_new_m[i];
-                        var b_i = myRelationFrame.orig_bnst_num[bnst_num];
+                        const b_i = myRelationFrame.orig_bnst_num[bnst_num];
                         modify_bnst[b_i] = true;
                     }
                     bnst_num++;
@@ -849,8 +848,8 @@ var WmrphFrame = function () {
 
             // 基本句行と文節行のマッピングの更新
             let orig_bnst_num = 0;
-            myRelationFrame.orig_bnst_data_num = {}; //初期化
-            for (i = 0; i < bnst_num; i++) {
+            myRelationFrame.orig_bnst_data_num = {}; // 初期化
+            for (let i = 0; i < bnst_num; i++) {
                 if (myRelationFrame.bnst_data_btype[i] == "*") {
                     myRelationFrame.orig_bnst_data_num[i] = orig_bnst_num;
                     myRelationFrame.orig_bnst_data_start[i] = 1;
@@ -858,7 +857,7 @@ var WmrphFrame = function () {
                     orig_bnst_num++;
                 } else {
                     myRelationFrame.orig_bnst_data_end[i] = 1;
-                    myRelationFrame.orig_bnst_data_end[i - 1] = 0; //ひとつ前の値を0に
+                    myRelationFrame.orig_bnst_data_end[i - 1] = 0; // ひとつ前の値を0に
                     myRelationFrame.orig_bnst_data_num[i] = orig_bnst_num - 1;
                 }
             }
@@ -866,48 +865,45 @@ var WmrphFrame = function () {
             // myRelationFrame.bnst_data_btype[bnst_num] = '*';
             myRelationFrame.bnst_num = bnst_num; // redundant
 
-            for (i = old_bnst_num - 1; i >= myRelationFrame.bnst_num; i--) {
+            for (let i = old_bnst_num - 1; i >= myRelationFrame.bnst_num; i--) {
                 myRelationFrame.bnst_data_dpnd.pop();
             }
 
-            const orig_diff = orig_bnst_num - myRelationFrame.orig_bnst_num; //文節の差分
-            if (orig_diff != 0) {
+            const orig_diff = orig_bnst_num - myRelationFrame.orig_bnst_num; // 文節の差分
+            if (orig_diff !== 0) {
 
                 // 係先(文節番号)の修正
-                for (i = 0;
-                     (TREE_MODE == 'R' && i < this.active_b_num_start) ||
-                     (TREE_MODE == 'LR' && i < myRelationFrame.bnst_num);
+                for (let i = 0;
+                     (TREE_MODE === 'R' && i < this.active_b_num_start) ||
+                     (TREE_MODE === 'LR' && i < myRelationFrame.bnst_num);
                      i++) {
 
                     // 基本句の属している文節の番号を取得
-                    var b_i = myRelationFrame.orig_bnst_data_num[i];
+                    const b_i = myRelationFrame.orig_bnst_data_num[i];
 
                     // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
                     if ((this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]) &&
                         myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
                         if ((myRelationFrame.orig_bnst_data_end[i] == 1) &&
                             (myRelationFrame.bnst_data_dpnd[i] == -1)) {
-                            myRelationFrame.orig_bnst_data_dpnd[b_i] = TREE_MODE == 'R' ? -1 : this.active_b_num_end;
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] = TREE_MODE === 'R' ? -1 : this.active_b_num_end;
                         }
                     }
                     // 表示中の文節列より後に係る場合
                     else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end && myRelationFrame.orig_bnst_data_end[i] == 1) {
-                        myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + parseInt(orig_diff, 10);
+                        myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + orig_diff;
                         // console.log(b_i + " " + myRelationFrame.orig_bnst_data_dpnd[b_i]);
                     }
                 }
 
                 // 文節をくっつけた場合
                 if (orig_diff < 0) {
-                    // console.log("diff < 0");
                     // 後から前にずらす
-                    for (i = (this.active_b_num_end + orig_diff + 1);
-                         i < myRelationFrame.bnst_num; i++) {
-
+                    for (let i = (this.active_b_num_end + orig_diff + 1); i < myRelationFrame.bnst_num; i++) {
                         if (myRelationFrame.bnst_data_btype[i] == "*") {
-                            var b_i = myRelationFrame.orig_bnst_data_num[i]; //基本句番号iに対応する文節番号
-                            var b_i_diff = parseInt(b_i, 10) - parseInt(orig_diff, 10);
-                            myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + parseInt(orig_diff, 10);
+                            const b_i = myRelationFrame.orig_bnst_data_num[i]; // 基本句番号iに対応する文節番号
+                            const b_i_diff = parseInt(b_i, 10) - parseInt(orig_diff, 10);
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
                             myRelationFrame.orig_bnst_data_type[b_i] = myRelationFrame.orig_bnst_data_type[b_i_diff] || "D";
                             myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
                         }
@@ -915,21 +911,17 @@ var WmrphFrame = function () {
 
                 } else { // 文節が増えた場合
                     // 前から後ろにずらす
-                    for (i = (myRelationFrame.bnst_num - 1);
-                         i >= (this.active_b_num_end + orig_diff); i--) {
-
+                    for (let i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + orig_diff); i--) {
                         if (myRelationFrame.bnst_data_btype[i] == "*") {
-                            var b_i = myRelationFrame.orig_bnst_data_num[i]; //基本句番号iに対応する文節番号
-                            var b_i_diff = parseInt(b_i, 10) - parseInt(orig_diff, 10);
-                            myRelationFrame.orig_bnst_data_dpnd[b_i] = myRelationFrame.orig_bnst_data_dpnd[b_i_diff] == -1 ? -1 : parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + parseInt(orig_diff, 10);
+                            const b_i = myRelationFrame.orig_bnst_data_num[i]; // 基本句番号iに対応する文節番号
+                            const b_i_diff = parseInt(b_i, 10) - orig_diff;
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] = myRelationFrame.orig_bnst_data_dpnd[b_i_diff] == -1 ? -1 : parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
                             myRelationFrame.orig_bnst_data_type[b_i] = myRelationFrame.orig_bnst_data_type[b_i_diff] || "D";
                             myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
                             myRelationFrame.orig_bnst_data_f[b_i_diff] = '';
                         }
                     }
-
                 }
-
             }
 
             // for (var b_i = 0; b_i < myRelationFrame.orig_bnst_num; b_i++) {
@@ -938,19 +930,19 @@ var WmrphFrame = function () {
             //     }
             // }
 
-            for (i = 0; i < myRelationFrame.bnst_num; i++) {
-                var b_i = myRelationFrame.orig_bnst_data_num[i];
+            for (let i = 0; i < myRelationFrame.bnst_num; i++) {
+                const b_i = myRelationFrame.orig_bnst_data_num[i];
                 if ((myRelationFrame.orig_bnst_data_end[i] == 1) &&
                     (myRelationFrame.bnst_data_dpnd[i] == -1)) {
                     myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
                 } else if (myRelationFrame.orig_bnst_data_end[i] == 1) {
-                    var j = myRelationFrame.bnst_data_dpnd[i]; //かかりうけ先
-                    var b_j = myRelationFrame.orig_bnst_data_num[j]; //jの文節番号
+                    const j = myRelationFrame.bnst_data_dpnd[i]; // かかりうけ先
+                    const b_j = myRelationFrame.orig_bnst_data_num[j]; // jの文節番号
                     myRelationFrame.orig_bnst_data_dpnd[b_i] = b_j;
                 }
             }
 
-            for (i = myRelationFrame.orig_bnst_num - 1; i >= orig_bnst_num; i--) {
+            for (let i = myRelationFrame.orig_bnst_num - 1; i >= orig_bnst_num; i--) {
                 myRelationFrame.orig_bnst_data_dpnd.pop();
             }
 
