@@ -569,7 +569,7 @@ let WmrphFrame = function () {
                     // 追加
                     m_num = myRelationFrame.bnst_data_start[b_num + 1] - 1;
 
-                    myRelationFrame.mrph_data_all.splice(m_num, 0, ['', '', '', '', '', '', '', '*', 0, '*', 0, "", ""]);
+                    myRelationFrame.mrph_data_all.splice(m_num, 0, ['', '', '', '', '', '', '', '*', 0, '*', 0, "NIL", ""]);
                     myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
 
                     if (TREE_MODE === 'R') {
