@@ -790,15 +790,20 @@ let WmrphFrame = function () {
                             }
                         }
                     } else {
-                        // TREE_MODE === 'R' の場合と同様に修正したほうがいい？
-                        for (let i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + diff + 1); i--) {
-                            myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10);
-                            myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
-                            myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
-                            myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i - diff];
-                            myRelationFrame.bnst_data_f[i - diff] = '';
-                            myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i - diff]);
-                            myRelationFrame.contextinfo[i - diff] = '';
+                        for (let i = (myRelationFrame.bnst_num - 1); i > this.active_b_num_end; i--) {
+                            if (i - diff > this.active_b_num_end) {
+                                myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10);
+                                myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
+                                myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
+                                myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i - diff];
+                                myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i - diff]);
+                            } else {
+                                myRelationFrame.bnst_data_dpnd[i] = -1;
+                                myRelationFrame.bnst_data_type[i] = null;
+                                myRelationFrame.bnst_data_btype[i] = '';
+                                myRelationFrame.bnst_data_f[i] = '';
+                                myRelationFrame.contextinfo[i] = '';
+                            }
                         }
                     }
                 }
