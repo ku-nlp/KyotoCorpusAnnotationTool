@@ -231,7 +231,7 @@ let WmrphFrame = function () {
     this.show_mrph = function (m_num, b_num, b_type, direction) {
 
         // 最初の形態素は強制的にBにする
-        if (m_num == 0 && b_type != '*') {
+        if (m_num == 0 && b_type !== '*') {
             b_type = '*';
         }
 
@@ -249,7 +249,7 @@ let WmrphFrame = function () {
         // 文節区切りボタン
         const btypeBtn = document.createElement("img");
 
-        if (b_type == '*') {
+        if (b_type === '*') {
             this.bnst_data_btype_new_label[m_num] = 'B';
             myRelationFrame.mrph_data_start[m_num] = 1;
             btypeBtn.src = `${IMAGE_PATH}b_of.png`;
@@ -262,7 +262,7 @@ let WmrphFrame = function () {
                     this.src = `${IMAGE_PATH}b_of.png`;
                 });
             }
-        } else if (b_type == '+') {
+        } else if (b_type === '+') {
             this.bnst_data_btype_new_label[m_num] = 'T';
             myRelationFrame.mrph_data_start[m_num] = 1;
             btypeBtn.src = `${IMAGE_PATH}t_of.png`;
@@ -304,7 +304,7 @@ let WmrphFrame = function () {
 
                 const btype = me.bnst_data_btype_new_label[m_num];
 
-                if (btype == 'B') {
+                if (btype === 'B') {
                     me.bnst_data_btype_new_m[m_num] = '+';
                     me.bnst_data_btype_new_label[m_num] = 'T';
                     this.src = `${IMAGE_PATH}t_g_of.png`;
@@ -314,7 +314,7 @@ let WmrphFrame = function () {
                     $(this).mouseout(function () {
                         this.src = `${IMAGE_PATH}t_g_of.png`;
                     });
-                } else if (btype == 'T') {
+                } else if (btype === 'T') {
                     myRelationFrame.mrph_data_start[m_num] = 0;
                     me.bnst_data_btype_new_m[m_num] = '';
                     me.bnst_data_btype_new_label[m_num] = '&nbsp;';
@@ -379,7 +379,7 @@ let WmrphFrame = function () {
         yomi.className = "yomi";
         var input = document.createElement("input");
         input.type = "text";
-        if (myRelationFrame.mrph_data_all[m_num][1] != undefined) {
+        if (myRelationFrame.mrph_data_all[m_num][1] !== undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][1];
         }
         yomi.appendChild(input);
@@ -404,7 +404,7 @@ let WmrphFrame = function () {
         var input = document.createElement("input");
         input.type = "text";
         input.id = `genkei-${row.id}`;
-        if (myRelationFrame.mrph_data_all[m_num][2] != undefined) {
+        if (myRelationFrame.mrph_data_all[m_num][2] !== undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][2];
         }
         genkei.appendChild(input);
@@ -424,8 +424,8 @@ let WmrphFrame = function () {
 
         // 品詞
         let label = "&nbsp;";
-        if ((myRelationFrame.mrph_data_all[m_num][5] != undefined) && (myRelationFrame.mrph_data_all[m_num][3] != undefined)) {
-            label = myRelationFrame.mrph_data_all[m_num][5] == '*' ? myRelationFrame.mrph_data_all[m_num][3] : `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
+        if ((myRelationFrame.mrph_data_all[m_num][5] !== undefined) && (myRelationFrame.mrph_data_all[m_num][3] !== undefined)) {
+            label = myRelationFrame.mrph_data_all[m_num][5] === '*' ? myRelationFrame.mrph_data_all[m_num][3] : `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
         }
 
         td = document.createElement("td");
@@ -438,17 +438,17 @@ let WmrphFrame = function () {
         // 活用 --> 〜型:〜形(〜) or なし
         //if (LANG == 'ja') {
         label = "なし";
-        if (myRelationFrame.mrph_data_all[m_num][7] != undefined && myRelationFrame.mrph_data_all[m_num][7] != '*') {
+        if (myRelationFrame.mrph_data_all[m_num][7] !== undefined && myRelationFrame.mrph_data_all[m_num][7] !== '*') {
             label = `${myRelationFrame.mrph_data_all[m_num][7]}:${myRelationFrame.mrph_data_all[m_num][9]}`;
             suffix = myJumanGrammer.conj_table[label];
-            if (suffix != undefined) {
+            if (suffix !== undefined) {
                 label += suffix;
             }
         }
 
         td = document.createElement("td");
         let label2 = "";
-        if ((myRelationFrame.mrph_data_all[m_num][3] != undefined) && (myRelationFrame.mrph_data_all[m_num][5] != undefined)) {
+        if ((myRelationFrame.mrph_data_all[m_num][3] !== undefined) && (myRelationFrame.mrph_data_all[m_num][5] !== undefined)) {
             label2 = `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
         }
 
@@ -466,7 +466,7 @@ let WmrphFrame = function () {
         var input = document.createElement("input");
         input.type = "text";
         input.id = `imi-${row.id}`;
-        if (myRelationFrame.mrph_data_all[m_num][11] != undefined) {
+        if (myRelationFrame.mrph_data_all[m_num][11] !== undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][11];
         }
         imi.appendChild(input);
@@ -850,7 +850,7 @@ let WmrphFrame = function () {
             let orig_bnst_num = 0;
             myRelationFrame.orig_bnst_data_num = {}; // 初期化
             for (let i = 0; i < bnst_num; i++) {
-                if (myRelationFrame.bnst_data_btype[i] == "*") {
+                if (myRelationFrame.bnst_data_btype[i] === "*") {
                     myRelationFrame.orig_bnst_data_num[i] = orig_bnst_num;
                     myRelationFrame.orig_bnst_data_start[i] = 1;
                     myRelationFrame.orig_bnst_data_end[i] = 1;
@@ -900,7 +900,7 @@ let WmrphFrame = function () {
                 if (orig_diff < 0) {
                     // 後から前にずらす
                     for (let i = (this.active_b_num_end + orig_diff + 1); i < myRelationFrame.bnst_num; i++) {
-                        if (myRelationFrame.bnst_data_btype[i] == "*") {
+                        if (myRelationFrame.bnst_data_btype[i] === "*") {
                             const b_i = myRelationFrame.orig_bnst_data_num[i]; // 基本句番号iに対応する文節番号
                             const b_i_diff = parseInt(b_i, 10) - parseInt(orig_diff, 10);
                             myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
@@ -912,7 +912,7 @@ let WmrphFrame = function () {
                 } else { // 文節が増えた場合
                     // 前から後ろにずらす
                     for (let i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + orig_diff); i--) {
-                        if (myRelationFrame.bnst_data_btype[i] == "*") {
+                        if (myRelationFrame.bnst_data_btype[i] === "*") {
                             const b_i = myRelationFrame.orig_bnst_data_num[i]; // 基本句番号iに対応する文節番号
                             const b_i_diff = parseInt(b_i, 10) - orig_diff;
                             myRelationFrame.orig_bnst_data_dpnd[b_i] = myRelationFrame.orig_bnst_data_dpnd[b_i_diff] == -1 ? -1 : parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
@@ -949,12 +949,9 @@ let WmrphFrame = function () {
             myRelationFrame.orig_bnst_num = orig_bnst_num;
 
             return true;
-
         } catch (e) {
             alert(e);
             return false;
         }
-
     };
-
 };
