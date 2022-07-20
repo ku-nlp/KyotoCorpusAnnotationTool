@@ -2183,7 +2183,7 @@ var RelationFrame = function () {
         for (let mrph_tail_num = this.bnst_data_start[i];
              mrph_tail_num < this.bnst_data_start[i + 1]; mrph_tail_num++) {
 
-            if ((this.mrph_data_all[mrph_tail_num][3].search(/^(名詞|接尾辞)$/)) == -1) {
+            if ((this.mrph_data_all[mrph_tail_num][3].search(/^(名詞|接尾辞|特殊)$/)) == -1) {
                 continue;
             }
             let mrph_start_num = mrph_tail_num;
