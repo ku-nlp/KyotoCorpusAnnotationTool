@@ -618,50 +618,49 @@ var RelationFrame = function () {
         table.setAttribute("cellSpacing", "0px");
         table.setAttribute("cellPadding", "0px");
         const thead = document.createElement("thead");
-        var tr = document.createElement("tr");
 
-        for (var j = 0; j <= cols; j++) {
-
-            var td = document.createElement("td");
+        const trHeader = document.createElement("tr");
+        for (let j = 0; j <= cols; j++) {
+            let td = document.createElement("td");
             td.setAttribute("align", "center");
-            if (j == 0) {
-                var title = document.createTextNode("");
-            } else if (j == 1) {
-                var title = document.createTextNode("構文木");
+            let title;
+            if (j === 0) {
+                title = "";
+            } else if (j === 1) {
+                title = "構文木";
             } else {
-                // 格名
-                var title = document.createTextNode(this.caseName[j - 1]);
+                title = this.caseName[j - 1];  // 格名
             }
-            td.appendChild(title);
-            tr.appendChild(td);
+            td.appendChild(document.createTextNode(title));
+            trHeader.appendChild(td);
         }
-        thead.appendChild(tr);
+        thead.appendChild(trHeader);
         const tbody = document.createElement("tbody");
         for (let ti = 0; ti < this.bnst_num; ti++) {
-            var tr = document.createElement("tr");
-            for (var j = 0; j <= cols; j++) {
+            const tr = document.createElement("tr");
+            for (let j = 0; j <= cols; j++) {
                 const kaku = this.caseName[j];
-                var td = document.createElement("td");
+                let td = document.createElement("td");
 
-                if (j == 0) {
-                    var topElem = document.createElement("div");
+                if (j === 0) {
+                    let topElem = document.createElement("div");
                     topElem.className = "top en";
-                    var title = document.createElement("div");
+                    let title = document.createElement("div");
                     title.className = "tableWord";
                     title.id = `tableWord${ti}`;
                     title.innerHTML = this.mrph_data_all[ti][0];
                     topElem.appendChild(title);
                     td.appendChild(topElem);
 
-                } else if (j == 1) {
+                } else if (j === 1) {
                     td.className = "rel-tree";
-                    var topElem = document.createElement("div");
+                    const topElem = document.createElement("div");
                     //topElem.setAttribute("align", "left");
                     topElem.className = "top en";
 
                     //if(sentence_table[ti]) {
                     if (tree_lines[ti]) {
-                        var title = document.createElement("div");
+                        let title = document.createElement("div");
                         title.className = "treeEn";
                         title.id = `tree${ti}`;
                         //title.innerHTML = sentence_table[ti];
@@ -687,29 +686,25 @@ var RelationFrame = function () {
                     td.appendChild(topElem);
 
                 } else {
+                    let title = null;
                     td.id = `tag${ti}_${j - 1}`;
                     td.setAttribute("align", "center");
-                    if (kaku == 'メモ') {
-                        var title = null;
+                    if (kaku === 'メモ') {
                         td.innerHTML = `<input type="text" name="name" id="${ti}`
                             + '" style="width: 200px; " class="memo_tag text ui-widget-content ui-corner-all" value=""'
                             + ' onblur="memo_tag_blur(this)"/>';
                     } else {
-                        var title = document.createElement("span");
+                        title = document.createElement("span");
                     }
 
-
-                    var titleText = "";
+                    let titleText = "";
                     if (this.contextinfo[ti] && this.contextinfo[ti][this.caseName[j - 1]]) {
                         // タグ
                         titleText = this.make_string(ti, this.caseName[j - 1]);
-
-                        if (kaku == 'メモ') {
-
-                            var tag = this.contextinfo[ti][kaku];
-                            var val = tag.Data[0].data;
-
-                            var title = titleText.innerHTML;
+                        if (kaku === 'メモ') {
+                            const tag = this.contextinfo[ti][kaku];
+                            const val = tag ? tag.Data[0].data : "";
+                            title = titleText.innerHTML;
                             td.innerHTML = `<input type="text" name="name" id="${ti}`
                                 + '" style="width: 200px" class="memo_tag text ui-widget-content ui-corner-all" value="'
                                 + val
@@ -718,23 +713,20 @@ var RelationFrame = function () {
                             title.innerHTML = titleText;
                         }
 
-                        if (kaku == 'NE') {
+                        if (kaku === 'NE') {
                             td.style.backgroundColor = ColorNE;
                         }
                     }
-                    if (title != undefined) {
+                    if (title !== undefined && title !== null) {
                         td.appendChild(title);
                     }
                     td.className = "tag";
 
-                    if (title != undefined && title.style != undefined) {
-                        color = this.check_have_extra_tag(this.contextinfo, ti, kaku) ? 'red' : 'black';
-                        title.style.color = color;
+                    if (title !== undefined && title !== null && title.style !== undefined) {
+                        title.style.color = this.check_have_extra_tag(this.contextinfo, ti, kaku) ? 'red' : 'black';
                     }
                 }
-
                 tr.appendChild(td);
-
             }
             tbody.appendChild(tr);
         }
