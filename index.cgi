@@ -18,11 +18,19 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
 };
 
 print <<EOF;
-<html>
+<html lang="ja">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>関係コーパス ログイン</title>
+    <style>
+        th, td {
+            padding: 5px;
+        }
+        th {
+            text-align: left;
+        }
+    </style>
     <script type="text/javascript" src="./js/login_default.js"></script>
 </head>
 
@@ -33,7 +41,7 @@ print <<EOF;
     <form method=POST action="cgi/list.cgi">
         <table>
             <tr>
-                <th align=left>
+                <th>
                     名前
                 </th>
                 <td>
@@ -45,7 +53,7 @@ print <<EOF;
                 </td>
             </tr>
             <tr>
-                <th align=left>
+                <th>
                     パスワード
                 </th>
                 <td>
@@ -53,7 +61,7 @@ print <<EOF;
                 </td>
             </tr>
             <tr>
-                <th align=left>
+                <th>
                     記事セット
                 </th>
                 <td>
@@ -63,7 +71,7 @@ print <<EOF;
                 </td>
             </tr>
             <tr>
-                <th align=left>
+                <th>
                     記事セット
                 </th>
                 <td>

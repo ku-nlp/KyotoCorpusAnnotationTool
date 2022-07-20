@@ -15,21 +15,21 @@ CompoundCases.forEach(function (kaku) {
 
 function parseString(strData) {
     // console.log("parse start");
-    var bnst_data_btype = [];
-    var bnst_data_dpnd = [];
-    var bnst_data_type = [];
-    var bnst_data_f = [];
-    var bnst_data_start = [];
-    var orig_bnst_data_num = []; //文節番号を格納
+    const bnst_data_btype = [];
+    const bnst_data_dpnd = [];
+    const bnst_data_type = [];
+    const bnst_data_f = [];
+    const bnst_data_start = [];
+    const orig_bnst_data_num = []; //文節番号を格納
 
-    var mrph_data_all = [];
-    var mrph_data_start = [];
+    const mrph_data_all = [];
+    const mrph_data_start = [];
 
-    var orig_bnst_data_start = [];
-    var orig_bnst_data_end = [];
-    var orig_bnst_data_dpnd = [];
-    var orig_bnst_data_type = [];
-    var orig_bnst_data_f = [];
+    const orig_bnst_data_start = [];
+    const orig_bnst_data_end = [];
+    const orig_bnst_data_dpnd = [];
+    const orig_bnst_data_type = [];
+    const orig_bnst_data_f = [];
 
     // var khnk_data_btype = [];
     // var bnst_data_dpnd = [];
@@ -37,30 +37,30 @@ function parseString(strData) {
     // var bnst_data_type = [];
     // var bnst_data_f = [];
 
-    var bnst_num = 0;		// 文節番号
-    var orig_bnst_num = 0;
-    var mrph_num = 0;
+    let bnst_num = 0;		// 文節番号
+    let orig_bnst_num = 0;
+    let mrph_num = 0;
 
     // var lines = strData.split("\n"); // 行ごとに配列にいれる
-    var lines = strData.split("\n"); // 行ごとに配列にいれる
-    var fileInfo = lines[0];         // 1行目がファイル情報になっている
+    const lines = strData.split("\n"); // 行ごとに配列にいれる
+    const fileInfo = lines[0];         // 1行目がファイル情報になっている
 
     // # S-ID:tsubame00-0000000100-343-3 JUMAN:8.0-20121220 KNP:4.0-20121220 DATE:2013/01/17 SCORE:-35.21807
     // var match = fileInfo.match(/\sMEMO(.+)$/);
     // var match = fileInfo.match(/#\s(.+)$/);
-    var match = fileInfo.match(/#\s(S-ID:(\S+)\s.+)$/);
+    let match = fileInfo.match(/#\s(S-ID:(\S+)\s.+)$/);
     if (match) {
         var memo = match[1];    // memoを取得
         var sen_id = match[2];
     }
 
     //undef @[orig_bnst_data_start;
-    var input_sentence = '';
-    var bnst_start_flag = false;
+    let input_sentence = '';
+    let bnst_start_flag = false;
 
     // 1行目はファイル情報なので2行目から(indexは1から)
     for (var i = 1; i < lines.length; i++) {
-        var line = lines[i];
+        const line = lines[i];
 
         // "*" or "+" はじまりの行かチェック
         match = line.match(/^([\*\+])/);
@@ -104,7 +104,7 @@ function parseString(strData) {
                         bnst_data_dpnd[bnst_num] = -1;
                         // orig_bnst_data_num[dpnd[1]]はまだ設定されていないので、
                         // 文節dependencyの自動修復はここではできない。
-                        // var b_j = orig_bnst_data_num[dpnd[1]]; 
+                        // var b_j = orig_bnst_data_num[dpnd[1]];
                         // orig_bnst_data_dpnd[b_i] = b_j;
                         // orig_bnst_data_type[b_i] = type;
                     }
@@ -112,11 +112,7 @@ function parseString(strData) {
 
                 // 文節のfeature
                 match2 = line.match(/^[\*\+] ([\-0-9]+)([DPIA]) (.+)$/);
-                if (match2) {
-                    bnst_data_f[bnst_num] = match2[3]; // featureを配列にいれる
-                } else {
-                    bnst_data_f[bnst_num] = "";
-                }
+                bnst_data_f[bnst_num] = match2 ? match2[3] : "";
 
                 bnst_num += 1;
                 // khnk_num += 1;
@@ -134,11 +130,7 @@ function parseString(strData) {
 
                 // 文節のfeature
                 match2 = line.match(/^[\*\+] ([\-0-9]+)([DPIA]) (.+)$/);
-                if (match2) {
-                    orig_bnst_data_f[orig_bnst_num] = match2[3]; // featureを配n列にいれる
-                } else {
-                    orig_bnst_data_f[orig_bnst_num] = undefined;
-                }
+                orig_bnst_data_f[orig_bnst_num] = match2 ? match2[3] : undefined;
 
                 bnst_start_flag = true;
                 orig_bnst_num++;
@@ -160,18 +152,14 @@ function parseString(strData) {
                 mrph_data_all[mrph_num][12] = match2[2]; // うしろの2つに意味情報をいれる
                 mrph_data_all[mrph_num][11] = match2[1];
             }
-            if (LANG == 'en') {
-                input_sentence += mrph_data_all[mrph_num][0] + ' ';
-            } else {
-                input_sentence += mrph_data_all[mrph_num][0]; // 入力文を生成
-            }
+            input_sentence += LANG == 'en' ? `${mrph_data_all[mrph_num][0]} ` : mrph_data_all[mrph_num][0];
             mrph_num += 1;
         }
-    }//for
+    }
 
-    var optionDict;
-    var contextinfo = [];
-    var caseBox = {};
+    let optionDict;
+    const contextinfo = [];
+    const caseBox = {};
 
     // 各文節のfeatureをみて関係タグ情報を読み出す
     for (var i = 0; i < bnst_num; i++) {
@@ -183,7 +171,7 @@ function parseString(strData) {
         // re = /(<rel type="\S+" target="\S+"(?: sid="\S*" id="\S*")?\/>)/g;
         re = /(<rel type="\S+"(?: mode="\S+")? target=".+?"(?: sid="\S*" id="\S*")?\/>)/g;
         while (match = re.exec(bnst_data_f[i])) {
-            var feature = match[1];
+            const feature = match[1];
             // console.log(feature);
             match2 = feature.match(/\<C定義文;(\d+):([^\>]+)/);
             if (match2) {
@@ -201,15 +189,14 @@ function parseString(strData) {
 
                 var type = match2[1];
                 var target = match2[2];
-                var sid = null, targetId = null;
+                var sid = null;
+                var targetId = null;
                 if (match2.length > 3) {
                     sid = match2[3];
                     targetId = match2[4];
                 }
 
                 var relation = type;
-                var similarity = "";
-                var rawsimilarity = "";
                 var sentence = "";
                 var andor = "";
                 // var temp = target;
@@ -217,8 +204,8 @@ function parseString(strData) {
                 // 関係に @EQUAL_OPT がついていれば削除し、equaloptに反映する
                 var equalopt = EQUAL_OPT.length;
                 for (; equalopt > 0; equalopt -= 1) {
-                    var key = EQUAL_OPT[equalopt - 1];
-                    var re3 = new RegExp(key);
+                    const key = EQUAL_OPT[equalopt - 1];
+                    const re3 = new RegExp(key);
                     //var match3 = type.match(/(.+)$key(≒)?/);
                     var match3 = type.match(re3);
                     if (match3) {
@@ -226,7 +213,7 @@ function parseString(strData) {
                         relation = type.replace(key, "")
                         break;
                     }
-                } // for
+                }
 
                 // 関係に ≒ がついていれば削除し、semiequalフラグをたてる
                 match3 = relation.match(/(.+)≒$/);
@@ -263,12 +250,12 @@ function parseString(strData) {
                     contextinfo[i][relation] = {};
                     contextinfo[i][relation]["Basic"] = {'relation': relation, 'flag': 0};
 
-                    if (typeof contextinfo[i][relation]["Data"] == 'undefined') {
-                        contextinfo[i][relation]["Data"] = [];
+                    if (typeof contextinfo[i][relation].Data == 'undefined') {
+                        contextinfo[i][relation].Data = [];
                     }
                 }
 
-                contextinfo[i][relation]["Data"].push({
+                contextinfo[i][relation].Data.push({
                     'data': target,
                     'SID': sid,
                     'sentence': sentence,
@@ -279,7 +266,7 @@ function parseString(strData) {
                 });
 
             }
-        } // while
+        }
 
         // NE解析結果
         match = bnst_data_f[i].match(/\<NE:([^\>]+)\>/);
@@ -290,8 +277,8 @@ function parseString(strData) {
                 contextinfo[i] = {};
             }
             contextinfo[i][relation] = {};
-            contextinfo[i][relation]['Data'] = [];
-            contextinfo[i][relation]['Data'][0] = {'data': match[1]};
+            contextinfo[i][relation].Data = [];
+            contextinfo[i][relation].Data[0] = {'data': match[1]};
 
             if (typeof caseBox[relation] == 'undefined') {
                 caseBox[relation] = 1;
@@ -299,20 +286,20 @@ function parseString(strData) {
 
             if (match[1].match(/OPTIONAL/)) {
                 contextinfo[i]['NE-OPT-TYPE'] = {};
-                contextinfo[i]['NE-OPT-TYPE']['Data'] = [];
-                contextinfo[i]['NE-OPT-TYPE']['Data'][0] = {'data': "0"};
+                contextinfo[i]['NE-OPT-TYPE'].Data = [];
+                contextinfo[i]['NE-OPT-TYPE'].Data[0] = {'data': "0"};
 
                 match2 = bnst_data_f[i].match(/\<NE-OPTIONAL:([^:]+):(\d)\>/);
                 if (match2) {
-                    contextinfo[i]['NE-OPT-TYPE']['Data'][0]['data'] = match2[2];
+                    contextinfo[i]['NE-OPT-TYPE'].Data[0].data = match2[2];
                     var ne_opt = match2[1];
-                    for (var j = 0; j < NE_OPT_TAG.length; j++) {
-                        var ne_tag = NE_OPT_TAG[j];
-                        contextinfo[i]['NE-OPT-' + ne_tag] = {};
-                        contextinfo[i]['NE-OPT-' + ne_tag]['Data'] = [];
+                    for (let j = 0; j < NE_OPT_TAG.length; j++) {
+                        const ne_tag = NE_OPT_TAG[j];
+                        contextinfo[i][`NE-OPT-${ne_tag}`] = {};
+                        contextinfo[i][`NE-OPT-${ne_tag}`].Data = [];
                         var re = new RegExp(ne_tag);
-                        var ne_type_num = ne_opt.match(re) ? 1 : 0;
-                        contextinfo[i]['NE-OPT-' + ne_tag]['Data'][0] = {'data': ne_type_num};
+                        const ne_type_num = ne_opt.match(re) ? 1 : 0;
+                        contextinfo[i][`NE-OPT-${ne_tag}`].Data[0] = {'data': ne_type_num};
                     }
                 }
             }
@@ -327,8 +314,8 @@ function parseString(strData) {
                 contextinfo[i] = {};
             }
             contextinfo[i][relation] = {};
-            contextinfo[i][relation]['Data'] = [];
-            contextinfo[i][relation]['Data'][0] = {'data': match[1]};
+            contextinfo[i][relation].Data = [];
+            contextinfo[i][relation].Data[0] = {'data': match[1]};
 
             if (typeof caseBox[relation] == 'undefined') {
                 caseBox[relation] = 1;
@@ -341,9 +328,9 @@ function parseString(strData) {
     if (typeof caseBox['ガ'] == 'undefined') {
         caseBox['ガ'] = 1;
     }
-    var caseBoxNum = 0;
-    var caseName = [];
-    var sorted_keys = Object.keys(caseBox).sort(function (a, b) {
+    let caseBoxNum = 0;
+    const caseName = [];
+    const sorted_keys = Object.keys(caseBox).sort(function (a, b) {
         return CaseOrder[b] - CaseOrder[a]
     }); // CaseBoxのkeyをCaseOrderのvalueにもとづいてソート
     for (var i = 0; i < sorted_keys.length; i++) { // CaseOrderの値が大きいものから0はじまりの連番をふる
@@ -360,30 +347,30 @@ function parseString(strData) {
     }
 
     inputDataList[sen_id] = {};
-    inputDataList[sen_id]["bnst_data_btype"] = bnst_data_btype;
-    inputDataList[sen_id]["bnst_data_dpnd"] = bnst_data_dpnd;
-    inputDataList[sen_id]["bnst_data_start"] = bnst_data_start;
-    inputDataList[sen_id]["bnst_data_type"] = bnst_data_type;
-    inputDataList[sen_id]["bnst_data_f"] = bnst_data_f;
-    inputDataList[sen_id]["bnst_num"] = bnst_num;
-    inputDataList[sen_id]["mrph_num"] = mrph_num;
+    inputDataList[sen_id].bnst_data_btype = bnst_data_btype;
+    inputDataList[sen_id].bnst_data_dpnd = bnst_data_dpnd;
+    inputDataList[sen_id].bnst_data_start = bnst_data_start;
+    inputDataList[sen_id].bnst_data_type = bnst_data_type;
+    inputDataList[sen_id].bnst_data_f = bnst_data_f;
+    inputDataList[sen_id].bnst_num = bnst_num;
+    inputDataList[sen_id].mrph_num = mrph_num;
 
-    inputDataList[sen_id]["orig_bnst_data_num"] = orig_bnst_data_num;
-    inputDataList[sen_id]["orig_bnst_data_start"] = orig_bnst_data_start;
-    inputDataList[sen_id]["orig_bnst_data_end"] = orig_bnst_data_end;
-    inputDataList[sen_id]["orig_bnst_data_dpnd"] = orig_bnst_data_dpnd;
-    inputDataList[sen_id]["orig_bnst_data_type"] = orig_bnst_data_type;
-    inputDataList[sen_id]["orig_bnst_data_f"] = orig_bnst_data_f;
-    inputDataList[sen_id]["orig_bnst_num"] = orig_bnst_num;
+    inputDataList[sen_id].orig_bnst_data_num = orig_bnst_data_num;
+    inputDataList[sen_id].orig_bnst_data_start = orig_bnst_data_start;
+    inputDataList[sen_id].orig_bnst_data_end = orig_bnst_data_end;
+    inputDataList[sen_id].orig_bnst_data_dpnd = orig_bnst_data_dpnd;
+    inputDataList[sen_id].orig_bnst_data_type = orig_bnst_data_type;
+    inputDataList[sen_id].orig_bnst_data_f = orig_bnst_data_f;
+    inputDataList[sen_id].orig_bnst_num = orig_bnst_num;
 
-    inputDataList[sen_id]["mrph_data_all"] = mrph_data_all;
-    inputDataList[sen_id]["mrph_data_start"] = mrph_data_start;
+    inputDataList[sen_id].mrph_data_all = mrph_data_all;
+    inputDataList[sen_id].mrph_data_start = mrph_data_start;
     inputDataList[sen_id]["contextinfo"] = contextinfo;
     inputDataList[sen_id]["caseBox"] = caseBox;
     inputDataList[sen_id]["caseBoxNum"] = caseBoxNum;
     inputDataList[sen_id]["caseName"] = caseName;
-    inputDataList[sen_id]["memo"] = memo;
-    inputDataList[sen_id]["fileInfo"] = fileInfo;
+    inputDataList[sen_id].memo = memo;
+    inputDataList[sen_id].fileInfo = fileInfo;
     inputDataList[sen_id]["input_sentence"] = input_sentence;
     inputFileList.push(sen_id);
 
