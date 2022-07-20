@@ -142,7 +142,7 @@ function save() {
 
 // 終了
 function quit() {
-    if (modify_flag == "*") {
+    if (modify_flag === "*") {
         $('#quit-dialog').dialog('open');
         return;
     }
