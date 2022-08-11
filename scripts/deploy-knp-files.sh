@@ -24,17 +24,13 @@ fi
 deploy-single-file() {
   knp_file="$1"
   doc_id="$(basename "${knp_file}" .knp)"
-  group_id="$(echo "${doc_id}" | cut -c 1-8)"
-  group_dir="${DEPLOY_DIR}/${group_id}"
-  mkdir -p "${group_dir}" || exit 1
-  cp "${knp_file}" "${group_dir}/${doc_id}.knp"
-  cd "${group_dir}"  # current directory must be the group directory
-  # create ${group_dir}/${doc_id} directory
-  perl "${PROJECT_DIR}/cgi/manage.pl" "${doc_id}.knp" && rm -f "${doc_id}.knp"
-  tar zcf "${doc_id}.tar.gz" "${doc_id}" && rm -rf "${doc_id}"
-  mkdir -p "${doc_id}"
-  mv -f "${doc_id}.tar.gz" "${doc_id}/"
-  echo "${USER}	$(date +%Y-%m-%d) 00:00" > "${doc_id}/dirinfo"
+  group_id="$(echo "${doc_id}" | cut -c 1-8)"  # fix here depending on your corpus
+  article_dir="${DEPLOY_DIR}/${group_id}/${doc_id}"
+  contents_dir="${article_dir}/contents"
+  mkdir -p "${contents_dir}" || exit 1
+  # create contents directory
+  python3 "${PROJECT_DIR}/scripts/manage.py" --knp-file "${knp_file}" --contents-dir "${contents_dir}"
+  echo "${USER}	$(date +%Y-%m-%d) 00:00" > "${article_dir}/dirinfo"
 }
 
 export -f deploy-single-file
