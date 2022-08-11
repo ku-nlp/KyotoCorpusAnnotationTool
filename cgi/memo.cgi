@@ -5,7 +5,7 @@ use CGI;
 
 my $cgi = new CGI;
 
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi.conf';
 
 # CGIヘッダの出力

@@ -4,7 +4,7 @@ use strict;
 use CGI;
 
 # ファイルを置くルートディレクトリの設定
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi_en.conf';
 my %PASSWD = (annotator_a => 'password_a', annotator_b => 'password_b');
 my $cgi = new CGI;
@@ -81,10 +81,9 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
     # print "$dir\n";
     next unless -d $dir;
     my ($dirname) = ($dir =~ m/^$rootdir\/(.+)/);
-    my $filename = "$dir/$dirname.$ext";
-    #print "$filename\n";
-    next unless -f $filename;
-    my $filesize = sprintf("%.1fK", (stat($filename))[7] / 1000);
+    my $total = 0;
+    find(sub { $total += -s if -f }, "$dir/$dirname");
+    my $filesize = sprintf("%.1fK", $total / 1000);
 
     my $infoname = "$dir/dirinfo";
     # print "$infoname\n";

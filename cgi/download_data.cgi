@@ -7,7 +7,7 @@ use File::Path;
 use File::Copy;
 
 # ファイルを置くルートディレクトリの設定
-our ($rootdir, $ext);
+our ($rootdir);
 require './cgi.conf';
 
 my $cgi = new CGI;

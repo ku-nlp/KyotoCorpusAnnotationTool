@@ -6,7 +6,7 @@ use CGI::Carp qw(fatalsToBrowser);
 use File::Path;
 
 # ファイルを置くルートディレクトリの設定
-our ($rootdir, $ext);
+our ($rootdir);
 require './cgi.conf';
 
 my $cgi = new CGI;
