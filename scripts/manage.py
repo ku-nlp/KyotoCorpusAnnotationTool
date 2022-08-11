@@ -25,6 +25,13 @@ def main():
             contents_dir.joinpath(sid).write_text(buff)
             buff = ""
 
+    fileinfos = []
+    for path in sorted([p for p in contents_dir.glob("*") if p.name != "fileinfos"]):
+        if path.is_file():
+            with path.open() as f:
+                fileinfos.append(f.readline())
+    contents_dir.joinpath("fileinfos").write_text("".join(fileinfos))
+
 
 # def extract_sid(sid):
 #     id_1, id_2, id_3 = sid.split('-')
