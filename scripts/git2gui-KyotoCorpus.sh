@@ -8,15 +8,16 @@ usage() {
   exit 1
 }
 
-scripts_dir=$(dirname -- "$0")
-# shellcheck source=scripts/git2gui-common.sh
-source "$scripts_dir/git2gui-common.sh"
-
 if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2" ]]; then
   usage
 fi
 knp_dir=$1
 tool_data_dir=$2
+
+scripts_dir=$(dirname -- "$0")
+# shellcheck source=scripts/git2gui-common.sh
+source "$scripts_dir/git2gui-common.sh"
+
 orig_dir=$(pwd)
 
 for knp_file in "$knp_dir"/*.knp; do

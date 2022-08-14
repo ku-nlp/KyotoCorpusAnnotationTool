@@ -8,15 +8,15 @@ usage() {
   exit 1
 }
 
-scripts_dir=$(dirname -- "$0")
-# shellcheck source=scripts/git2gui-common.sh
-source "$scripts_dir/git2gui-common.sh"
-
 if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2" ]]; then
   usage
 fi
 knp_dir=$1
 tool_data_dir=$2
+
+scripts_dir=$(dirname -- "$0")
+# shellcheck source=scripts/git2gui-common.sh
+source "$scripts_dir/git2gui-common.sh"
 
 for article_set_dir in "$knp_dir"/w201106-*; do
   article_set_name=$(basename "$article_set_dir")
