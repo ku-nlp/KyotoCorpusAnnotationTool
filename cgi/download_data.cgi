@@ -103,6 +103,5 @@ sub save_old_dir {
     my $date = sprintf("%d%02d%02d%02d%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     my ($dir, $annotator_id) = @_;
     my $suffix = "$date" . "_" . "$annotator_id";
-    my $new_dir = "contents.$suffix";
-    copy($dir, $new_dir);
+    copy($dir, "$dir.$suffix");
 }
