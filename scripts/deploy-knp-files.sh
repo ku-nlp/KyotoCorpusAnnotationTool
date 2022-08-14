@@ -24,7 +24,7 @@ fi
 deploy-single-file() {
   knp_file="$1"
   doc_id="$(basename "${knp_file}" .knp)"
-  group_id="$(echo "${doc_id}" | cut -c 1-8)"  # fix here depending on your corpus
+  group_id="$(echo "${doc_id}" | cut -c 1-13)"  # fix here depending on your corpus
   article_dir="${DEPLOY_DIR}/${group_id}/${doc_id}"
   contents_dir="${article_dir}/contents"
   mkdir -p "${contents_dir}" || exit 1
