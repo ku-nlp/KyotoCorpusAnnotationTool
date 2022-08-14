@@ -16,7 +16,7 @@ fi
 knp_dir=$1
 tool_data_dir=$2
 
-scripts_dir=$(dirname -- "$0")
+scripts_dir="$(readlink -f "$(dirname -- "$0")")"
 # shellcheck source=scripts/push-common.sh
 source "$scripts_dir/push-common.sh"
 
