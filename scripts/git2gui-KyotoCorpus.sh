@@ -3,38 +3,36 @@
 # $0 KyotoCorpusFull/knp ~kawahara/public_html/annotation/KyotoCorpus
 
 usage() {
-  echo "Usage: $0 knp_dir gui_top_dir"
-  echo "e.g., $0 KyotoCorpusFull/knp ~/public_html/annotation/KyotoCorpus"
+  echo "Usage: $0 knp_dir tool_data_dir"
+  echo "e.g., $0 data/KyotoCorpusFull/knp data/files"
   exit 1
 }
 
 scripts_dir=$(dirname -- "$0")
-split_article=$scripts_dir/split-article.perl
+# shellcheck source=scripts/git2gui-common.sh
 source "$scripts_dir/git2gui-common.sh"
 
-if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2/data/files" ]]; then
+if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2" ]]; then
   usage
 fi
 knp_dir=$1
-gui_data_dir=$2/data/files
+tool_data_dir=$2
 orig_dir=$(pwd)
 
-for knp_file in $knp_dir/*.knp; do
-  knp_file_abs_path=$(readlink -f $knp_file)
-
+for knp_file in "$knp_dir"/*.knp; do
   echo "processing $knp_file ..."
-  set_dir_name=$(basename $knp_file .knp)
-  mkdir $set_dir_name
-  cd "$set_dir_name" || continue
 
-  # split a knp file to articles
-  perl $split_article $knp_file_abs_path
+  article_set_name="$(basename "$knp_file" .knp)"
+
+  temp_dir="$(mktemp -d --suffix "$article_set_name")"
+  cd "$temp_dir" || continue
+  # split a knp file to articles into currento directory
+  perl "$scripts_dir/split-article.perl" "$(readlink -f "$knp_file")"
+  cd "$orig_dir" || continue
 
   # process each article
-  for article_knp_file in *.knp; do
-    process_article $scripts_dir/manage.pl $article_knp_file $gui_data_dir/$set_dir_name
+  for article_knp_file in "$temp_dir"/*.knp; do
+    article_name=$(basename "$article_knp_file" .knp)
+    process_article "$article_knp_file" "${tool_data_dir}/${article_set_name}/${article_name}"
   done
-
-  cd $orig_dir || exit 1
-  rm -rf $set_dir_name
 done

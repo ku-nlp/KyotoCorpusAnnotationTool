@@ -3,8 +3,8 @@
 # $0 KWDLC/knp /mnt/zamia/web_storage/htdocs/annotation/corpus-simple
 
 usage() {
-  echo "Usage: $0 knp_dir gui_top_dir"
-  echo "e.g., $0 KWDLC/knp ~/public_html/annotation/KWDLC"
+  echo "Usage: $0 knp_dir tool_data_dir"
+  echo "e.g., $0 data/KWDLC/knp data/files"
   exit 1
 }
 
@@ -12,20 +12,18 @@ scripts_dir=$(dirname -- "$0")
 # shellcheck source=scripts/git2gui-common.sh
 source "$scripts_dir/git2gui-common.sh"
 
-if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2/data/files" ]]; then
+if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2" ]]; then
   usage
 fi
 knp_dir=$1
-gui_data_dir=$2/data/files
-orig_dir=$(pwd)
+tool_data_dir=$2
 
-for set_dir_path in $knp_dir/w201106-*; do
-  set_dir_name=$(basename $set_dir_path)
-  cd "$set_dir_path" || continue
+for article_set_dir in "$knp_dir"/w201106-*; do
+  article_set_name=$(basename "$article_set_dir")
 
   # process each article
-  for article_knp_file in *.knp; do
-    process_article $scripts_dir/manage.pl $article_knp_file $gui_data_dir/$set_dir_name
+  for article_knp_file in "$article_set_dir"/*.knp; do
+    article_name=$(basename "$article_knp_file" .knp)
+    process_article "$article_knp_file" "${tool_data_dir}/${article_set_name}/${article_name}"
   done
-  cd "$orig_dir" || exit 1
 done

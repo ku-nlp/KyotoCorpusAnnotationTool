@@ -1,3 +1,4 @@
+from importlib.resources import contents
 import re
 import argparse
 from pathlib import Path
@@ -6,10 +7,11 @@ from pathlib import Path
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--knp-file', type=Path, required=True)
-    parser.add_argument('--contents-dir', type=Path, default=None)
+    parser.add_argument('--contents-dir', type=Path, required=True)
     args = parser.parse_args()
 
-    contents_dir: Path = args.contents_dir or args.knp_file.parent
+    contents_dir: Path = args.contents_dir
+    contents_dir.mkdir(exist_ok=True)
 
     buff = ""
     sid = ""
