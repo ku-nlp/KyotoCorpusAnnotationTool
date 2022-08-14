@@ -19,7 +19,8 @@ print <<EOF;
         <!--
 
         body {
-            font:bold 16px;
+            font-size: 16px;
+            font-weight: bold;
             color:#444444;
             background-color:#eee;
             margin:20px;
