@@ -26,11 +26,12 @@ for knp_file in "$knp_dir"/*.knp; do
   echo "processing $knp_file ..."
 
   article_set_name="$(basename "$knp_file" .knp)"
+  abs_knp_file="$(readlink -f "$knp_file")"
 
   temp_dir="$(mktemp -d --suffix "$article_set_name")"
   cd "$temp_dir" || continue
   # split a knp file to articles into currento directory
-  perl "$scripts_dir/split-article.perl" "$(readlink -f "$knp_file")"
+  perl "$scripts_dir/split-article.perl" "$abs_knp_file"
   cd "$orig_dir" || continue
 
   # process each article
