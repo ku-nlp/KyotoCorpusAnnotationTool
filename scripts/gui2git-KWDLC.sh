@@ -1,58 +1,47 @@
 #!/usr/bin/env bash
 
-# $0 /mnt/zamia/web_storage/htdocs/annotation/corpus-simple
-
 usage() {
-  echo "Usage: $0 gui_top_dir"
-  echo "e.g., $0 ~/public_html/annotation/KWDLC"
+  echo "Usage: $0 knp_dir tool_data_dir"
+  echo "e.g., $0 data/KWDLC/knp data/files"
   exit 1
 }
 
-if [[ -z "$1" || ! -d "$1/data/files" ]]; then
+if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2" ]]; then
   usage
 fi
-gui_data_dir=$1/data/files
+knp_dir=$1
+tool_data_dir=$2
 
-scripts_dir=$(dirname -- "$0")
+for article_set_dir in "$tool_data_dir"/w201106-*; do
+  [[ ! -d $article_set_dir ]] && continue
+  article_set_name="$(basename "$article_set_dir")"
 
-mkdir -p knp
-cd knp || exit 1
+  # w201106-00022 and w201106-00025 are not annotated
+  if [[ $article_set_name = "w201106-00022" || $article_set_name = "w201106-00025" ]]; then
+    continue
+  fi
+  mkdir -p "${knp_dir}/${article_set_name}"
 
-for set_dir in $gui_data_dir/w201106-*; do
-  if [[ -d "$set_dir" ]]; then
-    set_id=$(basename $set_dir)
+  # process each article
+  for article_dir in "$article_set_dir"/*; do
+    [[ ! -d $article_dir ]] && continue
+    echo "processing $article_dir ..."
 
-    # w201106-00022 and w201106-00025 are not annotated
-    if [[ "$set_id" = "w201106-00022" || "$set_id" = "w201106-00025" ]]; then
+    article_name="$(basename "$article_dir")"
+
+    # obtain memo to check inappropriateness
+    if [[ -s "$article_dir/annotator_memo" ]]; then
+      memo="$(nkf -w "$article_dir/annotator_memo")"
+    else
+      memo=""
+    fi
+    inappropriate_str="$(echo "$memo" | grep -E '★|不適')"
+    if [[ -n "$inappropriate_str" ]]; then
+      echo "$article_name inappropriate: $inappropriate_str"
       continue
     fi
-    mkdir -p "$set_id"
 
-    # process each article
-    for aid_full in $set_dir/*; do
-      if [[ -d $aid_full ]]; then
-        aid=$(basename $aid_full)
-
-        # obtain memo to check inappropriateness
-        if [[ -s "$aid_full/annotator_memo" ]]; then
-          memo=$(nkf -w $aid_full/annotator_memo)
-        else
-          memo=""
-        fi
-        inappropriate_str=$(echo $memo | grep -E '★|不適')
-        if [[ -n "$inappropriate_str" ]]; then
-          echo "$aid inappropriate"
-          continue
-        fi
-
-        tar zxf $aid_full/$aid.tar.gz
-        perl $scripts_dir/manage.pl $aid + > /dev/null
-
-        echo $aid
-        mv $aid.knp $set_id
-        rm -rf $aid
-      fi
-    done
-  fi
+    # merge article knp files
+    cat "$article_dir/contents/${article_name}"* > "${knp_dir}/${article_set_name}/${article_name}.knp"
+  done
 done
-cd ..

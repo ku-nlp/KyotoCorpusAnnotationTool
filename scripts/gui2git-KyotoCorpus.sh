@@ -3,49 +3,41 @@
 # $0 ~kawahara/public_html/annotation/KyotoCorpus
 
 usage() {
-  echo "Usage: $0 gui_top_dir"
-  echo "e.g., $0 ~/public_html/annotation/KyotoCorpus"
+  echo "Usage: $0 knp_dir tool_data_dir"
+  echo "e.g., $0 data/KyotoCorpus/knp data/files"
   exit 1
 }
 
-if [[ -z "$1" || ! -d "$1/data/files" ]]; then
+if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2" ]]; then
   usage
 fi
-gui_data_dir=$1/data/files
+knp_dir=$1
+tool_data_dir=$2
 
-scripts_dir=$(echo "$0" | xargs dirname)
-manage_pl=$scripts_dir/manage.pl
-corpus_conv_pl=$scripts_dir/corpus_conv.pl
+scripts_dir=$(dirname -- "$0")
 
-mkdir -p knp
-cd knp || exit 1
+for article_set_dir in $tool_data_dir/95*; do
+  [[ ! -d $article_set_dir ]] && continue
+  article_set_name="$(basename "$article_set_dir")"
 
-for set_dir in $gui_data_dir/95*; do
-  if [[ -d "$set_dir" ]]; then
-    set_id=$(basename $set_dir)
-    : > $set_id.knp
-    for aid_full in $set_dir/*; do
-      if [[ -d $aid_full ]]; then
-        aid=$(basename "$aid_full")
-        tar zxf $aid_full/$aid.tar.gz
-        perl $manage_pl $aid + > /dev/null
+  knp_file="${knp_dir}/${article_set_name}.knp"
+  : > "$knp_file"
+  for article_dir in "$article_set_dir"/*; do
+    [[ ! -d $article_dir ]] && continue
+    article_name="$(basename "$article_dir")"
 
-        echo $aid
-        cat $aid.knp >> $set_id.knp
-        rm -rf $aid $aid.knp
-      fi
-    done
-  fi
+    # merge article knp files
+    cat "$article_dir/contents/${article_name}"* >> "$knp_file"
+  done
 done
-cd ..
 
 # For KyotoCorpus without Mainichi CD-ROM
 mkdir -p num
 
-for f in knp/*.knp; do
-  base=$(basename $f .knp)
-  echo $base
-  perl $corpus_conv_pl num_w_id < $f > num/$base.num
+for f in "$knp_dir"/*.knp; do
+  base=$(basename "$f" .knp)
+  echo "$base"
+  perl "$scripts_dir/corpus_conv.pl" num_w_id < "$f" > "num/$base.num"
 done
 
 echo 'Do "cp -f knp/95*.knp /somewhere/KyotoCorpusFull/knp"'
