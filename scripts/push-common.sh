@@ -3,7 +3,7 @@
 date_for_backup=$(date +%Y%m%d%H%M)
 date_for_dirinfo=$(date "+%Y-%m-%d %H:%M")
 
-scripts_dir=$(dirname -- "$0")
+scripts_dir="$(readlink -f "$(dirname -- "$0")")"
 
 process_article() {
   article_knp_file=$1
