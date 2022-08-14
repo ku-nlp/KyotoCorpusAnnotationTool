@@ -18,13 +18,13 @@ scripts_dir=$(dirname -- "$0")
 
 for article_set_dir in $tool_data_dir/95*; do
   [[ ! -d $article_set_dir ]] && continue
-  article_set_name="$(basename "$article_set_dir")"
+  article_set_name="${article_set_dir##*/}"  # basename
 
   knp_file="${knp_dir}/${article_set_name}.knp"
   : > "$knp_file"
   for article_dir in "$article_set_dir"/*; do
     [[ ! -d $article_dir ]] && continue
-    article_name="$(basename "$article_dir")"
+    article_name="${article_dir##*/}"  # basename
 
     # merge article knp files
     cat "$article_dir/contents/${article_name}"* >> "$knp_file"

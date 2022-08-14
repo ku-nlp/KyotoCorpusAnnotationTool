@@ -14,7 +14,7 @@ tool_data_dir=$2
 
 for article_set_dir in "$tool_data_dir"/w201106-*; do
   [[ ! -d $article_set_dir ]] && continue
-  article_set_name="$(basename "$article_set_dir")"
+  article_set_name="${article_set_dir##*/}"  # basename
 
   # w201106-00022 and w201106-00025 are not annotated
   if [[ $article_set_name = "w201106-00022" || $article_set_name = "w201106-00025" ]]; then
@@ -27,7 +27,7 @@ for article_set_dir in "$tool_data_dir"/w201106-*; do
     [[ ! -d $article_dir ]] && continue
     echo "processing $article_dir ..."
 
-    article_name="$(basename "$article_dir")"
+    article_name="${article_dir##*/}"  # basename
 
     # obtain memo to check inappropriateness
     if [[ -s "$article_dir/annotator_memo" ]]; then

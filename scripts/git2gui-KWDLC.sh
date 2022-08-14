@@ -19,7 +19,7 @@ scripts_dir=$(dirname -- "$0")
 source "$scripts_dir/git2gui-common.sh"
 
 for article_set_dir in "$knp_dir"/w201106-*; do
-  article_set_name=$(basename "$article_set_dir")
+  article_set_name="${article_set_dir##*/}"  # basename
 
   # process each article
   for article_knp_file in "$article_set_dir"/*.knp; do
