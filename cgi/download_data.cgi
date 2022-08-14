@@ -1,10 +1,10 @@
-#!/usr/bin/env perl
+#!/home/linuxbrew/.linuxbrew/bin/perl
 
 use strict;
 use CGI;
 use CGI::Carp qw(fatalsToBrowser);
 use File::Path;
-use File::Copy;
+use File::Copy::Recursive qw(dircopy);
 
 # ファイルを置くルートディレクトリの設定
 our ($rootdir);
@@ -41,7 +41,7 @@ if ($cgi->param('annotator_id')) {
     # ロックされていない
     if ($buf[0] !~ /^\* /) {
         # print "<lockuser>$buf[0]</lockuser>\n";
-        open(INFO, "> $dirinfo_path");
+        open(INFO, ">", $dirinfo_path);
         print INFO "\* $annotator_id\t$date\n";
         for my $line (@buf) {
             print INFO $line;
@@ -103,5 +103,5 @@ sub save_old_dir {
     my $date = sprintf("%d%02d%02d%02d%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     my ($dir, $annotator_id) = @_;
     my $suffix = "$date" . "_" . "$annotator_id";
-    copy($dir, "$dir.$suffix");
+    dircopy($dir, "$dir.$suffix");
 }
