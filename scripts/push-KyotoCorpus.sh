@@ -17,8 +17,8 @@ knp_dir=$1
 tool_data_dir=$2
 
 scripts_dir=$(dirname -- "$0")
-# shellcheck source=scripts/git2gui-common.sh
-source "$scripts_dir/git2gui-common.sh"
+# shellcheck source=scripts/push-common.sh
+source "$scripts_dir/push-common.sh"
 
 orig_dir=$(pwd)
 

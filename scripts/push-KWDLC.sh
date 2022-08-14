@@ -17,8 +17,8 @@ knp_dir=$1
 tool_data_dir=$2
 
 scripts_dir=$(dirname -- "$0")
-# shellcheck source=scripts/git2gui-common.sh
-source "$scripts_dir/git2gui-common.sh"
+# shellcheck source=scripts/push-common.sh
+source "$scripts_dir/push-common.sh"
 
 for article_set_dir in "$knp_dir"/w201106-*; do
   article_set_name="${article_set_dir##*/}"  # basename
