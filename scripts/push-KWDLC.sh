@@ -2,6 +2,8 @@
 
 # $0 KWDLC/knp /mnt/zamia/web_storage/htdocs/annotation/corpus-simple
 
+# push corpus directory contents to the tool-managed directory
+
 usage() {
   echo "Usage: $0 knp_dir tool_data_dir"
   echo "e.g., $0 data/KWDLC/knp data/files"

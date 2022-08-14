@@ -8,7 +8,7 @@ SHELL := /bin/bash
 .PHONY: all push pull
 
 push:
-	./scripts/git2gui-$(CORPUS).sh $(CORPUS_DIR) $(TOOL_DATA_DIR)
+	./scripts/push-$(CORPUS).sh $(CORPUS_DIR) $(TOOL_DATA_DIR)
 
 pull:
-	./scripts/gui2git-$(CORPUS).sh $(CORPUS_DIR) $(TOOL_DATA_DIR)
+	./scripts/pull-$(CORPUS).sh $(CORPUS_DIR) $(TOOL_DATA_DIR)
