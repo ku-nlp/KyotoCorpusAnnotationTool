@@ -2195,7 +2195,7 @@ var RelationFrame = function () {
                 if (this.mrph_data_all[mrph_start_num][3].search(/^(名詞|接頭辞|接尾辞)$/) >= 0) {
                     candidate.push(mrph);
                 } else if (this.mrph_data_all[mrph_start_num][0].search(/^[一・]$/) == -1 &&
-                    mrph_tail_num - mrph_start_num > 8) {
+                    mrph_tail_num - mrph_start_num > 20) {
                     break;
                 }
                 mrph_start_num--;
