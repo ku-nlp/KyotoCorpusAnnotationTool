@@ -43,7 +43,7 @@ for article_set_dir in "$tool_data_dir"/w201106-*; do
       continue
     fi
 
-    # merge article knp files
-    cat "$article_dir/contents/${article_name}"* > "${knp_dir}/${article_set_name}/${article_name}.knp"
+    # merge article knp files, ensuring newline at the end of each file
+    awk 1 "$article_dir/contents/${article_name}"* > "${knp_dir}/${article_set_name}/${article_name}.knp"
   done
 done

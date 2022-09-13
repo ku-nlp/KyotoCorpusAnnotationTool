@@ -28,8 +28,8 @@ for article_set_dir in "$tool_data_dir"/95*; do
     [[ ! -d $article_dir ]] && continue
     article_name="${article_dir##*/}"  # basename
 
-    # merge article knp files
-    cat "$article_dir/contents/${article_name}"* >> "$knp_file"
+    # merge article knp files, ensuring newline at the end of each file
+    awk 1 "$article_dir/contents/${article_name}"* >> "$knp_file"
   done
 done
 
