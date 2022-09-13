@@ -27,19 +27,19 @@ for article_set_dir in "$tool_data_dir"/w201106-*; do
   # process each article
   for article_dir in "$article_set_dir"/*; do
     [[ ! -d $article_dir ]] && continue
-    echo "processing $article_dir ..."
+    echo "processing ${article_dir} ..."
 
     article_name="${article_dir##*/}"  # basename
 
     # obtain memo to check inappropriateness
-    if [[ -s "$article_dir/annotator_memo" ]]; then
-      memo="$(nkf -w "$article_dir/annotator_memo")"
+    if [[ -s $article_dir/annotator_memo ]]; then
+      memo="$(nkf -w "${article_dir}/annotator_memo")"
     else
       memo=""
     fi
     inappropriate_str="$(echo "$memo" | grep -E '★|不適')"
     if [[ -n "$inappropriate_str" ]]; then
-      echo "$article_name inappropriate: $inappropriate_str"
+      echo "${article_name} inappropriate: ${inappropriate_str}"
       continue
     fi
 

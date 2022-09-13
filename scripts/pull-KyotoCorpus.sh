@@ -18,7 +18,7 @@ tool_data_dir=$2
 
 scripts_dir=$(dirname -- "$0")
 
-for article_set_dir in $tool_data_dir/95*; do
+for article_set_dir in "$tool_data_dir"/95*; do
   [[ ! -d $article_set_dir ]] && continue
   article_set_name="${article_set_dir##*/}"  # basename
 
