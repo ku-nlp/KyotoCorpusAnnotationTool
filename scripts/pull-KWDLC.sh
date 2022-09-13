@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# pull annotations from the tool-managed directory and save into knp_dir
+#
+# Pull annotations from the tool-managed directory and save into knp_dir.
+#
 
 usage() {
   echo "Usage: $0 knp_dir tool_data_dir"

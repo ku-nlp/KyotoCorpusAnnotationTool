@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# $0 ~kawahara/public_html/annotation/KyotoCorpus
-
-# pull annotations from the tool-managed directory and save into knp_dir
+#
+# Pull annotations from the tool-managed directory and save into knp_dir.
+#
 
 usage() {
   echo "Usage: $0 knp_dir tool_data_dir"
@@ -15,6 +15,7 @@ if [[ -z "$1" || ! -d "$1" || -z "$2" || ! -d "$2" ]]; then
 fi
 knp_dir=$1
 tool_data_dir=$2
+dat_dir=$3
 
 scripts_dir=$(dirname -- "$0")
 
@@ -34,13 +35,10 @@ for article_set_dir in "$tool_data_dir"/95*; do
 done
 
 # For KyotoCorpus without Mainichi CD-ROM
-mkdir -p num
-
-for f in "$knp_dir"/*.knp; do
-  base=$(basename "$f" .knp)
-  echo "$base"
-  perl "$scripts_dir/corpus_conv.pl" num_w_id < "$f" > "num/$base.num"
-done
-
-echo 'Do "cp -f knp/95*.knp /somewhere/KyotoCorpusFull/knp"'
-echo 'and "cp -f num/95*.num /somewhere/KyotoCorpus/dat/num"'
+if [[ -n $dat_dir ]]; then
+  for f in "$knp_dir"/*.knp; do
+    base=$(basename "$f" .knp)
+    echo "$base"
+    perl "$scripts_dir/corpus_conv.pl" num_w_id < "$f" > "$dat_dir/num/$base.num"
+  done
+fi

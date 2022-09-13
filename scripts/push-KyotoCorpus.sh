@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# $0 KyotoCorpusFull/knp ~kawahara/public_html/annotation/KyotoCorpus
-
-# push corpus directory contents to a tool-managed directory
+#
+# Push corpus directory contents to a tool-managed directory.
+#
 
 usage() {
   echo "Usage: $0 knp_dir tool_data_dir"
