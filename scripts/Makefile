@@ -1,5 +1,5 @@
 TOOL_DATA_DIR := data/files
-# KWDLC or KyotoCorpus
+# KWDLC, KyotoCorpus, or WAC
 CORPUS := KWDLC
 
 SHELL := /bin/bash
@@ -9,6 +9,8 @@ ifeq ($(CORPUS),KWDLC)
 else ifeq ($(CORPUS),KyotoCorpus)
     CORPUS_DIR := data/KyotoCorpusFull/knp
     CORPUS_DAT_DIR := data/KyotoCorpus/dat
+else ifeq ($(CORPUS),WAC)
+    CORPUS_DIR := data/WikipediaAnnotatedCorpus/knp
 else
     $(error "Unknown corpus: $(CORPUS)")
 endif
