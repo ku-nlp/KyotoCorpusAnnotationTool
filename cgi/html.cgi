@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-use strict;
+# use strict;
 use CGI;
 use File::Path;
 
@@ -29,13 +29,7 @@ unless (-e $contents_dir) {
     exit 1;
 }
 
-if (-e $out_html/$article_id) {
-    # remove directory
-    rmtree $out_html/$article_id;
-}
-
-`cp -r $contents_dir $out_html/$article_id`;
-`cd $out_html; perl $rootdir/../../cgi/manage.pl $out_html/$article_id +`;
+`awk 1 $contents_dir/$article_id* > $out_html/$article_id.knp`;
 my $html = `perl $rootdir/../../cgi/kc_annotation_per-article.perl $out_html/$article_id.knp`;
 print $cgi->header({ type => 'text/html', charset => 'UTF-8', expires => '-1d' });
 print $cgi->start_html({ title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8' });
