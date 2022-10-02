@@ -1,9 +1,7 @@
-# 京大コーパスアノテーションツール
-
 本パッケージに下記二つのバージョンが含まれている。
 
-- right dependencyと日本語のみに対応したバージョン
-- left/right dependencyと日本語、英語、中国語に対応したバージョン
+- right dependency と日本語のみに対応したバージョン
+- left/right dependency と日本語、英語、中国語に対応したバージョン
 
 ## Requirements
 
@@ -17,11 +15,11 @@
 
 ## コーパスデータ設定
 
-- ``cgi/cgi.confのrootdir``変数に、管理したいデータのパスを設定する。
+- ``cgi/cgi.conf の rootdir``変数に、管理したいデータのパスを設定する。
     - デフォルトは``data/files``
 - データを設置する
     - ``/path/to/txt-files``以下に``.txt``という拡張子をもつテキストファイルを置く
-    - 以下の手順で、テキストファイルからデータを生成 (日本語の場合; JUMAN/KNPが必要)
+    - 以下の手順で、テキストファイルからデータを生成 (日本語の場合; JUMAN/KNP が必要)
 ```
 mkdir data/files/foo
 cd  data/files/foo
@@ -31,9 +29,9 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
     - デフォルトは``data/out-html``
 - ``left/right dependency``対応版の、言語ごとの設定は``cgi/cgi_{ja,en,zh}.conf``に入力する。
 
-## UI設定
+## UI 設定
 
-必要に応じて、下記ファイルを編集してバージョンごとのUI設定を変更する（カスタマイズが特に必要なければ設定不要）。
+必要に応じて、下記ファイルを編集してバージョンごとの UI 設定を変更する（カスタマイズが特に必要なければ設定不要）。
 
 - ``js/setting.js``
 - ``js/setting_{ja,en,zh}.js``
@@ -41,10 +39,10 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 ## 起動
 1.
     - right dependency、日本語のみに対応したツールは``http://xxx/<username>/annot/`` からアクセスする。
-    - left/right dependencyの日本語、英語、中国語に対応したツールは``http://xxx/<username>/annot/{ja,en,zh}.html``からアクセスする
+    - left/right dependency の日本語、英語、中国語に対応したツールは``http://xxx/<username>/annot/{ja,en,zh}.html``からアクセスする
 2. ユーザ名、パスワードを入力し、データセットを選択する。
-    - cgi/list.cgiもしくはcgi/list_{ja,en,zh}.cgi 9行目のPASSWDでユーザ名、パスワードを設定しておく必要がある。
-3. 編集したい記事の編集ボタンを押すとHTMLのページがロードされアノテーションツールが起動する。
+    - cgi/list.cgi もしくは cgi/list_{ja,en,zh}.cgi 9 行目の PASSWD でユーザ名、パスワードを設定しておく必要がある。
+3. 編集したい記事の編集ボタンを押すと HTML のページがロードされアノテーションツールが起動する。
 
 ## 操作方法
 
