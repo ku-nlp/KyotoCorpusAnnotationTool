@@ -2,7 +2,7 @@
 
 use strict;
 use CGI;
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi/cgi.conf';
 
 my $cgi = new CGI;

@@ -1,18 +1,18 @@
 #!/usr/bin/env perl
 
-use strict;
+# use strict;
 use CGI;
+use File::Path;
 
 # ファイルを置くルートディレクトリの設定
-our ($rootdir, $ext);
+our ($rootdir);
 require './cgi.conf';
 
 my $cgi = new CGI;
 
 my $article_id = $cgi->param('article_id');
 my $corpus_set_id = $cgi->param('corpus_set_id');
-my $filename = "$article_id.$ext";
-my $filepath = "$rootdir/$corpus_set_id/$article_id/$filename";
+my $contents_dir = "$rootdir/$corpus_set_id/$article_id/contents";
 my $out_html = "$rootdir/../out-html";
 
 # 作業者をチェック
@@ -24,13 +24,12 @@ if ($cgi->param('annotator_id')) {
     exit 1;
 }
 
-unless (-f $filepath) {
+unless (-e $contents_dir) {
     &default_page();
     exit 1;
 }
 
-`tar -C $out_html -zxf $filepath`;
-`cd $out_html; perl $rootdir/../../cgi/manage.pl $out_html/$article_id +`;
+`awk 1 $contents_dir/$article_id* > $out_html/$article_id.knp`;
 my $html = `perl $rootdir/../../cgi/kc_annotation_per-article.perl $out_html/$article_id.knp`;
 print $cgi->header({ type => 'text/html', charset => 'UTF-8', expires => '-1d' });
 print $cgi->start_html({ title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8' });

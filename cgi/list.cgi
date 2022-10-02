@@ -2,9 +2,10 @@
 
 use strict;
 use CGI;
+use File::Find;
 
 # ファイルを置くルートディレクトリの設定
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi.conf';
 my %PASSWD = (annotator_a => 'password_a', annotator_b => 'password_b');
 my $cgi = new CGI;
@@ -52,11 +53,11 @@ EOF
 print "<h3>コーパス 管理ページ</h3>\n";
 
 # 作業者をチェック
-my ($annotator_id, $password, $corpus_set_id);
+my ($annotator_id, $password, $corpus_set_id, $corpus_set_dir);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
     $corpus_set_id = $cgi->param('corpus_set_id');
-    $rootdir .= "/$corpus_set_id";
+    $corpus_set_dir = "$rootdir/$corpus_set_id";
     $password = $cgi->param('password');
     if (!defined($PASSWD{$annotator_id}) || $password ne $PASSWD{$annotator_id}) {
         print "<p>パスワードが違います。</p>\n";
@@ -74,12 +75,12 @@ print "<tr><th>ID</th><th>記事ID</th><th>サイズ</th><th>最終更新日時<
 
 my $dircount = 0;
 my $skip = $cgi->param('skip');
-for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
+for my $dir (sort({$a <=> $b} glob("$corpus_set_dir/*"))) {
     next unless -d $dir;
-    my ($dirname) = ($dir =~ m/^$rootdir\/(.+)/);
-    my $filename = "$dir/$dirname.$ext";
-    next unless -f $filename;
-    my $filesize = sprintf("%.1fK", (stat($filename))[7] / 1000);
+    my ($dirname) = ($dir =~ m/^$corpus_set_dir\/(.+)/);
+    my $total = 0;
+    find(sub { $total += -s if -f }, "$dir/contents");
+    my $filesize = sprintf("%.1fK", $total / 1000);
 
     my $infoname = "$dir/dirinfo";
     my ($annotator, $lastdate, $editing_flag, $current_annotator);

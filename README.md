@@ -5,6 +5,12 @@
 - right dependencyと日本語のみに対応したバージョン
 - left/right dependencyと日本語、英語、中国語に対応したバージョン
 
+## Requirements
+
+- Perl 5.30.0+
+- Python 3.7+
+- Perl modules: CGI, File::Copy::Recursive
+
 ## インストール手順
 
 ``public_html``以下の任意のディレクトリ（以下、``annot``とする）に``git clone``などで取得したパッケージを配置する。

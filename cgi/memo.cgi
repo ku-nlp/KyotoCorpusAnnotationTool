@@ -5,7 +5,7 @@ use CGI;
 
 my $cgi = new CGI;
 
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi.conf';
 
 # CGIヘッダの出力
@@ -19,7 +19,8 @@ print <<EOF;
         <!--
 
         body {
-            font:bold 16px;
+            font-size: 16px;
+            font-weight: bold;
             color:#444444;
             background-color:#eee;
             margin:20px;

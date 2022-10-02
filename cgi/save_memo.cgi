@@ -5,7 +5,7 @@ use CGI;
 
 my $cgi = new CGI;
 
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi.conf';
 my $corpus_set_id = $cgi->param('corpus_set_id');
 $rootdir .= "/$corpus_set_id";
