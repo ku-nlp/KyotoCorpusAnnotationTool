@@ -38,6 +38,7 @@ for article_set_dir in "$tool_data_dir"/wiki*; do
     inappropriate_str="$(echo "$memo" | grep -E '★|不適')"
     if [[ -n "$inappropriate_str" ]]; then
       echo "${article_name} inappropriate: ${inappropriate_str}"
+      echo "${article_name}" >> "${knp_dir}/../id/inappropriate.id"
       continue
     fi
 
