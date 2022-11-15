@@ -1,4 +1,4 @@
-#!/home/linuxbrew/.linuxbrew/bin/perl
+#!/usr/bin/perl
 
 use strict;
 use CGI;
