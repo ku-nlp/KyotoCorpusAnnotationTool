@@ -526,3 +526,15 @@ ul.popup li:hover > ul { visibility: visible; }
 .limit-context-size { 
     max-height: 300px; overflow-y: scroll; 
 }
+
+.baseClauseHead {
+    text-align: center;
+}
+
+.baseClauseDelimiter {
+    text-align: center;
+}
+
+.clauseDelimiteri {{
+    text-align: center;
+}

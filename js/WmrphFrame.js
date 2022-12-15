@@ -99,7 +99,7 @@ var WmrphFrame = function() {
                 myRelationFrame.mrph_data_all[m_num][3] = myJumanGrammer.pos_data[i][j];
                 myRelationFrame.mrph_data_all[m_num][4] = 0;
                 myRelationFrame.mrph_data_all[m_num][5] = '*';
-                myRelationFrame.mrph_data_all[m_num][6] = 0;            
+                myRelationFrame.mrph_data_all[m_num][6] = 0;
         }
 
         // 更新
@@ -114,19 +114,19 @@ var WmrphFrame = function() {
             var conjElem = document.getElementById("conj-" + m_num);
             conjElem.className = this.getConjContextClass(label) + " conj";
         }
-        
+
         if (new_types) {
             var elem = document.getElementById("conj-" + m_num);
             elem.innerHTML = '？';
         } else {
             var elem = document.getElementById("conj-" + m_num);
-            
+
             elem.innerHTML = 'なし';
             myRelationFrame.mrph_data_all[m_num][2] = myRelationFrame.mrph_data_all[m_num][0];
-			myRelationFrame.mrph_data_all[m_num][7] = '*';
-			myRelationFrame.mrph_data_all[m_num][8] = 0;
-			myRelationFrame.mrph_data_all[m_num][9] = '*';
-			myRelationFrame.mrph_data_all[m_num][10] = 0;
+            myRelationFrame.mrph_data_all[m_num][7] = '*';
+            myRelationFrame.mrph_data_all[m_num][8] = 0;
+            myRelationFrame.mrph_data_all[m_num][9] = '*';
+            myRelationFrame.mrph_data_all[m_num][10] = 0;
         }
     };
 
@@ -150,14 +150,14 @@ var WmrphFrame = function() {
         var v = m2[1];
         for (var k = 0; k < myJumanGrammer.conj_data.length; k++) {
             if(myJumanGrammer.conj_data[i][k]) {
-	            var m3 = myJumanGrammer.conj_data[i][k].match(/^基本形\((.*)\)$/);
+                var m3 = myJumanGrammer.conj_data[i][k].match(/^基本形\((.*)\)$/);
                 if(m3) {
-	                var orig = m3[1];
+                    var orig = m3[1];
                     var genkei_id = "#"+"genkei-"+m_num;
-                    var genkei = $(genkei_id).val();                   
+                    var genkei = $(genkei_id).val();
                     var replaced = new RegExp(v+"$");
                     genkei = genkei.replace(replaced, orig);
-                    $(genkei_id).val(genkei);                            
+                    $(genkei_id).val(genkei);
                     myRelationFrame.mrph_data_all[m_num][2] = genkei;
                 }
             }
@@ -181,25 +181,25 @@ var WmrphFrame = function() {
                 current_modify_flag = null;
             }
 
- 	        this.active_b_num_start = b_num;
+            this.active_b_num_start = b_num;
             this.active_b_num_end = b_num;
 
-	        // ### "OK" "追加"などのボタンを配置するフレームを準備
+            // ### "OK" "追加"などのボタンを配置するフレームを準備
             // tableタイトル行をつくる
-	        var table = document.createElement("table");
+            var table = document.createElement("table");
             table.id = "wmrph-table";
-	        // table.setAttribute("border", "0");
-	        // table.setAttribute("cellSpacing", "5px");
-	        // table.setAttribute("cellPadding", "10px");
-	        var thead = document.createElement("thead");
-	        var tr = document.createElement("tr");
+            // table.setAttribute("border", "0");
+            // table.setAttribute("cellSpacing", "5px");
+            // table.setAttribute("cellPadding", "10px");
+            var thead = document.createElement("thead");
+            var tr = document.createElement("tr");
 
-	        var cols = WmrphMenuArray.length;
-	        for (var j = 0; j < cols; j++) {
+            var cols = WmrphMenuArray.length;
+            for (var j = 0; j < cols; j++) {
                 if(WmrphMenuArray[j]["title"] != undefined) {
                     var td = document.createElement("td");
                     var text = WmrphMenuArray[j].title;
-		            var title = document.createTextNode(text);
+                    var title = document.createTextNode(text);
                     if(text != "") {
                         td.className = "kb_bg";
                     }
@@ -207,8 +207,8 @@ var WmrphFrame = function() {
                     tr.appendChild(td);
                 }
             }
-	        thead.appendChild(tr);
-	        table.appendChild(thead);
+            thead.appendChild(tr);
+            table.appendChild(thead);
             $("#wmrph_content").append(table);
 
             for (var i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num+1]; i++) {
@@ -218,7 +218,7 @@ var WmrphFrame = function() {
                     this.show_mrph(i, b_num, myRelationFrame.bnst_data_btype[b_num], "top");
                 }
             }
-            
+
         } else if (b_num == this.active_b_num_end + 1) {
             this.active_b_num_end = b_num;
             for (i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num+1]; i++) {
@@ -337,7 +337,7 @@ var WmrphFrame = function() {
         var hyoki_change = function(m_num) {
             return function() {
                 modify_flag = '*';
-				modify_flag2 = '*';
+                modify_flag2 = '*';
                 current_modify_flag = '*';
                 removeSpaces(this);
                 myRelationFrame.mrph_data_all[m_num][0] = this.value;
@@ -386,7 +386,7 @@ var WmrphFrame = function() {
         // genkei.innerHTML = myRelationFrame.mrph_data_all[m_num][2];
         var input = document.createElement("input");
         input.type = "text";
-        input.id = "genkei-"+row.id; 
+        input.id = "genkei-"+row.id;
         if(myRelationFrame.mrph_data_all[m_num][2] != undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][2];
         }
@@ -454,7 +454,7 @@ var WmrphFrame = function() {
         // genkei.innerHTML = myRelationFrame.mrph_data_all[m_num][2];
         var input = document.createElement("input");
         input.type = "text";
-        input.id = "imi-"+row.id; 
+        input.id = "imi-"+row.id;
         if(myRelationFrame.mrph_data_all[m_num][11] != undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][11];
         }
@@ -470,6 +470,42 @@ var WmrphFrame = function() {
 
         td = document.createElement("td");
         td.appendChild(imi);
+        tr.appendChild(td);
+
+        // 基本句-主辞
+        var baseClauseHead = document.createElement("div");
+        baseClauseHead.className = "baseClauseHead";
+        var input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = "baseClauseHead-"+row.id;
+        baseClauseHead.appendChild(input);
+
+        td = document.createElement("td");
+        td.appendChild(baseClauseHead);
+        tr.appendChild(td);
+
+        // 基本句-区切
+        var baseClauseDelimiter = document.createElement("div");
+        baseClauseDelimiter.className = "baseClauseDelimiter";
+        var input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = "baseClauseDelimiter-"+row.id;
+        baseClauseDelimiter.appendChild(input);
+
+        td = document.createElement("td");
+        td.appendChild(baseClauseDelimiter);
+        tr.appendChild(td);
+
+        // 文節-区切
+        var clauseDelimiter = document.createElement("div");
+        clauseDelimiter.className = "clauseDelimiter";
+        var input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = "clauseDelimiter-"+row.id;
+        clauseDelimiter.appendChild(input);
+
+        td = document.createElement("td");
+        td.appendChild(clauseDelimiter);
         tr.appendChild(td);
 
         //     ### 複製ボタン
@@ -531,41 +567,41 @@ var WmrphFrame = function() {
                 if(myRelationFrame.mrph_data_all[m_num-1] && myRelationFrame.mrph_data_all[m_num]) {
                     if (myRelationFrame.mrph_data_all[m_num-1][12] && myRelationFrame.mrph_data_all[m_num][12]) { // no check for english
                         if (flag && myRelationFrame.mrph_data_all[m_num-1][12].match(/\<NE:[^\>]+\>/) ||
-	                        myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:middle\>/) ||
-	                        myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:tail\>/)) {
-	                        alert('固有表現タグをはずしてから編集してください');
-	                        return;
+                            myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:middle\>/) ||
+                            myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^:]+:tail\>/)) {
+                            alert('固有表現タグをはずしてから編集してください');
+                            return;
                         }
                     }
                 }
-                
+
                 modify_flag = '*';
                 current_modify_flag = '*';
 
                 for (var i = b_num + 1; i <= myRelationFrame.bnst_num; i++) {
-	                myRelationFrame.bnst_data_start[i]++;
+                    myRelationFrame.bnst_data_start[i]++;
                 }
 
                 // myRelationFrame.increment_mrph_num();
                 myRelationFrame.mrph_num++;
 
                 if (!flag) { 
-	                // 追加
-	                m_num = myRelationFrame.bnst_data_start[b_num+1] - 1;
+                    // 追加
+                    m_num = myRelationFrame.bnst_data_start[b_num+1] - 1;
 
-	                myRelationFrame.mrph_data_all.splice(m_num, 0, ['', '', '', '', '', '', '', '*', 0, '*', 0, "", ""]);
-	                myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
+                    myRelationFrame.mrph_data_all.splice(m_num, 0, ['', '', '', '', '', '', '', '*', 0, '*', 0, "", ""]);
+                    myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
 
                     if (TREE_MODE == 'R') {
-	                    me.show_mrph(m_num, b_num, '', "top");
+                        me.show_mrph(m_num, b_num, '', "top");
                     } else {
                         me.show_mrph(m_num, b_num, '*', "top");
                     }
                 }
                 else {
-	                // 複製
-	                modify_flag2 = '*';
-	                m_num = myRelationFrame.bnst_data_start[b_num] + flag;
+                    // 複製
+                    modify_flag2 = '*';
+                    m_num = myRelationFrame.bnst_data_start[b_num] + flag;
 
                     var new_array = [];
                     for (var i=0, l=myRelationFrame.mrph_data_all[m_num-1].length; i<l; i++) {
@@ -573,19 +609,19 @@ var WmrphFrame = function() {
                     }
 
                     myRelationFrame.mrph_data_all.splice(m_num, 0, new_array);
-	                myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
+                    myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
 
-	                var b_num_start = me.active_b_num_start;
-	                var b_num_end = me.active_b_num_end;
+                    var b_num_start = me.active_b_num_start;
+                    var b_num_end = me.active_b_num_end;
 
-	                me.active_b_num_start = -1;
+                    me.active_b_num_start = -1;
 
                     // me.init();
                     me.removeContent();
 
-	                for (b_num = b_num_start; b_num <= b_num_end; b_num++) {
-	                    me.show_bnst(b_num, true); // un_initialize_flagをtrueに
-	                }
+                    for (b_num = b_num_start; b_num <= b_num_end; b_num++) {
+                        me.show_bnst(b_num, true); // un_initialize_flagをtrueに
+                    }
                 }
 
             }catch(e) {
@@ -599,39 +635,39 @@ var WmrphFrame = function() {
     this.delete_mrph = function(b_num, m_num, clearflag) {
         return function() {
             try {
-                if (myRelationFrame.mrph_data_all[m_num][12] 
+                if (myRelationFrame.mrph_data_all[m_num][12]
                     && myRelationFrame.mrph_data_all[m_num][12].match(/\<NE:[^\>]+\>/)) {
-                	alert('固有表現タグをはずしてから編集してください');
-                	return;
+                    alert('固有表現タグをはずしてから編集してください');
+                    return;
                 }
-                
+
                 modify_flag = '*';
                 current_modify_flag = '*';
-                
+
                 if (clearflag) {
-                	// 表記、読み、原形をクリア
-                	for (var i = 0; i < 3; i++) {
-                	    myRelationFrame.mrph_data_all[m_num][i] = "";
-                	}
+                    // 表記、読み、原形をクリア
+                    for (var i = 0; i < 3; i++) {
+                        myRelationFrame.mrph_data_all[m_num][i] = "";
+                    }
                 }
                 else {
-                	// 削除
-                	modify_flag2 = '*';
-                    
-                	for (var i = b_num + 1; i <= myRelationFrame.bnst_num; i++) {
-                	    myRelationFrame.bnst_data_start[i]--;
-                	}
-                    
+                    // 削除
+                    modify_flag2 = '*';
+
+                    for (var i = b_num + 1; i <= myRelationFrame.bnst_num; i++) {
+                        myRelationFrame.bnst_data_start[i]--;
+                    }
+
                     myRelationFrame.mrph_num--;
 
                     myRelationFrame.mrph_data_all[m_num] = undefined;
                     myRelationFrame.mrph_data_all.splice(m_num, 1);
                     myRelationFrame.mrph_data_start.splice(m_num, 1);
                 }
-                
+
                 var  b_num_start = me.active_b_num_start;
                 var b_num_end = me.active_b_num_end;
-                me.active_b_num_start = -1;  
+                me.active_b_num_start = -1;
 
                 me.removeContent();
 
@@ -655,17 +691,17 @@ var WmrphFrame = function() {
 
             // clearされた形態素
             for (var i = 0; i < myRelationFrame.mrph_num; i++) {
-    	        if (!myRelationFrame.mrph_data_all[i][0]) {
-    	            myRelationFrame.mrph_data_start[i] = 0;
+                if (!myRelationFrame.mrph_data_all[i][0]) {
+                    myRelationFrame.mrph_data_start[i] = 0;
                 }
             }
 
             // 表示範囲内の文節の個数 (新)
             var orig_count = 0;
             for (i = start; i < end; i++) {
-    	        if (myRelationFrame.mrph_data_start[i] == 1) {
-    	            count++;
-    	        }
+                if (myRelationFrame.mrph_data_start[i] == 1) {
+                    count++;
+                }
             }
 
             // 文節数の差
@@ -673,44 +709,44 @@ var WmrphFrame = function() {
 
             // なくなった形態素の処理
             for (i = 0; i < myRelationFrame.mrph_num; i++) {
-    	        if (!myRelationFrame.mrph_data_all[i][0]) {
+                if (!myRelationFrame.mrph_data_all[i][0]) {
                     myRelationFrame.mrph_data_all[i] = undefined;
-    	            myRelationFrame.mrph_data_all.splice(i, 1);
-    	            myRelationFrame.mrph_data_start.splice(i, 1);
-    	            i--;
+                    myRelationFrame.mrph_data_all.splice(i, 1);
+                    myRelationFrame.mrph_data_start.splice(i, 1);
+                    i--;
                     myRelationFrame.mrph_num--;
-    	        }
+                }
             }
 
             // 文節開始位置(形態素番号)の修正
             var old_bnst_num = myRelationFrame.bnst_num;
             myRelationFrame.bnst_num = 0;
             for (i = 0; i < myRelationFrame.mrph_num; i++) {
-    	        if (myRelationFrame.mrph_data_start[i] == 1) {
-    	            myRelationFrame.bnst_data_start[myRelationFrame.bnst_num] = i;
+                if (myRelationFrame.mrph_data_start[i] == 1) {
+                    myRelationFrame.bnst_data_start[myRelationFrame.bnst_num] = i;
                     myRelationFrame.bnst_num++;
-    	        }
+                }
             }
 
             myRelationFrame.bnst_data_start[myRelationFrame.bnst_num] = myRelationFrame.mrph_num; // 末尾の印
-            
+
             var isRoot = false;
-    	    for (i = this.active_b_num_start; i <= this.active_b_num_end; i++) {
+            for (i = this.active_b_num_start; i <= this.active_b_num_end; i++) {
                 if (myRelationFrame.bnst_data_dpnd[i] == -1) {
                     var isRoot = true;
                     break;
                 }
-            }            
-            
+            }
+
             // 係先(文節番号)の修正
             if (diff != 0) {
-               
+
                 // 格のdependencyを修正
-                var curSntIndex = myRelationFrame.currentShowIndex; 
+                var curSntIndex = myRelationFrame.currentShowIndex;
                 for(var si = curSntIndex; si < inputFileList.length; si++) {
                     for (i = 0; i < old_bnst_num; i++) {
-                        var sid = inputFileList[si]; 
-	                    var contextInfo = inputDataList[sid].contextinfo[i];
+                        var sid = inputFileList[si];
+                        var contextInfo = inputDataList[sid].contextinfo[i];
                         for (var kaku in contextInfo) {
                             for (j = 0; j < contextInfo[kaku].Data.length; j++) {
                                 var data = contextInfo[kaku].Data[j];
@@ -724,77 +760,77 @@ var WmrphFrame = function() {
                     }
                 }
 
-    	        for (i = 0; 
-                     (TREE_MODE == 'R' && i < this.active_b_num_start) || 
-                    (TREE_MODE == 'LR' && i < old_bnst_num); 
+                for (i = 0;
+                     (TREE_MODE == 'R' && i < this.active_b_num_start) ||
+                    (TREE_MODE == 'LR' && i < old_bnst_num);
                      i++) {
-                    
-    	            // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
-    	            if (i != this.active_b_num_start 
-                        && this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i] 
+
+                    // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
+                    if (i != this.active_b_num_start
+                        && this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]
                         && myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
                         if (TREE_MODE == 'R') {
-    		                myRelationFrame.bnst_data_dpnd[i] = -1;
+                            myRelationFrame.bnst_data_dpnd[i] = -1;
                         } else {
                             myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
                             // if (this.active_b_num_end < myRelationFrame.bnst_num - 1) {
                             //     myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_end + 1;
                             // } else {
-    		                //     myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start - 1;;
+                            //     myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start - 1;;
                             // }
                         }
-    	            }
-    	            // 表示中の文節列より後に係る場合
-    	            else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end) {
-    		            myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i], 10) + parseInt(diff, 10);
-    	            }
-    	        }
+                    }
+                    // 表示中の文節列より後に係る場合
+                    else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end) {
+                        myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i], 10) + parseInt(diff, 10);
+                    }
+                }
 
-    	        // 文節をくっつけたとき
-    	        if (diff < 0) {
-    	            // 後から前にずらす
-    	            for (i = (this.active_b_num_end + diff + 1);
-    		             i < myRelationFrame.bnst_num; i++) {
-                        // ルートをずらさない 
+                // 文節をくっつけたとき
+                if (diff < 0) {
+                    // 後から前にずらす
+                    for (i = (this.active_b_num_end + diff + 1);
+                         i < myRelationFrame.bnst_num; i++) {
+                        // ルートをずらさない
                         if (TREE_MODE == 'R') {
                             if (myRelationFrame.bnst_data_dpnd[i-diff] == -1) {
                                 myRelationFrame.bnst_data_dpnd[i] = -1;
-                            } else { 
+                            } else {
                                 myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i-diff], 10) + parseInt(diff, 10);
                             }
                         } else {
                             myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i-diff];
                         }
 
-					    myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i-diff];
-    		            myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i-diff];
-					    myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i-diff];
-					    myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i-diff]);
-    	            }
-    	        }
+                        myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i-diff];
+                        myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i-diff];
+                        myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i-diff];
+                        myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i-diff]);
+                    }
+                }
 
-    	        // 文節を分割したとき
-    	        else {
+                // 文節を分割したとき
+                else {
                     // console.log("diff > 0");
-    	            // 前から後にずらす
+                    // 前から後にずらす
                     if (TREE_MODE == 'R') {
                         for (i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + diff + 1); i--) {
                             // ルートをずらさない
                             if (myRelationFrame.bnst_data_dpnd[i-diff] == -1) {
                                 myRelationFrame.bnst_data_dpnd[i] = -1;
                             } else {
-                                myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i-diff], 10) + parseInt(diff, 10); 
+                                myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i-diff], 10) + parseInt(diff, 10);
                             }
                             myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i-diff];
                             myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i-diff];
-					        myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i-diff];
+                            myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i-diff];
                             myRelationFrame.bnst_data_f[i-diff] = '';
                             myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i-diff]);
                             myRelationFrame.contextinfo[i-diff] = '';
                         }
                     } else {
                         for (i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + diff + 1); i--) {
-                            myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i-diff], 10); 
+                            myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i-diff], 10);
                             myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i-diff];
                             myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i-diff];
                             myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i-diff];
@@ -805,34 +841,34 @@ var WmrphFrame = function() {
                     }
                 }
                 if (TREE_MODE == 'R') {
-    	            for (i = this.active_b_num_start; 
-    	                 i <= (this.active_b_num_end + diff); i++) {
-    	                myRelationFrame.bnst_data_dpnd[i] = -1;
+                    for (i = this.active_b_num_start;
+                         i <= (this.active_b_num_end + diff); i++) {
+                        myRelationFrame.bnst_data_dpnd[i] = -1;
                         // myRelationFrame.bnst_data_f[i] = ''; // タグ情報をクリアしない
                     }
-    	        } else {
+                } else {
                     var  i;
                     if (diff > 0) {
                         myRelationFrame.bnst_data_dpnd[this.active_b_num_end + diff] = myRelationFrame.bnst_data_dpnd[this.active_b_num_start];
-    	                for (i = this.active_b_num_start;
-    	                     i < (this.active_b_num_end + diff); i++) {
+                        for (i = this.active_b_num_start;
+                             i < (this.active_b_num_end + diff); i++) {
                             //if (myRelationFrame.bnst_data_dpnd[i] != -1) {
-    	                    myRelationFrame.bnst_data_dpnd[i] = i + 1;
+                            myRelationFrame.bnst_data_dpnd[i] = i + 1;
                             //}
                         }
                     } else {
                         if (isRoot) {
                             myRelationFrame.bnst_data_dpnd[this.active_b_num_start] = -1;
-    	                    for (i = this.active_b_num_start+1;
-    	                         i <= (this.active_b_num_end + diff); i++) {
-    	                        myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
+                            for (i = this.active_b_num_start+1;
+                                 i <= (this.active_b_num_end + diff); i++) {
+                                myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
                             }
                         } else {
                             //myRelationFrame.bnst_data_dpnd[this.active_b_num_end + diff] -= diff;
-    	                    // for (i = this.active_b_num_start;
-    	                    //      i <= (this.active_b_num_end + diff); i++) {
+                            // for (i = this.active_b_num_start;
+                            //      i <= (this.active_b_num_end + diff); i++) {
                             //     //if (myRelationFrame.bnst_data_dpnd[i] != -1) {
-    	                    //     myRelationFrame.bnst_data_dpnd[i] = i + 1;
+                            //     myRelationFrame.bnst_data_dpnd[i] = i + 1;
                             //     //}
                             // }
                         }
@@ -844,18 +880,18 @@ var WmrphFrame = function() {
             var bnst_num = 0;
             var modify_bnst = {};
             for (i = 0; i < myRelationFrame.mrph_num; i++) {
-    	        if (myRelationFrame.mrph_data_start[i] == 1) {
-    	            if (bnst_num >= this.active_b_num_start && bnst_num <= this.active_b_num_end + diff) {
+                if (myRelationFrame.mrph_data_start[i] == 1) {
+                    if (bnst_num >= this.active_b_num_start && bnst_num <= this.active_b_num_end + diff) {
                         // btype
                         if(myRelationFrame.bnst_data_btype[bnst_num] != this.bnst_data_btype_new_m[i]) {
-    		                myRelationFrame.bnst_data_btype[bnst_num] = this.bnst_data_btype_new_m[i];
+                            myRelationFrame.bnst_data_btype[bnst_num] = this.bnst_data_btype_new_m[i];
                             var b_i = myRelationFrame.orig_bnst_num[bnst_num];
                             modify_bnst[b_i] = true;
                         }
                         
-    	            }
-    	            bnst_num++;
-    	        }
+                    }
+                    bnst_num++;
+                }
             }
 
             // 基本句行と文節行のマッピングの更新
@@ -865,11 +901,11 @@ var WmrphFrame = function() {
                 if (myRelationFrame.bnst_data_btype[i] == "*") {
                     myRelationFrame.orig_bnst_data_num[i] = orig_bnst_num;
                     myRelationFrame.orig_bnst_data_start[i] = 1;
-		        	myRelationFrame.orig_bnst_data_end[i] = 1;
+                    myRelationFrame.orig_bnst_data_end[i] = 1;
                     orig_bnst_num++;
                 } else {
                     myRelationFrame.orig_bnst_data_end[i] = 1;
-		        	myRelationFrame.orig_bnst_data_end[i-1] = 0; //ひとつ前の値を0に
+                    myRelationFrame.orig_bnst_data_end[i-1] = 0; //ひとつ前の値を0に
                     myRelationFrame.orig_bnst_data_num[i] = orig_bnst_num-1;
                 }
             }
@@ -885,7 +921,7 @@ var WmrphFrame = function() {
             if(orig_diff != 0) {
 
                 // 係先(文節番号)の修正
-    	        for (i = 0; 
+                for (i = 0; 
                      (TREE_MODE == 'R' && i < this.active_b_num_start) || 
                      (TREE_MODE == 'LR' && i < myRelationFrame.bnst_num); 
                       i++) {
@@ -893,47 +929,47 @@ var WmrphFrame = function() {
                     // 基本句の属している文節の番号を取得
                     var b_i = myRelationFrame.orig_bnst_data_num[i];
                     
-    	            // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
-    	            if ((this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]) &&
-    		            myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
+                    // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
+                    if ((this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]) &&
+                        myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
                         if((myRelationFrame.orig_bnst_data_end[i] == 1) &&
                            (myRelationFrame.bnst_data_dpnd[i] == -1)) {
                             if (TREE_MODE == 'R') {
-    		                    myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
+                                myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
                             } else {
                                 myRelationFrame.orig_bnst_data_dpnd[b_i] = this.active_b_num_end;
                             }
                         }
-    	            }
-    	            // 表示中の文節列より後に係る場合
-    	            else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end) {
+                    }
+                    // 表示中の文節列より後に係る場合
+                    else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end) {
                         if(myRelationFrame.orig_bnst_data_end[i] == 1) {
-    		                myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + parseInt(orig_diff, 10);
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + parseInt(orig_diff, 10);
                             // console.log(b_i + " " + myRelationFrame.orig_bnst_data_dpnd[b_i]);
                         }
-    	            }
-    	        }
+                    }
+                }
 
                 // 文節をくっつけた場合
-    	        if (orig_diff < 0) {
+                if (orig_diff < 0) {
                     // console.log("diff < 0");
-    	            // 後から前にずらす
-    	            for (i = (this.active_b_num_end + orig_diff + 1);
-    		             i < myRelationFrame.bnst_num; i++) {
+                    // 後から前にずらす
+                    for (i = (this.active_b_num_end + orig_diff + 1);
+                         i < myRelationFrame.bnst_num; i++) {
 
                         if(myRelationFrame.bnst_data_btype[i] == "*") {
                             var b_i = myRelationFrame.orig_bnst_data_num[i]; //基本句番号iに対応する文節番号
                             var b_i_diff = parseInt(b_i,10) - parseInt(orig_diff,10);
                             myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + parseInt(orig_diff, 10);
                             myRelationFrame.orig_bnst_data_type[b_i] = myRelationFrame.orig_bnst_data_type[b_i_diff] || "D";
-					        myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
+                            myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
                         }
                     }
 
                 } else { // 文節が増えた場合
-    	            // 前から後ろにずらす
-    	            for (i = (myRelationFrame.bnst_num - 1);
-    		             i >= (this.active_b_num_end + orig_diff); i--) {
+                    // 前から後ろにずらす
+                    for (i = (myRelationFrame.bnst_num - 1);
+                         i >= (this.active_b_num_end + orig_diff); i--) {
 
                         if(myRelationFrame.bnst_data_btype[i] == "*") {
                             var b_i = myRelationFrame.orig_bnst_data_num[i]; //基本句番号iに対応する文節番号
@@ -944,8 +980,8 @@ var WmrphFrame = function() {
                                 myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + parseInt(orig_diff, 10);
                             }
                             myRelationFrame.orig_bnst_data_type[b_i] = myRelationFrame.orig_bnst_data_type[b_i_diff] || "D";
-					        myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
-					        myRelationFrame.orig_bnst_data_f[b_i_diff] = '';
+                            myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
+                            myRelationFrame.orig_bnst_data_f[b_i_diff] = '';
                         }
                     }
 
@@ -953,17 +989,17 @@ var WmrphFrame = function() {
 
             }
 
-    	    // for (var b_i = 0; b_i < myRelationFrame.orig_bnst_num; b_i++) {
+            // for (var b_i = 0; b_i < myRelationFrame.orig_bnst_num; b_i++) {
             //     if(modify_bnst[b_i - orig_diff]) {
             //         myRelationFrame.orig_bnst_data_f[b_i] = '';
             //     }
-    	    // }
+            // }
 
-    	    for (i = 0; i < myRelationFrame.bnst_num; i++) {
-    	        var b_i = myRelationFrame.orig_bnst_data_num[i];
+            for (i = 0; i < myRelationFrame.bnst_num; i++) {
+                var b_i = myRelationFrame.orig_bnst_data_num[i];
                 if((myRelationFrame.orig_bnst_data_end[i] == 1) && 
                    (myRelationFrame.bnst_data_dpnd[i] == -1)) {
-    	            myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
+                    myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
                 } else {
                     if(myRelationFrame.orig_bnst_data_end[i] == 1) {
                         var j = myRelationFrame.bnst_data_dpnd[i]; //かかりうけ先
@@ -971,7 +1007,7 @@ var WmrphFrame = function() {
                         myRelationFrame.orig_bnst_data_dpnd[b_i] = b_j;
                     }
                 }
-    	    }
+            }
 
             for (i = myRelationFrame.orig_bnst_num - 1; i >=  orig_bnst_num; i--) {
                 myRelationFrame.orig_bnst_data_dpnd.pop();
