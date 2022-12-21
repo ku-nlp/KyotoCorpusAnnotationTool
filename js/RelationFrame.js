@@ -300,7 +300,7 @@ var RelationFrame = function () {
         inputDataList[sid]["caseBoxNum"] = this.caseBoxNum;
 
         // 係わり受けの編集をしないLRモードでは、全文表示を更新する
-        const removePrev = TREE_MODE === 'LR' ? false : true;
+        const removePrev = TREE_MODE !== 'LR';
         this.removeContent(removePrev);
         // 構文木文節テーブルの表示
         this.makeCaseTable();
@@ -1130,7 +1130,7 @@ var RelationFrame = function () {
         for (let si = 0; si < inputFileList.length; si++) {
             const sid = inputFileList[si]; // センテンスIDを取得
 
-            const { bnst_num, mrph_data_all, mrph_data_start } = inputDataList[sid];
+            const {bnst_num, mrph_data_all, mrph_data_start} = inputDataList[sid];
 
             const sentence_table = [];
             var j = 0;
@@ -1234,7 +1234,7 @@ var RelationFrame = function () {
         for (let si = 0; si < inputFileList.length; si++) {
             const sid = inputFileList[si]; // センテンスIDを取得
 
-            const { bnst_num, mrph_data_all, mrph_data_start } = inputDataList[sid];
+            const {bnst_num, mrph_data_all, mrph_data_start} = inputDataList[sid];
 
             const sentence_table = [];
             var j = 0;
@@ -1354,15 +1354,15 @@ var RelationFrame = function () {
             const sid = inputFileList[si]; // センテンスIDを取得
 
             const {
-              bnst_data_btype,
-              bnst_data_dpnd,
-              bnst_data_start,
-              bnst_data_type,
-              bnst_data_f,
-              bnst_num,
-              orig_bnst_data_end,
-              mrph_data_all,
-              mrph_data_start
+                bnst_data_btype,
+                bnst_data_dpnd,
+                bnst_data_start,
+                bnst_data_type,
+                bnst_data_f,
+                bnst_num,
+                orig_bnst_data_end,
+                mrph_data_all,
+                mrph_data_start
             } = inputDataList[sid];
 
             //構文木の線引き
@@ -1459,9 +1459,9 @@ var RelationFrame = function () {
         if (tagData.dependant < 0) {
             return;
         }
-        var si = 0;
-        for (var si = 0; si <= this.currentShowIndex; si++) {
-            if (tagData.SID == inputFileList[si]) {
+        let si = 0;
+        for (si = 0; si <= this.currentShowIndex; si++) {
+            if (tagData.SID === inputFileList[si]) {
                 break;
             }
         }
@@ -1563,15 +1563,15 @@ var RelationFrame = function () {
         $('#ne_tag_input').empty();
 
         $('#ne_tag_list').append("<ul>");
-        for (var i = 0; i < NETags.length; i++) {
+        for (let i = 0; i < NETags.length; i++) {
             //$('#ne_tag_list').append('<li><a class="ne_tag">' +  NETags[i] + '</a></li>')
-            var checked = "";
+            let checked = "";
             if (this.contextinfo[sidx]
                 && this.contextinfo[sidx][kaku]
                 && this.contextinfo[sidx][kaku].Data[0].data.search(NETags[i]) >= 0) {
                 checked = 'checked="checked"';
             }
-            $('#ne_tag_list').append(`<li><input type="radio" class="ne_radio" name="ne_radio" ${checked}id="`
+            $('#ne_tag_list').append(`<li><input type="radio" class="ne_radio" name="ne_radio" ${checked} id="`
                 + i + '"><a class="ne_tag">' + NETags[i] + '</a></input></li>')
 
         }
@@ -1583,7 +1583,7 @@ var RelationFrame = function () {
         }
         $('#ne_tag_list').append("</ul>");
         const inputList = this.ne_candidate(sidx);
-        for (var i = 0; i < inputList.length; i++) {
+        for (let i = 0; i < inputList.length; i++) {
             $('#ne_tag_input').append(`<p><input type="submit"  class="ne_button" id="ne_button_${i}" value="${inputList[i]}"/></p>`);
         }
 
@@ -1611,27 +1611,27 @@ var RelationFrame = function () {
         //$('#ne_opt_tag_list').append('<fieldset>');
         let genHtml = '<fieldset>';
         for (let i = 0; i < NE_OPT_TAG.length; i++) {
-            var checked = "";
+            let checked = "";
             if (this.contextinfo[sidx]
                 && this.contextinfo[sidx][`NE-OPT-${NE_OPT_TAG[i]}`]
                 && this.contextinfo[sidx][`NE-OPT-${NE_OPT_TAG[i]}`].Data[0].data) {
                 checked = 'checked="checked"';
             }
 
-            genHtml += `<li><input type="checkbox" class="ne_opt_check" name="ne_check" ${checked}  id="`
+            genHtml += `<li><input type="checkbox" class="ne_opt_check" name="ne_check" ${checked} id="`
                 + i + '"><a class="ne_tag">' + NE_OPT_TAG[i] + '</a></input></li>';
         }
 
         genHtml += "<p>Type:</p>";
         for (let i = 0; i < NE_OPT_TYPE.length; i++) {
-            var checked = "";
+            let checked = "";
             if (this.contextinfo[sidx]
                 && this.contextinfo[sidx]['NE-OPT-TYPE']
                 && this.contextinfo[sidx]['NE-OPT-TYPE'].Data[0].data == NE_OPT_TYPE[i]) {
                 checked = 'checked="checked"';
             }
 
-            genHtml += `&nbsp;<input type="radio" class="ne_opt_radio" name="ne_opt_radio" ${checked}  id="`
+            genHtml += `&nbsp;<input type="radio" class="ne_opt_radio" name="ne_opt_radio" ${checked} id="`
                 + i + '"><a class="ne_tag">' + NE_OPT_TYPE[i] + '</a></input>';
         }
         genHtml += '</fieldset>';
@@ -1723,7 +1723,7 @@ var RelationFrame = function () {
         }
 
         // フリー入力フォームの値が空の場合
-        if (tag_name == "") {
+        if (tag_name === "") {
             alert("タグを入力してください");
             return;
         }
@@ -2497,7 +2497,7 @@ var RelationFrame = function () {
 
                     let nprev = 0;
                     for (let j = this.currentShowIndex; j >= 0; j--) {
-                        if (tagData.SID == inputFileList[j]) {
+                        if (tagData.SID === inputFileList[j]) {
                             break;
                         }
                         nprev++;

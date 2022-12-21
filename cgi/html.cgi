@@ -44,7 +44,7 @@ sub default_page {
     print $cgi->start_html({ title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8' });
     print "<h1>関係コーパス 記事データダウンロード</h1><br>\n";
     print "<p>名前を入力してください。</p>\n" unless $annotator_id;
-    print "<p>記事$article_idがみつかりません。</p>\n" unless -f $filepath;
+    print "<p>記事$article_id がみつかりません。</p>\n" unless -f $filepath;
     print "<form method=POST action=\"download.cgi\">\n";
     print "<table>\n";
     print "<tr><th align=left>名前</th><td><input name=\"annotator_id\" size=\"10\"></td></tr>\n";
