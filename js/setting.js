@@ -48,8 +48,6 @@ WmrphMenuArray = [{ "title" : "" },
              { "title" : "活用形" },
              { "title" : "意味情報" },
              { "title" : "基本句-主辞" },
-             { "title" : "基本句-区切" },
-             { "title" : "文節-区切" },
              { "title" : "" },
              { "title" : "" },
              { "title" : "" }

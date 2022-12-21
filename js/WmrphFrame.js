@@ -171,6 +171,8 @@ var WmrphFrame = function() {
 
     // 文節の表示
     this.show_bnst = function(b_num, un_initialize_flag) {
+        console.log('show_bnst b_num='+b_num+ " un_initialize_flag="+un_initialize_flag + ' this.active_b_num_start='+this.active_b_num_start);
+        console.dir(myRelationFrame.mrph_data_all[b_num]);
         if (this.active_b_num_start == -1) {
 
             // 文節形態素編集フレームを開く
@@ -479,33 +481,17 @@ var WmrphFrame = function() {
         input.type = "checkbox";
         input.id = "baseClauseHead-"+row.id;
         baseClauseHead.appendChild(input);
+        var baseClauseHead_change = function(m_num) {
+            return function() {
+                modify_flag = '*';
+                current_modify_flag = '*';
+                // TODO: Set value in myRelationFrame.mrph_data_all[m_num][??]
+            };
+        };
+        $(input).change(baseClauseHead_change(m_num));
 
         td = document.createElement("td");
         td.appendChild(baseClauseHead);
-        tr.appendChild(td);
-
-        // 基本句-区切
-        var baseClauseDelimiter = document.createElement("div");
-        baseClauseDelimiter.className = "baseClauseDelimiter";
-        var input = document.createElement("input");
-        input.type = "checkbox";
-        input.id = "baseClauseDelimiter-"+row.id;
-        baseClauseDelimiter.appendChild(input);
-
-        td = document.createElement("td");
-        td.appendChild(baseClauseDelimiter);
-        tr.appendChild(td);
-
-        // 文節-区切
-        var clauseDelimiter = document.createElement("div");
-        clauseDelimiter.className = "clauseDelimiter";
-        var input = document.createElement("input");
-        input.type = "checkbox";
-        input.id = "clauseDelimiter-"+row.id;
-        clauseDelimiter.appendChild(input);
-
-        td = document.createElement("td");
-        td.appendChild(clauseDelimiter);
         tr.appendChild(td);
 
         //     ### 複製ボタン
