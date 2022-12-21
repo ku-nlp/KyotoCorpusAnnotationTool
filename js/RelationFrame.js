@@ -586,13 +586,12 @@ var RelationFrame = function () {
             }
             this.sentence_table[i - 1] += this.mrph_data_all[m_num][0];
             // 品詞情報取得
-            var label;
             var mark;
-            label = this.mrph_data_all[m_num][3];
-            if (this.mrph_data_all[m_num][5] == '固有名詞' ||
-                this.mrph_data_all[m_num][5] == '人名' ||
-                this.mrph_data_all[m_num][5] == '地名' ||
-                this.mrph_data_all[m_num][5] == '組織名') {
+            let label = this.mrph_data_all[m_num][3];
+            if (this.mrph_data_all[m_num][5] === '固有名詞' ||
+                this.mrph_data_all[m_num][5] === '人名' ||
+                this.mrph_data_all[m_num][5] === '地名' ||
+                this.mrph_data_all[m_num][5] === '組織名') {
                 label = this.mrph_data_all[m_num][5];
             }
             mark = this.pos_mark[label];
@@ -763,10 +762,10 @@ var RelationFrame = function () {
             }
             // 品詞情報取得
             var label = this.mrph_data_all[m_num][3];
-            if (this.mrph_data_all[m_num][5] == '固有名詞' ||
-                this.mrph_data_all[m_num][5] == '人名' ||
-                this.mrph_data_all[m_num][5] == '地名' ||
-                this.mrph_data_all[m_num][5] == '組織名') {
+            if (this.mrph_data_all[m_num][5] === '固有名詞' ||
+                this.mrph_data_all[m_num][5] === '人名' ||
+                this.mrph_data_all[m_num][5] === '地名' ||
+                this.mrph_data_all[m_num][5] === '組織名') {
                 label = this.mrph_data_all[m_num][5];
             }
             const mark = this.pos_mark[label];
@@ -837,7 +836,7 @@ var RelationFrame = function () {
                 } else {
                     td.id = `tag${ti}_${j}`;
                     td.setAttribute("align", "center");
-                    if (kaku == 'メモ') {
+                    if (kaku === 'メモ') {
                         var title = null;
                         td.innerHTML = `<input type="text" name="name" id="${ti}`
                             + '" style="width: 200px; " class="memo_tag text ui-widget-content ui-corner-all" value=""'
@@ -852,7 +851,7 @@ var RelationFrame = function () {
                         // タグ
                         titleText = this.make_string(ti, this.caseName[j]);
 
-                        if (kaku == 'メモ') {
+                        if (kaku === 'メモ') {
 
                             var tag = this.contextinfo[ti][kaku];
                             var val = tag.Data[0].data;
@@ -866,7 +865,7 @@ var RelationFrame = function () {
                             title.innerHTML = titleText;
                         }
 
-                        if (kaku == 'NE') {
+                        if (kaku === 'NE') {
                             td.style.backgroundColor = ColorNE;
                         }
                     }
@@ -914,7 +913,7 @@ var RelationFrame = function () {
 
         let wrongTreeState = false;
         this.bnstTreeMap = new Array();
-        for (var i = 0; i < tree_lines.length; i++) {
+        for (let i = 0; i < tree_lines.length; i++) {
             const m = tree_lines[i].match(/<span class="bnst" id="bnst([0-9]+)">/);
             if (m[1] != i) {
                 wrongTreeState = true;
@@ -933,7 +932,7 @@ var RelationFrame = function () {
 
         //console.log(tree_lines);
 
-        for (var i = 0; i < this.bnst_num; i++) {
+        for (let i = 0; i < this.bnst_num; i++) {
             $(`div#tree${i}`).html(tree_lines[i]);
             //this.setBnstContextEvent(i);
         }
@@ -948,14 +947,14 @@ var RelationFrame = function () {
         let bmark;
         let crossflag;
 
-        for (var i = 0; i < this.bnst_num; i++) {
+        for (let i = 0; i < this.bnst_num; i++) {
             active_column[i] = 0;
         }
 
         const last_id = this.bnst_num - 1;
         $(`div#bnst${last_id}.title.bnst`).css('background-color', BnstColor);
 
-        for (i = 0; i < (this.bnst_num - 1); i++) {
+        for (let i = 0; i < (this.bnst_num - 1); i++) {
             if (this.bnst_data_dpnd[i] == -1) {
                 // color = 'green';
                 // $("div#" + i + ".title.bnst").css('background-color', 'green');
@@ -964,7 +963,7 @@ var RelationFrame = function () {
                 $(`div#bnst${i}.title.bnst`).css('background-color', BnstColor);
             }
 
-            para_row = this.bnst_data_type[i] == 'P' ? 1 : 0;
+            para_row = this.bnst_data_type[i] === 'P' ? 1 : 0;
 
             bmark = this.orig_bnst_data_end[i] == 0 ? 1 : 0;
 
@@ -974,55 +973,55 @@ var RelationFrame = function () {
                 const elem = $(id)[0];
 
                 if (j < this.bnst_data_dpnd[i]) {
-                    if (active_column[j] == 2) {
+                    if (active_column[j] === 2) {
                         crossflag = 1;
-                        elem.innerHTML = para_row == 1 ? "╋" : "╂";
+                        elem.innerHTML = para_row === 1 ? "╋" : "╂";
                         elem.className = "tree vertical edit";
                         elem.style.backgroundColor = BnstAnotherColor;
-                    } else if (active_column[j] == 1) {
+                    } else if (active_column[j] === 1) {
                         crossflag = 1;
-                        elem.innerHTML = para_row == 1 ? "┿" : "┼";
+                        elem.innerHTML = para_row === 1 ? "┿" : "┼";
                         elem.className = "tree vertical edit";
                         elem.style.backgroundColor = BnstAnotherColor;
                     } else {
-                        elem.innerHTML = para_row == 1 ? "━" : "─";
+                        elem.innerHTML = para_row === 1 ? "━" : "─";
                         elem.className = "tree";
                         elem.style.backgroundColor = "";
                     }
                 } else if (j == this.bnst_data_dpnd[i]) {
-                    if (this.bnst_data_type[i] == "P") {
+                    if (this.bnst_data_type[i] === "P") {
                         elem.innerHTML = "Ｐ";
-                    } else if (this.bnst_data_type[i] == "I") {
+                    } else if (this.bnst_data_type[i] === "I") {
                         elem.innerHTML = "Ｉ";
-                    } else if (this.bnst_data_type[i] == "A") {
+                    } else if (this.bnst_data_type[i] === "A") {
                         elem.innerHTML = "Ａ";
                     } else {
-                        if (active_column[j] == 2) {
+                        if (active_column[j] === 2) {
                             elem.innerHTML = "┨";
                         } else {
-                            elem.innerHTML = active_column[j] == 1 ? "┤" : "┐";
+                            elem.innerHTML = active_column[j] === 1 ? "┤" : "┐";
                         }
                         elem.className = "tree vertical edit";
                     }
 
-                    if (active_column[j] == 2) {
+                    if (active_column[j] === 2) {
                         ;		//すでにＰからの太線があればそのまま
                     } else if (para_row) {
                         active_column[j] = 2;
                     } else {
                         active_column[j] = 1;
                     }
-                } else if (active_column[j] == 2) {
+                } else if (active_column[j] === 2) {
                     elem.innerHTML = "┃";
                     elem.className = "tree vertical edit";
-                } else if (active_column[j] == 1) {
+                } else if (active_column[j] === 1) {
                     elem.innerHTML = "│";
                     elem.className = "tree vertical edit";
                 } else {
                     elem.innerHTML = "　";
                     elem.className = "tree";
                 }
-                if (bmark == 1 && crossflag == 0) {
+                if (bmark === 1 && crossflag === 0) {
                     elem.style.backgroundColor = BnstColor;
                     if (this.orig_bnst_data_end[j] == 1) {
                         bmark = 0;
@@ -1145,10 +1144,10 @@ var RelationFrame = function () {
                 }
                 // 品詞情報取得
                 var label = mrph_data_all[m_num][3];
-                if (mrph_data_all[m_num][5] == '固有名詞' ||
-                    mrph_data_all[m_num][5] == '人名' ||
-                    mrph_data_all[m_num][5] == '地名' ||
-                    mrph_data_all[m_num][5] == '組織名') {
+                if (mrph_data_all[m_num][5] === '固有名詞' ||
+                    mrph_data_all[m_num][5] === '人名' ||
+                    mrph_data_all[m_num][5] === '地名' ||
+                    mrph_data_all[m_num][5] === '組織名') {
                     label = mrph_data_all[m_num][5];
                 }
                 const mark = this.pos_mark[label];
@@ -1248,13 +1247,13 @@ var RelationFrame = function () {
                     sentence_table[j - 1] += mrph_data_all[m_num][0];
                 }
                 // 品詞情報取得
-                var label;
-                var mark;
+                let label;
+                let mark;
                 label = mrph_data_all[m_num][3];
-                if (mrph_data_all[m_num][5] == '固有名詞' ||
-                    mrph_data_all[m_num][5] == '人名' ||
-                    mrph_data_all[m_num][5] == '地名' ||
-                    mrph_data_all[m_num][5] == '組織名') {
+                if (mrph_data_all[m_num][5] === '固有名詞' ||
+                    mrph_data_all[m_num][5] === '人名' ||
+                    mrph_data_all[m_num][5] === '地名' ||
+                    mrph_data_all[m_num][5] === '組織名') {
                     label = mrph_data_all[m_num][5];
                 }
                 mark = this.pos_mark[label];
@@ -1368,11 +1367,11 @@ var RelationFrame = function () {
 
             //構文木の線引き
             let para_row;
-            const active_column = new Array();
-            var bmark;
-            var crossflag;
+            const active_column = [];
+            let bmark;
+            let crossflag;
 
-            for (var i = 0; i < bnst_num; i++) {
+            for (let i = 0; i < bnst_num; i++) {
                 active_column[i] = 0;
             }
 
@@ -1382,7 +1381,7 @@ var RelationFrame = function () {
                     $(`div#${si}_${i}.title_bnst`).css('background-color', BnstAnotherColor);
                 }
 
-                para_row = bnst_data_type[i] == 'P' ? 1 : 0;
+                para_row = bnst_data_type[i] === 'P' ? 1 : 0;
 
                 bmark = orig_bnst_data_end[i] == 0 ? 1 : 0;
 
@@ -1393,63 +1392,60 @@ var RelationFrame = function () {
 
                     if (j < bnst_data_dpnd[i]) {
 
-                        if (active_column[j] == 2) {
+                        if (active_column[j] === 2) {
                             crossflag = 1;
-                            elem.innerHTML = para_row == 1 ? "╋" : "╂";
+                            elem.innerHTML = para_row === 1 ? "╋" : "╂";
                             elem.className = "tree vertical";
                             elem.style.backgroundColor = BnstAnotherColor;
-                        } else if (active_column[j] == 1) {
+                        } else if (active_column[j] === 1) {
                             crossflag = 1;
-                            elem.innerHTML = para_row == 1 ? "┿" : "┼";
+                            elem.innerHTML = para_row === 1 ? "┿" : "┼";
                             elem.className = "tree vertical";
                             elem.style.backgroundColor = BnstAnotherColor;
                         } else {
-                            elem.innerHTML = para_row == 1 ? "━" : "─";
+                            elem.innerHTML = para_row === 1 ? "━" : "─";
                             elem.className = "tree";
                         }
-                    } else if (j == bnst_data_dpnd[i]) {
+                    } else if (j === bnst_data_dpnd[i]) {
 
-                        if (bnst_data_type[i] == "P") {
+                        if (bnst_data_type[i] === "P") {
                             elem.innerHTML = "Ｐ";
-                        } else if (bnst_data_type[i] == "I") {
+                        } else if (bnst_data_type[i] === "I") {
                             elem.innerHTML = "Ｉ";
-                        } else if (bnst_data_type[i] == "A") {
+                        } else if (bnst_data_type[i] === "A") {
                             elem.innerHTML = "Ａ";
                         } else {
-                            if (active_column[j] == 2) {
+                            if (active_column[j] === 2) {
                                 elem.innerHTML = "┨";
                             } else {
-                                elem.innerHTML = active_column[j] == 1 ? "┤" : "┐";
+                                elem.innerHTML = active_column[j] === 1 ? "┤" : "┐";
                             }
                             elem.className = "tree vertical";
                         }
 
-                        if (active_column[j] == 2) {
-                            ;		//すでにＰからの太線があればそのまま
+                        if (active_column[j] === 2) {
+                            //すでにＰからの太線があればそのまま
                         } else if (para_row) {
                             active_column[j] = 2;
                         } else {
                             active_column[j] = 1;
                         }
-                    } else if (active_column[j] == 2) {
+                    } else if (active_column[j] === 2) {
                         elem.innerHTML = "┃";
                         elem.className = "tree vertical";
-                    } else if (active_column[j] == 1) {
+                    } else if (active_column[j] === 1) {
                         elem.innerHTML = "│";
                         elem.className = "tree vertical";
                     } else {
                         elem.innerHTML = "　";
                         elem.className = "tree";
                     }
-                    if (bmark == 1 && crossflag == 0 && orig_bnst_data_end[j] == 1) {
+                    if (bmark === 1 && crossflag === 0 && orig_bnst_data_end[j] == 1) {
                         bmark = 0;
                     }
                 }
             }
-
-
         }
-
     };
 
     this.highlight_target = function (tag_span, highlight) {
@@ -1524,7 +1520,7 @@ var RelationFrame = function () {
         });
 
         const selectedId = $(cell).attr('id');
-        if (kaku != 'メモ') {
+        if (kaku !== 'メモ') {
             myRelationFrame.currentCellId = selectedId;
         }
 
@@ -1536,13 +1532,13 @@ var RelationFrame = function () {
         $(".active").removeClass("active");
         $(".active-ne").removeClass("active-ne");
 
-        if (kaku == 'NE') {
+        if (kaku === 'NE') {
             $('#dialogdemo1').dialog('close');
             this.populate_ne_tag_edit(i, kaku);
             $('#dialogdemone').dialog({modal: false});
             $('#dialogdemone').dialog('open');
             $(cell).addClass("active-ne");
-        } else if (kaku != 'メモ') {
+        } else if (kaku !== 'メモ') {
             $('#dialogdemone').dialog('close');
             this.populate_tag_edit();
             $('#dialogdemo1').dialog({modal: false});
@@ -1592,15 +1588,15 @@ var RelationFrame = function () {
         }
 
         let oldtag;
-        let oldtext = "";
+        let oldText = "";
         if (this.contextinfo[sidx] && typeof (this.contextinfo[sidx][kaku]) != 'undefined') {
             m = this.contextinfo[sidx][kaku].Data[0].data.match(/([^:]+):(.+)/);
             oldtag = m[1];
-            oldtext = m[2];
+            oldText = m[2];
         }
 
         $('#ne_tag_input').append('<p><input type="text" name="name" id="ne_edit_text" style="width: 60%" class="text ui-widget-content ui-corner-all" value="'
-            + oldtext + '"/><img class="setBtn" src="css/images/set_of.png" onmouseover="this.src=\'css/images/set_on.png\'" onmouseout="this.src=\'css/images/set_of.png\'" onclick="ne_mode_free()" id="ne_free_input"/></p>');
+            + oldText + '"/><img class="setBtn" src="css/images/set_of.png" onmouseover="this.src=\'css/images/set_on.png\'" onmouseout="this.src=\'css/images/set_of.png\'" onclick="ne_mode_free()" id="ne_free_input"/></p>');
 
     };
 
@@ -1614,7 +1610,7 @@ var RelationFrame = function () {
         $('#ne_opt_tag_list').empty();
         //$('#ne_opt_tag_list').append('<fieldset>');
         let genHtml = '<fieldset>';
-        for (var i = 0; i < NE_OPT_TAG.length; i++) {
+        for (let i = 0; i < NE_OPT_TAG.length; i++) {
             var checked = "";
             if (this.contextinfo[sidx]
                 && this.contextinfo[sidx][`NE-OPT-${NE_OPT_TAG[i]}`]
@@ -1627,7 +1623,7 @@ var RelationFrame = function () {
         }
 
         genHtml += "<p>Type:</p>";
-        for (var i = 0; i < NE_OPT_TYPE.length; i++) {
+        for (let i = 0; i < NE_OPT_TYPE.length; i++) {
             var checked = "";
             if (this.contextinfo[sidx]
                 && this.contextinfo[sidx]['NE-OPT-TYPE']
@@ -1683,7 +1679,7 @@ var RelationFrame = function () {
                 + (tag.equalopt ? `[${EQUAL_OPT[tag.equalopt - 1]}]` : "")
                 + (tag.semiequal ? '[≒]' : "")
                 + '</a></li>');
-            if (kaku == "=") {
+            if (kaku === "=") {
                 $('h3.equalopt').show();
                 $('#tag_equalopt1_list').append(`<li><a href="#" class="equalopt1" id="${k}">`
                     + tag.data
@@ -1738,11 +1734,11 @@ var RelationFrame = function () {
         const bnst_index = parseInt(m[1], 10);// + 1;
         const kaku = this.caseName[m[2]];
 
-        if (tag_name == "不特定:人") {
+        if (tag_name === "不特定:人") {
             tag_name += $("#people_count").val();
-        } else if (tag_name == "不特定:物") {
+        } else if (tag_name === "不特定:物") {
             tag_name += $("#things_count").val();
-        } else if (tag_name == "不特定:状況") {
+        } else if (tag_name === "不特定:状況") {
             tag_name += $("#status_count").val();
         }
 
@@ -1757,7 +1753,7 @@ var RelationFrame = function () {
             tag_name, bnst_index, this.mrph_num, kaku);
 
         // 特殊タグを含むかどうかによって色を設定
-        color = this.check_have_extra_tag(this.contextinfo, bnst_index, kaku) ? 'red' : 'black';
+        const color = this.check_have_extra_tag(this.contextinfo, bnst_index, kaku) ? 'red' : 'black';
         $(`#${tag_id} > span`).css("color", color);
 
     };
@@ -1832,7 +1828,7 @@ var RelationFrame = function () {
 
 
         // 色の更新
-        color = this.check_have_extra_tag(this.contextinfo, i, kaku) ? 'red' : 'black';
+        const color = this.check_have_extra_tag(this.contextinfo, i, kaku) ? 'red' : 'black';
 
         // 表示文字列の更新
         this.make_string(i, kaku);
@@ -1847,7 +1843,7 @@ var RelationFrame = function () {
         const table = document.getElementsByTagName("table")[0];
         const col = table.rows[0].cells.length;
         for (j = 0; j < col; j++) {
-            if (table.rows[0].cells[j].textContent == title) {
+            if (table.rows[0].cells[j].textContent === title) {
                 return;
             }
         }
@@ -1856,13 +1852,13 @@ var RelationFrame = function () {
         // 格の数を更新する
         this.caseBoxNum += 1;
 
-        const isMemo = (title == 'メモ');
+        const isMemo = (title === 'メモ');
         for (i = 0; i < table.rows.length; i++) {
             // 全ての行に１列ずつ追加
             const newCell = table.rows[i].insertCell(-1);
             newCell.align = "center";
             // タイトル行
-            if (i == 0) {
+            if (i === 0) {
                 newCell.innerHTML = title;
             } else {
                 newCell.id = `tag${i - 1}_${col}`;
@@ -1888,10 +1884,10 @@ var RelationFrame = function () {
 
     // weak_suffixのチェック
     this.check_weak_suffix = function (m) {
-        if (m[3] == '接尾辞' && (!m[2].match(STRONG_SUFFIX) &&
-            m[5] != '名詞性名詞助数辞' &&
-            m[5] != '形容詞性述語接尾辞' &&
-            m[5] != '動詞性接尾辞')) {
+        if (m[3] === '接尾辞' && (!m[2].match(STRONG_SUFFIX) &&
+            m[5] !== '名詞性名詞助数辞' &&
+            m[5] !== '形容詞性述語接尾辞' &&
+            m[5] !== '動詞性接尾辞')) {
             return 1;
         }
         return 0;
@@ -1899,10 +1895,10 @@ var RelationFrame = function () {
 
     // メモタグ
     this.memo_mode = function (i, input, kaku) {
-        let oldtext = "";
+        let oldText = "";
         let isUpdate = false;
         if (this.contextinfo[i] && this.contextinfo[i][kaku]) {
-            oldtext = this.contextinfo[i][kaku].Data[0].data;
+            oldText = this.contextinfo[i][kaku].Data[0].data;
             isUpdate = true;
         }
 
@@ -1913,7 +1909,7 @@ var RelationFrame = function () {
             delete this.contextinfo[i][kaku];
         }
         // 文字列が編集されたとき
-        else if (oldtext != input) {
+        else if (oldText !== input) {
             modify_flag = '*';
             // feature の更新
             if (isUpdate) {
@@ -1952,16 +1948,16 @@ var RelationFrame = function () {
         // $case は 'NE'
         let m2;
         let oldtag;
-        let oldtext = "";
+        let oldText = "";
         if (this.contextinfo[i] && typeof (this.contextinfo[i][kaku]) != 'undefined') {
             m2 = this.contextinfo[i][kaku].Data[0].data.match(/([^:]+):(.+)/);
             oldtag = m2[1];
-            oldtext = m2[2];
+            oldText = m2[2];
         }
 
         if (netag) {
             // 変更なし
-            if ((input === oldtext && netag === oldtag) || (!input && !oldtext)) {
+            if ((input === oldText && netag === oldtag) || (!input && !oldText)) {
                 return;
             }
 
@@ -2020,8 +2016,8 @@ var RelationFrame = function () {
         if (isDelete || !input) {
 
             this.delete_bnst_feature_for_ne(i);
-            //this.renew_flag_for_ne(i, j, oldtext, 1);
-            this.delete_mrph_feature_for_ne(i, oldtext);
+            //this.renew_flag_for_ne(i, j, oldText, 1);
+            this.delete_mrph_feature_for_ne(i, oldText);
             delete this.contextinfo[i][kaku];
             $(`#${tag_id} > span`).css("color", 'black');
 
@@ -2034,10 +2030,10 @@ var RelationFrame = function () {
 
         // 文字列が編集されたとき
         // feature の更新
-        if (oldtext) {
+        if (oldText) {
             this.delete_bnst_feature_for_ne(i);
-            //this.renew_flag_for_ne(i, j, oldtext, 1);
-            this.delete_mrph_feature_for_ne(i, oldtext);
+            //this.renew_flag_for_ne(i, j, oldText, 1);
+            this.delete_mrph_feature_for_ne(i, oldText);
             delete this.contextinfo[i][kaku];
         }
         this.write_bnst_feature_for_ne(i, input, netag);
@@ -2101,8 +2097,8 @@ var RelationFrame = function () {
 
         let my_mrph_num = this.bnst_data_start[current_bnst + 1] - 1;
         let mrph = this.mrph_data_all[my_mrph_num][0];
-        var re = new RegExp(`${escapeRegExp(mrph)}$`);
-        while (my_mrph_num > 0 && ne.search(re) == -1) { // TODO added my_mrph_num >= 0. Is it ok?
+        let re = new RegExp(`${escapeRegExp(mrph)}$`);
+        while (my_mrph_num > 0 && ne.search(re) === -1) { // TODO added my_mrph_num >= 0. Is it ok?
             my_mrph_num--;
             mrph = this.mrph_data_all[my_mrph_num][0];
             re = new RegExp(`${escapeRegExp(mrph)}$`);
@@ -2114,7 +2110,7 @@ var RelationFrame = function () {
         if (my_mrph_num <= 0) {
             return;
         }
-        var re = new RegExp(`${escapeRegExp(mrph)}$`);
+        re = new RegExp(`${escapeRegExp(mrph)}$`);
         ne = ne.replace(re, "");
         my_mrph_num--;
         mrph = this.mrph_data_all[my_mrph_num][0];
@@ -2149,7 +2145,7 @@ var RelationFrame = function () {
 
         this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(/<NE-OPTIONAL:[^\>]*\>/, "");
         if (!this.contextinfo[current_bnst][kaku] ||
-            this.contextinfo[current_bnst][kaku].Data[0].data.search("OPTIONAL") == -1) {
+            this.contextinfo[current_bnst][kaku].Data[0].data.search("OPTIONAL") === -1) {
             return;
         }
 
@@ -2253,29 +2249,27 @@ var RelationFrame = function () {
             stop = cand_b > b_strt.length ? mn_all - 1 : b_strt[cand_b + 1] - 1;
 
             // 開始点
-            for (var a = start; a <= stop; a++) {
-                if (m_d_all[a][3] != '特殊' || // 特殊以外
-                    m_d_all[a][5] == '記号' && // 特殊なら記号だけ可
-                    m_d_all[a][0] != '・') {   // ただし、"・"は除く
+            for (let a = start; a <= stop; a++) {
+                if (m_d_all[a][3] !== '特殊' || // 特殊以外
+                    m_d_all[a][5] === '記号' && // 特殊なら記号だけ可
+                    m_d_all[a][0] !== '・') {   // ただし、"・"は除く
                     start = a;
                     break;
                 }
             }
-            for (var a = stop; a >= start; a--) {
-                if ((!m_d_all[a][3].match(/^(?:特殊|助詞|助動詞|判定詞)$/) &&
-                        !(this.check_weak_suffix(m_d_all[a]))) ||
-                    (m_d_all[a][3] == '特殊' && m_d_all[a][5] == '記号' && m_d_all[a][0] != '・')) {
+            for (let a = stop; a >= start; a--) {
+                if ((!m_d_all[a][3].match(/^(?:特殊|助詞|助動詞|判定詞)$/) && !(this.check_weak_suffix(m_d_all[a]))) ||
+                    (m_d_all[a][3] === '特殊' && m_d_all[a][5] === '記号' && m_d_all[a][0] !== '・')) {
                     stop = a;
                     break;
                 }
             }
-            for (var a = stop; a >= start; a--) {
+            for (let a = stop; a >= start; a--) {
                 if (!m_d_all[a][3].match(/^(特殊)$/)) {
                     stop = a;
                     break;
                 }
             }
-
 
             // 要素の作成
             for (var a = start; a <= stop; a++) {
@@ -2311,7 +2305,8 @@ var RelationFrame = function () {
 
             this.contextinfo[current_bnst][kaku]['Basic'] = {"relation": kaku, "flag": 0};
             this.contextinfo[current_bnst][kaku].Data[mark] = {
-                "data": bf_cand, "SID": filename,
+                "data": bf_cand,
+                "SID": filename,
                 "sentence": sentence,
                 "dependant": cand_b,
                 "equalopt": equalopt,
@@ -2329,16 +2324,16 @@ var RelationFrame = function () {
             equalStr += tagData.semiequal ? '≒' : "";
 
             // 不特定など
-            if (kaku == 'メモ') {
+            if (kaku === 'メモ') {
                 this.bnst_data_f[current_bnst] += `<memo text="${tagData.data}"/>`;
             } else {
 
-                var mode = '';
+                let mode = '';
                 if (tagi > 0 && tagData.andor != '') {
                     mode = `" mode="${tagData.andor}`;
                 }
 
-                var sentence = tagData.dependant == -1 ? "" : tagData.SID;
+                let sentence = tagData.dependant == -1 ? "" : tagData.SID;
                 this.bnst_data_f[current_bnst] += sentence ? `<rel type="${kaku}${equalStr}${mode}`
                     + '" target="' + tagData.data + '" sid="' + sentence + '" id="' + tagData.dependant + '"/>' : `<rel type="${kaku}${equalStr}${mode}`
                     + '" target="' + tagData.data + '"/>';
@@ -2381,14 +2376,14 @@ var RelationFrame = function () {
 
         // 最後に追加したものを編集する
         const tagData = this.contextinfo[i][kaku].Data[tag_index];
-        const oldtext = tagData.data;
+        const oldText = tagData.data;
 
         // 文字列がなくなったとき
-        if (input.length == 0) {
+        if (input.length === 0) {
             //&delete_mode($i, $j, $case, $mark); // TODO
         }
         // 文字列が編集されたとき
-        else if (oldtext != input) {
+        else if (oldText !== input) {
 
             // feature の更新
             this.rewrite_bnst_feature_for_ellipsis(i, kaku, tag_index,
@@ -2412,7 +2407,7 @@ var RelationFrame = function () {
 
         modify_flag = '*';
         const tagData = this.contextinfo[i][kaku].Data[tag_index];
-        const target = tagData.data;
+        // const target = tagData.data;
 
         if (equalopt) {
             tagData.equalopt = tagData.equalopt == equalopt ? 0 : equalopt;
@@ -2441,7 +2436,7 @@ var RelationFrame = function () {
         let re;
 
         const kakuEqual = kaku.replace(/\(/g, '\\(').replace(/\)/g, '\\)') + EQUAL_OPT_DELETE;
-        re = kaku == 'メモ' ? new RegExp('\<memo text=".*?"\/\>') : new RegExp(`\<rel type="${kakuEqual}".*?\/\>`, 'g');
+        re = kaku === 'メモ' ? new RegExp('\<memo text=".*?"\/\>') : new RegExp(`\<rel type="${kakuEqual}".*?\/\>`, 'g');
 
         this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(re, "");
 
@@ -2473,12 +2468,12 @@ var RelationFrame = function () {
             var re = new RegExp(`${escapeRegExp(mrph)}$`);
             ne = ne.replace(re, "");
             if (this.mrph_data_all[my_mrph_num].length > 12 && this.mrph_data_all[my_mrph_num][12])
-                this.mrph_data_all[my_mrph_num][12] = this.mrph_data_all[my_mrph_num][12].replace(/\<(NE:[^\>]+)\>/, "");
+                this.mrph_data_all[my_mrph_num][12] = this.mrph_data_all[my_mrph_num][12].replace(/<(NE:[^>]+)>/, "");
             // Originally, only element 12 was updated.
             // For some data though, it's also needed to cleanup element 11 to remove all traces
             // of the NE tag.
             if (this.mrph_data_all[my_mrph_num].length > 11 && this.mrph_data_all[my_mrph_num][11])
-                this.mrph_data_all[my_mrph_num][11] = this.mrph_data_all[my_mrph_num][11].replace(/\<(NE:[^\>]+)\>/, "");
+                this.mrph_data_all[my_mrph_num][11] = this.mrph_data_all[my_mrph_num][11].replace(/<(NE:[^>]+)>/, "");
 
             my_mrph_num--;
             if (my_mrph_num < 0) {
@@ -2532,7 +2527,7 @@ var RelationFrame = function () {
             const $span = $("span", tag_id);
             $span.html(bnst_f);
 
-            color = this.check_have_extra_tag(this.contextinfo, current_bnst, kaku) ? 'red' : 'black';
+            const color = this.check_have_extra_tag(this.contextinfo, current_bnst, kaku) ? 'red' : 'black';
             $span.css("color", color);
 
             $(`td${tag_id}`).css("background-color", "");
@@ -2582,7 +2577,7 @@ var RelationFrame = function () {
             }
 
             // date = strftime("%Y/%m/%d", localtime);
-            var date = new Date();
+            const date = new Date();
             const year = date.getFullYear();
             let month = date.getMonth() + 1;
             let day = date.getDate();
@@ -2592,12 +2587,12 @@ var RelationFrame = function () {
             if (day < 10) {
                 day = `0${day}`;
             }
-            var date = `${year}/${month}/${day}`;
+            const date_str = `${year}/${month}/${day}`;
 
             const output_lines = [];
 
             // info
-            this.fileInfo = this.fileInfo.match(/MOD:/) ? this.fileInfo.replace(/MOD:[^ ]*/, `MOD:${date}`) : `${this.fileInfo} MOD:${date}`;
+            this.fileInfo = this.fileInfo.match(/MOD:/) ? this.fileInfo.replace(/MOD:[^ ]*/, `MOD:${date_str}`) : `${this.fileInfo} MOD:${date_str}`;
             // memo
             const text = $("#memo").val();
             if (text != undefined) {
@@ -2612,7 +2607,7 @@ var RelationFrame = function () {
 
             let output_sentence = '';
             let j = 0;
-            for (var i = 0; i < this.mrph_num; i++) {
+            for (let i = 0; i < this.mrph_num; i++) {
                 if (this.mrph_data_start[i] == 1) {
                     var bline = null;
                     var tline = null;
@@ -2650,7 +2645,7 @@ var RelationFrame = function () {
                 }
 
                 const mrph = this.mrph_data_all[i];
-                output_sentence += LANG == 'en' ? `${mrph[0]} ` : mrph[0];
+                output_sentence += LANG === 'en' ? `${mrph[0]} ` : mrph[0];
                 if (this.mrph_data_all[i][0] === '' ||
                     this.mrph_data_all[i][1] === '' ||
                     this.mrph_data_all[i][2] === '' ||
@@ -2673,7 +2668,7 @@ var RelationFrame = function () {
             // console.log(output_lines.join("\n"));
             output_lines.push("EOS");
 
-            if (output_sentence != this.input_sentence) {
+            if (output_sentence !== this.input_sentence) {
                 alert("入力データと修正データが不整合です.\n【入力データ】"
                     + this.input_sentence + "\n【修正データ】" + output_sentence + "\n");
                 return false;
