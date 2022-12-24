@@ -763,6 +763,39 @@ var RelationFrame = function() {
 
     };
 
+    this.initFeatureTagsDropdown = function(tagsParentElementId) {
+        let tags = [
+            "用言:動",
+            "用言:形",
+            "用言:判",
+            "体言",
+            "非用言格解析:動",
+            "非用言格解析:形",
+            "モダリティ-疑問",
+            "モダリティ-意志",
+            "モダリティ-勧誘",
+            "モダリティ-命令",
+            "モダリティ-禁止",
+            "モダリティ-評価:弱",
+            "モダリティ-評価:強",
+            "モダリティ-認識-推量",
+            "モダリティ-認識-蓋然性",
+            "モダリティ-認識-証拠性",
+            "モダリティ-依頼Ａ",
+            "モダリティ-依頼Ｂ",
+            "時制:過去",
+            "時制:非過去",
+            "否定表現",
+            "節-主辞",
+            "節-区切"
+        ];
+        
+        $(`#${tagsParentElementId}`).empty();
+        for (let i = 0; i < tags.length; i++) {
+            $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="mode">${tags[i]}</a></li>`);
+        }
+    }
+
     // テーブル初期化
     this.makeCaseTableJa = function () {
 
@@ -811,6 +844,13 @@ var RelationFrame = function() {
             td.appendChild(title);
             tr.appendChild(td);
 	    }
+
+        let tdFeatureTags = document.createElement("td");
+        tdFeatureTags.setAttribute("align", "center");
+        tdFeatureTagsTitle = document.createTextNode("素性");
+        tdFeatureTags.append(tdFeatureTagsTitle);
+        tr.appendChild(tdFeatureTags);
+
 	    thead.appendChild(tr);
 	    var tbody = document.createElement("tbody");
 	    for(var ti = 0; ti < this.bnst_num; ti++){
@@ -906,11 +946,40 @@ var RelationFrame = function() {
 		        tr.appendChild(td);
 		        
             }
+            
+            let tdFeatureTags = document.createElement("td");
+
+            let featureTagsDropdown = document.createElement("ul");
+            featureTagsDropdown.id = `featureTagsDropdown${ti}`;
+            featureTagsDropdown.className = "dropdown";
+            
+            let addFeatureTagsButton = document.createElement("li");
+            let addFeatureTagsButtonLabel = document.createTextNode("\u00A0\u00A0+\u00A0\u00A0");
+
+            let featureTagsMenu = document.createElement("ul");
+            featureTagsMenu.id = `featureTagsMenu${ti}`;
+            featureTagsMenu.className = "tool";
+            
+            addFeatureTagsButton.appendChild(addFeatureTagsButtonLabel);
+            addFeatureTagsButton.appendChild(featureTagsMenu);
+            featureTagsDropdown.appendChild(addFeatureTagsButton);
+            tdFeatureTags.appendChild(featureTagsDropdown);
+
+            let tdSelect2 = document.createElement("div");
+            tdSelect2.className = "select2";
+            tdSelect2.style.width = "300px";
+            tdFeatureTags.appendChild(tdSelect2);
+
+            tr.appendChild(tdFeatureTags);
             tbody.appendChild(tr);
 	    }
+
 	    table.appendChild(thead);
 	    table.appendChild(tbody);
 	    document.getElementById("out").appendChild(table);
+
+        for (var ti = 0; ti < this.bnst_num; ti++)
+            this.initFeatureTagsDropdown(`featureTagsMenu${ti}`);
 
         // 改行させないため動的に min-width をセット
         // 一旦改行が発生しないくらいの幅を設定てから解像度にあわせてmaxWidthを取得
@@ -923,7 +992,6 @@ var RelationFrame = function() {
             }
         });
         $(".rel-tree").css("min-width", maxWidth);
-
     };
 
     
