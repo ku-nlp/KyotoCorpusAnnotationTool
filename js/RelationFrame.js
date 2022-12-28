@@ -974,7 +974,6 @@ var RelationFrame = function() {
 
             let featureTagsInput = document.createElement("input");
             featureTagsInput.id = `featureTagsInput${ti}`;
-            featureTagsInput.type = 'text';
             tdFeatureTags.appendChild(featureTagsInput);
 
             tr.appendChild(tdFeatureTags);
