@@ -1,4 +1,3 @@
-
 // RelationFrameクラス
 var RelationFrame = function() {
 
@@ -50,6 +49,34 @@ var RelationFrame = function() {
 
     this.wrongTreeState = false;
     this.bnstTreeMap = null;
+
+    this.featureTags = [
+        "用言:動",
+        "用言:形",
+        "用言:判",
+        "体言",
+        "非用言格解析:動",
+        "非用言格解析:形",
+        "モダリティ-疑問",
+        "モダリティ-意志",
+        "モダリティ-勧誘",
+        "モダリティ-命令",
+        "モダリティ-禁止",
+        "モダリティ-評価:弱",
+        "モダリティ-評価:強",
+        "モダリティ-認識-推量",
+        "モダリティ-認識-蓋然性",
+        "モダリティ-認識-証拠性",
+        "モダリティ-依頼Ａ",
+        "モダリティ-依頼Ｂ",
+        "時制:過去",
+        "時制:非過去",
+        "否定表現",
+        "節-主辞",
+        "節-区切"
+    ];
+        
+    this.featureTagInputs = null;
 
     // 品詞マーク
     this.pos_mark = {
@@ -408,7 +435,6 @@ var RelationFrame = function() {
     }
 
     this.initMenu = function() {
-	    
 	    $('#case_list').empty();
 	    for (var caseName in CaseOrder) {
 	        var classStr = "kaku";	    
@@ -764,36 +790,17 @@ var RelationFrame = function() {
     };
 
     this.initFeatureTagsDropdown = function(tagsParentElementId) {
-        let tags = [
-            "用言:動",
-            "用言:形",
-            "用言:判",
-            "体言",
-            "非用言格解析:動",
-            "非用言格解析:形",
-            "モダリティ-疑問",
-            "モダリティ-意志",
-            "モダリティ-勧誘",
-            "モダリティ-命令",
-            "モダリティ-禁止",
-            "モダリティ-評価:弱",
-            "モダリティ-評価:強",
-            "モダリティ-認識-推量",
-            "モダリティ-認識-蓋然性",
-            "モダリティ-認識-証拠性",
-            "モダリティ-依頼Ａ",
-            "モダリティ-依頼Ｂ",
-            "時制:過去",
-            "時制:非過去",
-            "否定表現",
-            "節-主辞",
-            "節-区切"
-        ];
-        
+        let me = this;
+        let row = tagsParentElementId.substring('featureTagsMenu'.length);
         $(`#${tagsParentElementId}`).empty();
-        for (let i = 0; i < tags.length; i++) {
-            $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="mode">${tags[i]}</a></li>`);
+        for (let i = 0; i < this.featureTags.length; i++) {
+            $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="featureTag">${this.featureTags[i]}</a></li>`);
         }
+        $(`#${tagsParentElementId}`).on('click', 'a.featureTag', function() { 
+            let tagIndex = $(this).parent().index();
+            $(this).addClass('disabled');
+            me.add_feature_tag(row, tagIndex);
+        });
     }
 
     // テーブル初期化
@@ -959,16 +966,16 @@ var RelationFrame = function() {
             let featureTagsMenu = document.createElement("ul");
             featureTagsMenu.id = `featureTagsMenu${ti}`;
             featureTagsMenu.className = "tool";
-            
+           
             addFeatureTagsButton.appendChild(addFeatureTagsButtonLabel);
             addFeatureTagsButton.appendChild(featureTagsMenu);
             featureTagsDropdown.appendChild(addFeatureTagsButton);
             tdFeatureTags.appendChild(featureTagsDropdown);
 
-            let tdSelect2 = document.createElement("div");
-            tdSelect2.className = "select2";
-            tdSelect2.style.width = "300px";
-            tdFeatureTags.appendChild(tdSelect2);
+            let featureTagsInput = document.createElement("input");
+            featureTagsInput.id = `featureTagsInput${ti}`;
+            featureTagsInput.type = 'text';
+            tdFeatureTags.appendChild(featureTagsInput);
 
             tr.appendChild(tdFeatureTags);
             tbody.appendChild(tr);
@@ -978,8 +985,16 @@ var RelationFrame = function() {
 	    table.appendChild(tbody);
 	    document.getElementById("out").appendChild(table);
 
-        for (var ti = 0; ti < this.bnst_num; ti++)
+        this.featureTagInputs = [];
+        for (var ti = 0; ti < this.bnst_num; ti++) {
             this.initFeatureTagsDropdown(`featureTagsMenu${ti}`);
+
+            this.featureTagInputs[ti] = new TagsInput({ 
+                selector: `featureTagsInput${ti}`,
+                duplicate: false,
+                max: this.featureTags.length 
+            });
+        }
 
         // 改行させないため動的に min-width をセット
         // 一旦改行が発生しないくらいの幅を設定てから解像度にあわせてmaxWidthを取得
@@ -1645,7 +1660,6 @@ var RelationFrame = function() {
     }
 
     this.click_cell = function(cell) {
-
 	    if (this.select_mode) {
 	        return;
 	    }
@@ -1672,6 +1686,9 @@ var RelationFrame = function() {
 	    });
 
 	    var selectedId = $(cell).attr('id');
+        if (!selectedId)
+            return;
+
 	    if (kaku != 'メモ') {
 	        myRelationFrame.currentCellId = selectedId;
 	    }
@@ -2035,6 +2052,10 @@ var RelationFrame = function() {
             }
         }	
     };
+
+    this.add_feature_tag = function(row, tagIndex) {
+        this.featureTagInputs[row].addTag(this.featureTags[tagIndex]);
+    }
 
     // 修正モードの変更
     this.change_mode = function(mode) {

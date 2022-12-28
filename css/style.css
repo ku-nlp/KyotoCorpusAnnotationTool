@@ -535,6 +535,18 @@ ul.popup li:hover > ul { visibility: visible; }
     text-align: center;
 }
 
-.clauseDelimiteri {{
+.clauseDelimiter {
     text-align: center;
+}
+
+.featureTag {
+    height: 11px;
+}
+
+a.featureTag.disabled {
+    color: grey;
+}
+
+a.featureTag.disabled:hover {
+    color: grey;
 }
