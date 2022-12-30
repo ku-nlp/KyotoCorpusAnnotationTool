@@ -797,8 +797,11 @@ var RelationFrame = function() {
             $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="featureTag">${this.featureTags[i]}</a></li>`);
         }
         $(`#${tagsParentElementId}`).on('click', 'a.featureTag', function() { 
-            let tagIndex = $(this).parent().index();
+            if ($(this).hasClass('disabled'))
+                return;
+
             $(this).addClass('disabled');
+            let tagIndex = $(this).parent().index();
             me.add_feature_tag(row, tagIndex);
         });
     }
