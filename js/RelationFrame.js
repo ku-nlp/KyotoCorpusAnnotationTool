@@ -994,7 +994,12 @@ var RelationFrame = function() {
             this.featureTagInputs[ti] = new TagsInput({ 
                 selector: `featureTagsInput${ti}`,
                 duplicate: false,
-                max: this.featureTags.length 
+                max: this.featureTags.length,
+                deleteTagCallback: function(tag, i) {
+                    let dropdownElement = tag.parentElement.parentElement.children[0];
+                    let tagText = tag.childNodes[0].textContent;
+                    $(dropdownElement.firstChild.children[0]).find(`a:contains('${tagText}')`).removeClass('disabled');
+                }
             });
         }
 
