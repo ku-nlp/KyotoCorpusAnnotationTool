@@ -480,12 +480,15 @@ var WmrphFrame = function() {
         var input = document.createElement("input");
         input.type = "checkbox";
         input.id = "baseClauseHead-"+row.id;
+        if (myRelationFrame.mrph_data_all[m_num][12] != undefined) {
+            input.checked = myRelationFrame.mrph_data_all[m_num][12] === '<基本句-主辞>';
+        }
         baseClauseHead.appendChild(input);
         var baseClauseHead_change = function(m_num) {
             return function() {
                 modify_flag = '*';
                 current_modify_flag = '*';
-                // TODO: Set value in myRelationFrame.mrph_data_all[m_num][??]
+                myRelationFrame.mrph_data_all[m_num][12] = this.checked ? '<基本句-主辞>' : '';
             };
         };
         $(input).change(baseClauseHead_change(m_num));
