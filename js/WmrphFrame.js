@@ -488,6 +488,9 @@ var WmrphFrame = function() {
             return function() {
                 modify_flag = '*';
                 current_modify_flag = '*';
+                if (myRelationFrame.mrph_data_all[m_num][11] == undefined) {
+                    myRelationFrame.mrph_data_all[m_num][11] = 'NIL';
+                }
                 myRelationFrame.mrph_data_all[m_num][12] = this.checked ? '<基本句-主辞>' : '';
             };
         };
