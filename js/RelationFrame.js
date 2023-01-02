@@ -789,9 +789,18 @@ var RelationFrame = function() {
 
     };
 
+    this.extractFeatureTags = function(bnst_data_f) {
+        let tags = [];
+        for (let i = 0; i < this.featureTags.length; i++) {
+            if (bnst_data_f.indexOf('<' + this.featureTags[i] + '>') != -1)
+                tags.push(this.featureTags[i]);
+        }
+        return tags;
+    }
+
     this.initFeatureTagsDropdown = function(tagsParentElementId) {
-        let me = this;
-        let row = tagsParentElementId.substring('featureTagsMenu'.length);
+        let relFrame = this;
+        let row = parseInt(tagsParentElementId.substring('featureTagsMenu'.length));
         $(`#${tagsParentElementId}`).empty();
         for (let i = 0; i < this.featureTags.length; i++) {
             $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="featureTag">${this.featureTags[i]}</a></li>`);
@@ -802,7 +811,8 @@ var RelationFrame = function() {
 
             $(this).addClass('disabled');
             let tagIndex = $(this).parent().index();
-            me.add_feature_tag(row, tagIndex);
+            relFrame.featureTagInputs[row].addTag(relFrame.featureTags[tagIndex]);
+            relFrame.write_bnst_feature_for_feature_tags(row);
         });
     }
 
@@ -988,19 +998,36 @@ var RelationFrame = function() {
 	    document.getElementById("out").appendChild(table);
 
         this.featureTagInputs = [];
-        for (var ti = 0; ti < this.bnst_num; ti++) {
+        for (let ti = 0; ti < this.bnst_num; ti++) {
             this.initFeatureTagsDropdown(`featureTagsMenu${ti}`);
 
+            let relFrame = this;
             this.featureTagInputs[ti] = new TagsInput({ 
                 selector: `featureTagsInput${ti}`,
                 duplicate: false,
                 max: this.featureTags.length,
-                deleteTagCallback: function(tag, i) {
-                    let dropdownElement = tag.parentElement.parentElement.children[0];
-                    let tagText = tag.childNodes[0].textContent;
-                    $(dropdownElement.firstChild.children[0]).find(`a:contains('${tagText}')`).removeClass('disabled');
+                deleteTagCallback: function(tag, indexTag, row) {
+                    //console.log('deleteTagCallback tag='+tag+' indexTag='+indexTag+ ' row='+row);
+                    //console.log('row='+this.row);
+                    //console.dir(this);
+                    //console.log('looking for parent ul');
+                    //console.dir($(this));
+                    //console.dir(tag.options);
+                    //console.log('max='+tag.options.max);
+                    //console.log('row2='+tag.options.row);
+                    //let dropdownElement = tag.parentElement.parentElement.children[0];
+                    //console.log('dropdownElement id='+dropdownElement.id);
+                    //let row = parseInt(dropdownElement.id.substring('featureTagsDropdown'.length));
+                    //console.log('row='+row);
+                    //let tagText = tag.childNodes[0].textContent;
+                    //$(dropdownElement.firstChild.children[0]).find(`a:contains('${tagText}')`).removeClass('disabled');
+                    //console.log('ti='+ti+ ' tag='+tag+' i='+i);
+                    //console.log('before='+relFrame.bnst_data_f[row]);
+                    //relFrame.write_bnst_feature_for_feature_tags(row);
+                    //console.log('after='+relFrame.bnst_data_f[row]);
                 }
             });
+            this.featureTagInputs[ti].addData(this.extractFeatureTags(this.bnst_data_f[ti]));
         }
 
         // 改行させないため動的に min-width をセット
@@ -2060,10 +2087,6 @@ var RelationFrame = function() {
         }	
     };
 
-    this.add_feature_tag = function(row, tagIndex) {
-        this.featureTagInputs[row].addTag(this.featureTags[tagIndex]);
-    }
-
     // 修正モードの変更
     this.change_mode = function(mode) {
 	    this.modifyMode = MODIFY_MODE[mode];
@@ -2704,6 +2727,19 @@ var RelationFrame = function() {
 	        mrph = this.mrph_data_all[my_mrph_num][0];	    
 	    }
     };
+
+    this.write_bnst_feature_for_feature_tags = function(current_bnst) {
+        modify_flag = '*';
+
+        // Remove previous tags.
+        for (let i = 0; i < this.featureTags.length; i++)
+            this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(`<${this.featureTags[i]}>`, '');
+
+        // Add current tags.
+        let tags =  this.featureTagInputs[current_bnst].getInputString().split(',');
+        let strTags = tags.map(tag => `<${tag}>`).join('');
+        this.bnst_data_f[current_bnst] += strTags;
+    }
 
     // タグ表示文字列更新、featureを返却
     this.make_string = function (current_bnst, kaku) {
