@@ -5,9 +5,9 @@ use CGI;
 
 my $cgi = new CGI;
 
-# CGI¥Ø¥Ã¥À¤Î½ÐÎÏ
-print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
-print $cgi->start_html({title => 'µ­»ö¥Ç¡¼¥¿ ¥¢¥Ã¥×¥í¡¼¥É', lang => 'ja', encoding => 'euc-jp'});
+# CGIãƒ˜ãƒƒãƒ€ã®å‡ºåŠ›
+print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
+print $cgi->start_html({ title => 'è¨˜äº‹ãƒ‡ãƒ¼ã‚¿ ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰', lang => 'ja', encoding => 'utf-8' });
 
-print "download²èÌÌ";
+print "downloadç”»é¢";
 print $cgi->end_html;

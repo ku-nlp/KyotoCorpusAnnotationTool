@@ -2,11 +2,11 @@
 
 use strict;
 use CGI;
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi/cgi.conf';
 
 my $cgi = new CGI;
-print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
+print $cgi->header({type => 'text/html', charset => 'utf-8', expires => '-1d'});
 
 use File::Basename qw/basename dirname/;
 my $options = "";
@@ -18,67 +18,75 @@ for my $dir (sort({$a <=> $b} glob("$rootdir/*"))) {
 };
 
 print <<EOF;
-<html>
+<html lang="ja">
 
-  <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>¥ÿ∑∏•≥°º•—•π •Ì•∞•§•Û</title>
-        <script type="text/javascript" src="./js/login_default.js"></script>
-  </head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Èñ¢‰øÇ„Ç≥„Éº„Éë„Çπ „É≠„Ç∞„Ç§„É≥</title>
+    <style>
+        th, td {
+            padding: 5px;
+        }
+        th {
+            text-align: left;
+        }
+    </style>
+    <script type="text/javascript" src="./js/login_default.js"></script>
+</head>
 
-  <body>
+<body>
+    <h3>Èñ¢‰øÇ„Ç≥„Éº„Éë„Çπ „É≠„Ç∞„Ç§„É≥</h3>
+    <br>
 
-	<h3>¥ÿ∑∏•≥°º•—•π •Ì•∞•§•Û</h3>
-	<br>
-
-	<form method=POST action="cgi/list.cgi">
-	  <table>
-		<tr>
-		  <th align=left>
-			Ãæ¡∞
-		  </th>
-		  <td>
-			<select name="annotator_id">
-			  <option value="annotator_a">annotator_a</option>
-			  <option value="annotator_b">annotator_b</option>
-			</select>
-			<!--<input name="annotator_id" size="10">-->
-		  </td>
-		</tr>
-		<tr>
-		  <th align=left>
-			•—•π•Ô°º•…
-		  </th>
-		  <td>
-			<input type="password" name="password" size="10" maxlength="8">
-		  </td>
-		</tr>
-		<tr>
-		  <th align=left>
-			µ≠ªˆ•ª•√•»
-		  </th>
-		  <td>
-			<select name="corpus_set_id">
-                            $options
-			</select>
-		  </td>
-		</tr>
-		<tr>
-		  <th align=left>
-			µ≠ªˆ•ª•√•»
-		  </th>
-		  <td>
-			<input TYPE="checkbox" NAME="skip" VALUE="skip">…‘≈¨µ≠ªˆ§Ú…Ωº®§∑§ §§
-		  </td>
-		</tr>
-		<th>
-		</th>
-		<td>
-		  <input type="submit" value="¡˜øÆ">
-		</td>
-</tr>
-</table>
-</form>
+    <form method=POST action="cgi/list.cgi">
+        <table>
+            <tr>
+                <th>
+                    ÂêçÂâç
+                </th>
+                <td>
+                    <select name="annotator_id">
+                        <option value="annotator_a">annotator_a</option>
+                        <option value="annotator_b">annotator_b</option>
+                    </select>
+                    <!--<input name="annotator_id" size="10">-->
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    „Éë„Çπ„ÉØ„Éº„Éâ
+                </th>
+                <td>
+                    <input type="password" name="password" size="10" maxlength="8">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Ë®ò‰∫ã„Çª„ÉÉ„Éà
+                </th>
+                <td>
+                    <select name="corpus_set_id">
+                        $options
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Ë®ò‰∫ã„Çª„ÉÉ„Éà
+                </th>
+                <td>
+                    <input TYPE="checkbox" NAME="skip" VALUE="skip">‰∏çÈÅ©Ë®ò‰∫ã„ÇíË°®Á§∫„Åó„Å™„ÅÑ
+                </td>
+            </tr>
+            <tr>
+                <th>
+                </th>
+                <td>
+                    <input type="submit" value="ÈÄÅ‰ø°">
+                </td>
+            </tr>
+        </table>
+    </form>
 
 </body>
 

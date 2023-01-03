@@ -1,107 +1,107 @@
 body {
-background-color: white;
+    background-color: white;
 }
 
 th {
-padding: 5px;
-background-color: blue;
-color: white;
+    padding: 5px;
+    background-color: blue;
+    color: white;
 }
 
 #dep {
-text-align: right;
+    text-align: right;
 }
 
 #deptype {
-font-size: small;
+    font-size: small;
 }
 
 td {
-padding: 0px;
+    padding: 0px;
 }
 
 #caseword {
-color: blue;
+    color: blue;
 }
 
 #casemarker {
-color: magenta;
-font-weight: bold;
+    color: magenta;
+    font-weight: bold;
 }
 
 #neword {
-color: green;
+    color: green;
 }
 
 #netype {
-color: orange;
-font-weight: bold;
+    color: orange;
+    font-weight: bold;
 }
 
 #casemposition {
-color: green;
+    color: green;
 }
 
 #kakari-keisen {
-background-color: lightcyan;
+    background-color: lightcyan;
 }
 
 #sem {
-background-color: lightcyan;
+    background-color: lightcyan;
 }
 
 #synsemhead {
-background-color: blue;
-color: white;
-padding: 5px;
+    background-color: blue;
+    color: white;
+    padding: 5px;
 }
 
 #memo {
-font-size: small;
+    font-size: small;
 }
 
 #cross {
-background-color: red;
+    background-color: red;
 }
 
 #bnst-kugiri {
-padding: 0px;
-font-size: small;
-text-align: center;
-color: darkgray;
-background-color: orange;
+    padding: 0px;
+    font-size: small;
+    text-align: center;
+    color: darkgray;
+    background-color: orange;
 }
 
 #tag-kugiri {
-padding: 0px;
-font-size: small;
-text-align: center;
-color: darkgray;
-background-color: FFFF59;
+    padding: 0px;
+    font-size: small;
+    text-align: center;
+    color: darkgray;
+    background-color: FFFF59;
 }
 
 #morphrow {
-padding: 5px;
-background-color: lightcyan;
+    padding: 5px;
+    background-color: lightcyan;
 }
 
 #sentiment_exp {
-background-color: yellow;
+    background-color: yellow;
 }
 
 #without_sentiment {
-background-color: lightcyan;
+    background-color: lightcyan;
 }
 
 #with_sentiment {
-background-color: yellow;
+    background-color: yellow;
 }
 
 #evaluated {
-color: darkblue;
+    color: darkblue;
 }
 
 #eval_type {
-color: darkred;
-font-weight: bold;
+    color: darkred;
+    font-weight: bold;
 }

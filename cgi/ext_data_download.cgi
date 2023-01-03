@@ -22,7 +22,7 @@ my $fileinfo = "fileinfos";
 my $dirinfo = "dirinfo";
 
 # ヘッダー出力
-print $cgi->header({type => 'text/xml', charset => 'utf-8', expires => '-1d'});
+print $cgi->header({ type => 'text/xml', charset => 'utf-8', expires => '-1d' });
 print "<result>";
 # print "<test>$filepath</test>";
 
@@ -35,7 +35,7 @@ if ($cgi->param('annotator_id')) {
 
 
     # ロックユーザーかチェック
-    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     my $infoname = "$rootdir/$article_id/dirinfo";
     my (@buf);
     if (-f $infoname) {
@@ -56,7 +56,7 @@ if ($cgi->param('annotator_id')) {
         }
         close(INFO);
 
-# annotator以外のユーザがロックしている
+        # annotator以外のユーザがロックしている
     } elsif ($buf[0] !~ /^\* $annotator_id\s+/) {
         &default_page();
         exit 1;
@@ -88,7 +88,7 @@ my @file;
 # fileinfoを開く
 open(F, $fileinfo);
 while (<F>) {
-    if($_ =~ /# S-ID:(\S+)/) {
+    if ($_ =~ /# S-ID:(\S+)/) {
         # TODO:ファイルがない時のエラー処理をいれる
         print "<file><id>$1</id><data>";
         open(F2, $1);
@@ -114,10 +114,10 @@ exit 1;
 
 sub default_page {
     # CGIヘッダの出力
-    print $cgi->header({type => 'text/xml', charset => 'utf-8', expires => '-1d'});
+    print $cgi->header({ type => 'text/xml', charset => 'utf-8', expires => '-1d' });
     print "<def>error</def>";
 
-    # print $cgi->start_html({title => '記事データ ダウンロード', lang => 'ja', encoding => 'euc-jp'});
+    # print $cgi->start_html({title => '記事データ ダウンロード', lang => 'ja', encoding => 'utf-8'});
     # print "<h1>関係コーパス 記事データダウンロード</h1><br>\n";
     # print "<p>名前を入力してください。</p>\n" unless $annotator_id;
     # print "<p>記事$article_idがみつかりません。</p>\n" unless -f $filepath;
@@ -132,7 +132,7 @@ sub default_page {
 }
 
 sub save_old_file {
-    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+    my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
     # my ($file) = @_;
     # my $suffix = 1;
 

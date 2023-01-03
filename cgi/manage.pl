@@ -1,67 +1,65 @@
 #!/usr/bin/env perl
 
-# KNP²òÀÏ·ë²Ì¤òÊ¸Ã±°Ì¤ËÊ¬³ä¤È¡¤¤½¤Î´ÉÍı¥Õ¥¡¥¤¥ë(fileinfos)¤ÎºîÀ®
+# KNPè§£æçµæœã‚’æ–‡å˜ä½ã«åˆ†å‰²ã¨ï¼Œãã®ç®¡ç†ãƒ•ã‚¡ã‚¤ãƒ«(fileinfos)ã®ä½œæˆ
 
-# °ú¿ô¤¬ file ¤Î¾ì¹ç : 1. (¤Ê¤±¤ì¤Ğ)directory¤ÎºîÀ®¡¤directoryÆâ¾Ãµî
-#		       2. ¤½¤ÎÃæ¤Ø¤Î¥Õ¥¡¥¤¥ëÊ¬³ä¡¤
-# 		       3. fileinfos¤ÎºîÀ®
+# å¼•æ•°ãŒ file ã®å ´åˆ:
+#   1. (ãªã‘ã‚Œã°)directoryã®ä½œæˆï¼Œdirectoryå†…æ¶ˆå»
+#   2. ãã®ä¸­ã¸ã®ãƒ•ã‚¡ã‚¤ãƒ«åˆ†å‰²
+#   3. fileinfosã®ä½œæˆ
 #
-# °ú¿ô¤¬ directory + ¤Î¾ì¹ç : directoryÆâ¤Î¥Õ¥¡¥¤¥ë¤ò¤Ş¤È¤á¤Æ .knp ¤Ë
+# å¼•æ•°ãŒ directory + ã®å ´åˆ: directoryå†…ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã¾ã¨ã‚ã¦ .knp ã«
 #
-# °ú¿ô¤¬ directory ¤Î¾ì¹ç : fileinfos¤Î¹¹¿·
+# å¼•æ•°ãŒ directory ã®å ´åˆ: fileinfosã®æ›´æ–°
 
 @fileinfos = ();
 
-# °ú¿ô¤¬file¤Î¾ì¹ç
+# å¼•æ•°ãŒfileã®å ´åˆ
 
 if (-f $ARGV[0] && $ARGV[0] =~ /([^\/\\]+)\.knp.*$/) {
 
     $dir = $1;
     if (-d $dir) {
-	unlink(glob("$dir/*"));
+        unlink(glob("$dir/*"));
     } else {
-	mkdir($dir, 0755);
+        mkdir($dir, 0755);
     }
 
-    open(INPUT, $ARGV[0]); 
-    while ( <INPUT> ) {
-
-	if (/^# S\-ID:([^ ]+)/) {
-	    $file_name = $1;
-	    open(OUTPUT, "> $dir/$file_name") || die;
+    open(INPUT, $ARGV[0]);
+    while (<INPUT>) {
+        if (/^# S\-ID:([^ ]+)/) {
+            $file_name = $1;
+            open(OUTPUT, "> $dir/$file_name") || die;
             print OUTPUT;
-	} elsif (/^EOS/) {
+        } elsif (/^EOS/) {
             print OUTPUT;
-	    close(OUTPUT);
-	} elsif (/^;;/) {
-	    ; # ¼ï¡¹¤Î¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¤Ï¼è¤ê½ü¤¯
-	} else {
-	    print OUTPUT;
-	}
+            close(OUTPUT);
+        } elsif (/^;;/) {
+            ; # ç¨®ã€…ã®ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯å–ã‚Šé™¤ã
+        } else {
+            print OUTPUT;
+        }
     }
     close(INPUT);
 }
 
-# °ú¿ô¤¬directory¤Î¾ì¹ç : ¥Õ¥¡¥¤¥ë¤Î¤Ş¤È¤á¡¤¤Ş¤¿¤Ïfileinfos¤Î¹¹¿·
+# å¼•æ•°ãŒdirectoryã®å ´åˆ : ãƒ•ã‚¡ã‚¤ãƒ«ã®ã¾ã¨ã‚ï¼Œã¾ãŸã¯fileinfosã®æ›´æ–°
 
 elsif (-d $ARGV[0]) {
 
     $dir = $ARGV[0];
 
     if ($ARGV[1] eq '+') {
-	$merge_p = 1;
-	$ARGV[0] =~ /([^\/\\]+)(\/)?$/;
-	open(OUT, "> $1.knp");
+        $merge_p = 1;
+        $ARGV[0] =~ /([^\/\\]+)(\/)?$/;
+        open(OUT, "> $1.knp");
     } else {
-	$merge_p = 0;
+        $merge_p = 0;
     }
-}
-
-else {
+} else {
     die;
 }
 
-# fileinfos¤Î¹¹¿·
+# fileinfosã®æ›´æ–°
 
 $file_num = 0;
 opendir(DIR, $dir);
@@ -69,10 +67,10 @@ foreach $file_name (&make_list()) {
     open(FILE, "$dir/$file_name");
 
     if ($merge_p) {
-	while ( <FILE> ) {
-	    $_ .= "\n" unless /\n$/;
-	    print OUT;
-	}
+        while (<FILE>) {
+            $_ .= "\n" unless /\n$/;
+            print OUT;
+        }
     }
 
     $_ = <FILE>;
@@ -87,7 +85,7 @@ if ($merge_p) {
 } else {
     open(FILEINFOS, "> $dir/fileinfos");
     for ($i = 0; $i < $file_num; $i++) {
-	print FILEINFOS $fileinfos[$i];
+        print FILEINFOS $fileinfos[$i];
     }
     close(FILEINFOS);
 }
@@ -111,57 +109,47 @@ sub make_list {
     my (@list);
 
     for my $file_name (readdir(DIR)) {
-	next if ($file_name !~ /[0-9\-]$/);
-	next if ($file_name eq 'fileinfos');
-	next if ($file_name =~ /tar\.gz/);
-	push(@list, $file_name);
+        next if ($file_name !~ /[0-9\-]$/);
+        next if ($file_name eq 'fileinfos');
+        next if ($file_name =~ /tar\.gz/);
+        push(@list, $file_name);
     }
 
     return sort({&extract_sid($a) <=> &extract_sid($b) or
-					 &extract_pid($a) <=> &extract_pid($b) or 
-					 &extract_tid($a) <=> &extract_tid($b)} @list);
+        &extract_pid($a) <=> &extract_pid($b) or
+        &extract_tid($a) <=> &extract_tid($b)} @list);
 }
 
 sub extract_sid {
     my ($sid) = @_;
 
     #my ($id) = ($sid =~ /(\d+)$/);
-    my ($id_1,$id_2,$id_3) = ($sid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
-	if($id_3 =~ /^0/ && $id_1)
-	{
-		return $id_1;
-	}
-	else
-	{
-		return $id_2;
-	}
+    my ($id_1, $id_2, $id_3) = ($sid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
+    if ($id_3 =~ /^0/ && $id_1) {
+        return $id_1;
+    } else {
+        return $id_2;
+    }
 }
 
 
 sub extract_pid {
     my ($pid) = @_;
-    my ($id_1,$id_2,$id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
-	if($id_3 =~ /^0/ && $id_1)
-	{
-		return $id_2;
-	}
-	else
-	{
-		return $id_3;
-	}
+    my ($id_1, $id_2, $id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
+    if ($id_3 =~ /^0/ && $id_1) {
+        return $id_2;
+    } else {
+        return $id_3;
+    }
 }
 
 
 sub extract_tid {
     my ($pid) = @_;
-    my ($id_1,$id_2,$id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
-	if($id_3 =~ /^0/ && $id_1)
-	{
-		return $id_3;
-	}
-	else
-	{
-		return 0;
-	}
-
+    my ($id_1, $id_2, $id_3) = ($pid =~ /(?:(\d+)-)?(\d+?)-(\d+)$/);
+    if ($id_3 =~ /^0/ && $id_1) {
+        return $id_3;
+    } else {
+        return 0;
+    }
 }

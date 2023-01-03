@@ -30,7 +30,7 @@
 //     var str = lines.join("\n");
 //     var blob = new Blob([str], {type:MIME_TYPE});
 //     var url = URL.createObjectURL(blob);
-    
+
 //     var a = document.createElement('a');
 //     // a.download = container.querySelector('input[type="text"]').value;
 //     a.download = "sample.txt";

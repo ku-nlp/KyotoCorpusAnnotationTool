@@ -3,23 +3,23 @@
 use strict;
 use CGI;
 
-# ¥Õ¥¡¥¤¥ë¤òÃÖ¤¯¥ë¡¼¥È¥Ç¥£¥ì¥¯¥È¥ê¤ÎÀßÄê
+# ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç½®ããƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®è¨­å®š
 our ($rootdir, $ext);
 require './cgi.conf';
 
 my $cgi = new CGI;
 
-# CGI¥Ø¥Ã¥À¤Î½ĞÎÏ
-print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
-print $cgi->start_html({title => 'µ­»ö¥Ç¡¼¥¿ ¥¢¥Ã¥×¥í¡¼¥É', lang => 'ja', encoding => 'euc-jp'});
+# CGIãƒ˜ãƒƒãƒ€ã®å‡ºåŠ›
+print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
+print $cgi->start_html({ title => 'è¨˜äº‹ãƒ‡ãƒ¼ã‚¿ ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰', lang => 'ja', encoding => 'utf-8' });
 
-# µ­»öID¤ò¥Á¥§¥Ã¥¯
+# è¨˜äº‹IDã‚’ãƒã‚§ãƒƒã‚¯
 my ($article_id);
 if ($cgi->param('article_id')) {
     $article_id = $cgi->param('article_id');
 }
 
-# ºî¶È¼Ô¤ò¥Á¥§¥Ã¥¯
+# ä½œæ¥­è€…ã‚’ãƒã‚§ãƒƒã‚¯
 my ($annotator_id, $password);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
@@ -27,20 +27,20 @@ if ($cgi->param('annotator_id')) {
 }
 
 
-# ¥Õ¥¡¥¤¥ëÌ¾
+# ãƒ•ã‚¡ã‚¤ãƒ«å
 my ($filename);
 if ($cgi->param('upfile')) {
     $filename = $cgi->param('upfile');
 }
 
 unless ($article_id && $annotator_id && $filename) {
-    # print "<p>µ­»öID¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
-    # print "<p>Ì¾Á°¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
+    # print "<p>è¨˜äº‹IDã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</p>\n";
+    # print "<p>åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</p>\n";
     &default_page();
     exit 1;
 }
 
-# µ­»ö¾ğÊó¤ò¥Á¥§¥Ã¥¯
+# è¨˜äº‹æƒ…å ±ã‚’ãƒã‚§ãƒƒã‚¯
 my $infoname = "$rootdir/$article_id/dirinfo";
 my (@buf);
 open(INFO, $infoname);
@@ -50,15 +50,16 @@ while (<INFO>) {
 close(INFO);
 my ($info_annotator) = ($buf[0] =~ /^\* (\S+)/);
 if ($annotator_id ne $info_annotator) {
-    print "<p>¤¢¤Ê¤¿¤Ï¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤Ş¤»¤ó¡£</p>\n";
+    print "<p>ã‚ãªãŸã¯ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã§ãã¾ã›ã‚“ã€‚</p>\n";
     &default_page();
     exit 1;
 }
 
-# ¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤Î¾ğÊó¤ò¼èÆÀ¤¹¤ë
+# ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 my ($fh);
-unless ($fh = $cgi->upload('upfile')) {      # ¥Õ¥¡¥¤¥ë¥Ï¥ó¥É¥ë
-    print "<p>Äó½Ğ¤¹¤ë¥Õ¥¡¥¤¥ë¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤¡£</p>\n";
+unless ($fh = $cgi->upload('upfile')) {
+    # ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«
+    print "<p>æå‡ºã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é¸ã‚“ã§ãã ã•ã„ã€‚</p>\n";
     &default_page();
     exit 1;
 }
@@ -66,10 +67,10 @@ unless ($fh = $cgi->upload('upfile')) {      # ¥Õ¥¡¥¤¥ë¥Ï¥ó¥É¥ë
 my $filepath = "$rootdir/$article_id/$article_id.$ext-$$";
 my $filetype = $cgi->uploadInfo($filename)->{'Content-Type'};
 
-# ¥Õ¥¡¥¤¥ë¤ò½ñ¤­½Ğ¤¹
+# ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãå‡ºã™
 unless (open OUT, "> $filepath") {
-    print "<p>¥Õ¥¡¥¤¥ë¤ò½èÍıÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£</p>\n",
-	$cgi->end_html;
+    print "<p>ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‡¦ç†ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚</p>\n",
+        $cgi->end_html;
     exit 1;
 }
 
@@ -82,54 +83,54 @@ while (my $bytes = read($fh, $buf, 1024)) {
 close OUT;
 
 if ($size == 0) {
-    print "<p>¥Õ¥¡¥¤¥ë¤¬ÆÉ¤ß¹ş¤á¤Ş¤»¤ó¤Ç¤·¤¿¡£</p>\n",
-	$cgi->end_html;
+    print "<p>ãƒ•ã‚¡ã‚¤ãƒ«ãŒèª­ã¿è¾¼ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚</p>\n",
+        $cgi->end_html;
     exit 1;
 }
 
-# À®¸ù
+# æˆåŠŸ
 
-# µ­»ö¾ğÊó¤ò¹¹¿·
+# è¨˜äº‹æƒ…å ±ã‚’æ›´æ–°
 open(INFO, "> $infoname");
-my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
 print INFO "$annotator_id\t$date\n";
 for my $line (@buf) {
     print INFO $line;
 }
 close(INFO);
 
-# ËÜ½ñ¤­¹ş¤ß
+# æœ¬æ›¸ãè¾¼ã¿
 my $last_filepath = "$rootdir/$article_id/$article_id.$ext";
 &save_old_file($last_filepath);
 rename($filepath, $last_filepath);
 
 print <<EOF;
-<h3>µ­»ö¥Ç¡¼¥¿¤ò¼õ¤±ÉÕ¤±¤Ş¤·¤¿¡£</h3>
+<h3>è¨˜äº‹ãƒ‡ãƒ¼ã‚¿ã‚’å—ã‘ä»˜ã‘ã¾ã—ãŸã€‚</h3>
 <ul>
- <li> Ì¾Á°: $annotator_id
- <li> µ­»öÈÖ¹æ: $article_id
- <li> ¼õÉÕÆü»ş: $date
- <li> ¥Õ¥¡¥¤¥ëÌ¾: $filename ($size bytes)
+ <li> åå‰: $annotator_id
+ <li> è¨˜äº‹ç•ªå·: $article_id
+ <li> å—ä»˜æ—¥æ™‚: $date
+ <li> ãƒ•ã‚¡ã‚¤ãƒ«å: $filename ($size bytes)
 </ul>
 EOF
 
 print qq(<form method=POST action="list.cgi">\n);
 print qq(<input type="hidden" name="annotator_id" value="$annotator_id">\n);
 print qq(<input type="hidden" name="password" value="$password">\n);
-print qq(<tr><th></th><td><input type="submit" value="Ìá¤ë"></td></tr>\n);
+print qq(<tr><th></th><td><input type="submit" value="æˆ»ã‚‹"></td></tr>\n);
 print qq(</form>\n);
 print $cgi->end_html;
 
 
 sub default_page {
-    print qq(<h3>µ­»ö¥Ç¡¼¥¿¤Î¥¢¥Ã¥×¥í¡¼¥É</h3><br>\n);
+    print qq(<h3>è¨˜äº‹ãƒ‡ãƒ¼ã‚¿ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰</h3><br>\n);
     print qq(<form method=POST enctype="multipart/form-data" action="upload.cgi">\n);
     print qq(<input type="hidden" name="password" value="$password">\n);
     print qq(<table>\n);
-    print qq(<tr><th align=left>Ì¾Á°</th><td><input name="annotator_id" value="$annotator_id" size="10"></td></tr>\n);
-    print qq(<tr><th align=left>µ­»öID</th><td><input name="article_id" value="$article_id" size="30"></td></tr>\n);
-    print qq(<tr><th align=left>¥Õ¥¡¥¤¥ë</th><td><input name="upfile" type="file" size="60"></td></tr>\n);
-    print qq(<tr><th></th><td><input type="submit" value="Á÷¿®"></td></tr>\n);
+    print qq(<tr><th align=left>åå‰</th><td><input name="annotator_id" value="$annotator_id" size="10"></td></tr>\n);
+    print qq(<tr><th align=left>è¨˜äº‹ID</th><td><input name="article_id" value="$article_id" size="30"></td></tr>\n);
+    print qq(<tr><th align=left>ãƒ•ã‚¡ã‚¤ãƒ«</th><td><input name="upfile" type="file" size="60"></td></tr>\n);
+    print qq(<tr><th></th><td><input type="submit" value="é€ä¿¡"></td></tr>\n);
     print qq(</form>\n);
     print qq(</table>\n);
     print $cgi->end_html;
@@ -140,7 +141,7 @@ sub save_old_file {
     my $suffix = 1;
 
     while (-f "$file.$suffix") {
-	$suffix++;
+        $suffix++;
     }
     rename($file, "$file.$suffix");
 }

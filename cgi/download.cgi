@@ -3,7 +3,7 @@
 use strict;
 use CGI;
 
-# ¥Õ¥¡¥¤¥ë¤òÃÖ¤¯¥ë¡¼¥È¥Ç¥£¥ì¥¯¥È¥ê¤ÎÀßÄê
+# ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ç½®ããƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®è¨­å®š
 our ($rootdir, $ext);
 require './cgi.conf';
 
@@ -15,29 +15,28 @@ $rootdir .= "/$corpus_set_id";
 my $filename = "$article_id.$ext";
 my $filepath = "$rootdir/$article_id/$filename";
 
-# # ºî¶È¼Ô¤ò¥Á¥§¥Ã¥¯
+# # ä½œæ¥­è€…ã‚’ãƒã‚§ãƒƒã‚¯
 # my ($annotator_id, $password);
 # if ($cgi->param('annotator_id')) {
 #     $annotator_id = $cgi->param('annotator_id');
 #     $password = $cgi->param('password');
 #     if (!defined($PASSWD{$annotator_id}) ||
 # 	$password ne $PASSWD{$annotator_id}) {
-# 	print "<p>¥Ñ¥¹¥ï¡¼¥É¤¬°ã¤¤¤Ş¤¹¡£</p>\n";
+# 	print "<p>ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™ã€‚</p>\n";
 # 	print $cgi->end_html;
 # 	exit 1;    }
 # }
 # else {
-#     print "<p>¤Ş¤º¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
+#     print "<p>ã¾ãšãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãã ã•ã„ã€‚</p>\n";
 #     print $cgi->end_html;
 #     exit 1;
 # }
 
-# ºî¶È¼Ô¤ò¥Á¥§¥Ã¥¯
+# ä½œæ¥­è€…ã‚’ãƒã‚§ãƒƒã‚¯
 my ($annotator_id);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
-}
-else {
+} else {
     &default_page();
     exit 1;
 }
@@ -56,24 +55,24 @@ while (<F>) {
 }
 close(F);
 
-# µ­»ö¾ğÊó¤Î¹¹¿·
-my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3,2,1]);
+# è¨˜äº‹æƒ…å ±ã®æ›´æ–°
+my $date = sprintf("%d-%02d-%02d %02d:%02d", (localtime)[5] + 1900, (localtime)[4] + 1, (localtime)[3, 2, 1]);
 my $infoname = "$rootdir/$article_id/dirinfo";
 my (@buf);
 if (-f $infoname) {
     open(INFO, $infoname);
     while (<INFO>) {
-	push(@buf, $_);
+        push(@buf, $_);
     }
     close(INFO);
 }
 
-# ¤¹¤Ç¤ËÊÔ½¸Ãæ¤Ê¤é¤Ğ¹¹¿·¤·¤Ê¤¤
+# ã™ã§ã«ç·¨é›†ä¸­ãªã‚‰ã°æ›´æ–°ã—ãªã„
 if ($buf[0] !~ /^\* /) {
     open(INFO, "> $infoname");
     print INFO "\* $annotator_id\t$date\n";
     for my $line (@buf) {
-	print INFO $line;
+        print INFO $line;
     }
     close(INFO);
 }
@@ -82,18 +81,18 @@ exit 0;
 
 
 sub default_page {
-    # CGI¥Ø¥Ã¥À¤Î½ĞÎÏ
-    print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
-    print $cgi->start_html({title => 'µ­»ö¥Ç¡¼¥¿ ¥À¥¦¥ó¥í¡¼¥É', lang => 'ja', encoding => 'euc-jp'});
-    print "<h1>´Ø·¸¥³¡¼¥Ñ¥¹ µ­»ö¥Ç¡¼¥¿¥À¥¦¥ó¥í¡¼¥É</h1><br>\n";
-    print "<p>Ì¾Á°¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n" unless $annotator_id;
-    print "<p>µ­»ö$article_id¤¬¤ß¤Ä¤«¤ê¤Ş¤»¤ó¡£</p>\n" unless -f $filepath;
+    # CGIãƒ˜ãƒƒãƒ€ã®å‡ºåŠ›
+    print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
+    print $cgi->start_html({ title => 'è¨˜äº‹ãƒ‡ãƒ¼ã‚¿ ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰', lang => 'ja', encoding => 'utf-8' });
+    print "<h1>é–¢ä¿‚ã‚³ãƒ¼ãƒ‘ã‚¹ è¨˜äº‹ãƒ‡ãƒ¼ã‚¿ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</h1><br>\n";
+    print "<p>åå‰ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚</p>\n" unless $annotator_id;
+    print "<p>è¨˜äº‹$article_idãŒã¿ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚</p>\n" unless -f $filepath;
     print "<form method=POST action=\"download.cgi\">\n";
     print "<table>\n";
-    print "<tr><th align=left>Ì¾Á°</th><td><input name=\"annotator_id\" size=\"10\"></td></tr>\n";
-    print "<tr><th align=left>µ­»öID</th><td><input name=\"article_id\" value=\"$article_id\" size=\"9\"></td></tr>\n";
+    print "<tr><th align=left>åå‰</th><td><input name=\"annotator_id\" size=\"10\"></td></tr>\n";
+    print "<tr><th align=left>è¨˜äº‹ID</th><td><input name=\"article_id\" value=\"$article_id\" size=\"9\"></td></tr>\n";
     print qq(<input type="hidden" name="skip" value="$skip">);
-    print "<tr><th></th><td><input type=\"submit\" value=\"Á÷¿®\"></td></tr>\n";
+    print "<tr><th></th><td><input type=\"submit\" value=\"é€ä¿¡\"></td></tr>\n";
     print "</form>\n";
     print "</table>\n";
     print $cgi->end_html;

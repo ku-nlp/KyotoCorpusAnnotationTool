@@ -1,81 +1,90 @@
-<html>
+<html lang="ja">
 
-  <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>関係コーパス ログイン</title>
-  </head>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>関係コーパス ログイン</title>
+    <style>
+        th, td {
+            padding: 5px;
+        }
+        th {
+            text-align: left;
+        }
+    </style>
+</head>
 
-  <body>
+<body>
 
-	<h3>関係コーパス ログイン</h3>
-	<br>
+<h3>関係コーパス ログイン</h3>
+<br>
 
-	<form method=POST action="cgi/list_en.cgi">
-	  <table>
-		<tr>
-		  <th align=left>
-			名前
-		  </th>
-		  <td>
-			<select name="annotator_id">
-			  <option value="annotator_a">annotator_a</option>
-			  <option value="annotator_b">annotator_b</option>
-			</select>
-			<!--<input name="annotator_id" size="10">-->
-		  </td>
-		</tr>
-		<tr>
-		  <th align=left>
-			パスワード
-		  </th>
-		  <td>
-			<input type="password" name="password" size="10" maxlength="8">
-		  </td>
-		</tr>
-		<tr>
-		  <th align=left>
-			記事セット
-		  </th>
-		  <td>
-			<select name="corpus_set_id">
-			  <option value="JE-en">JE-en</option>
-			  <!-- <option value="w201106-00000">00</option> -->
-			  <!-- <option value="w201106-00001">01</option> -->
-			  <!-- <option value="w201106-00002">02</option> -->
-			  <!-- <option value="w201106-00003">03</option> -->
-			  <!-- <option value="w201106-00004">04</option> -->
-			  <!-- <option value="w201106-00005">05</option> -->
-			  <!-- <option value="w201106-00006">06</option> -->
-			  <!-- <option value="w201106-00007">07</option> -->
-			  <!-- <option value="w201106-00008">08</option> -->
-			  <!-- <option value="w201106-00009">09</option> -->
-			  <!-- <option value="w201106-00010">10</option> -->
-			  <!-- <option value="w201106-00011">11</option> -->
-			  <!-- <option value="w201106-00012">12</option> -->
-			  <!-- <option value="w201106-00013">13</option> -->
-			  <!-- <option value="w201106-00014">14</option> -->
-			  <!-- <option value="w201106-00015">15</option> -->
-			  <!-- <option value="w201106-00016">16</option> -->
-			  <!-- <option value="w201106-00017">17</option> -->
-			  <!-- <option value="w201106-00018">18</option> -->
-			</select>
-		  </td>
-		</tr>
-		<tr>
-		  <th align=left>
-			記事セット
-		  </th>
-		  <td>
-			<input TYPE="checkbox" NAME="skip" VALUE="skip">不適記事を表示しない
-		  </td>
-		</tr>
-		<th>
-		</th>
-		<td>
-		  <input type="submit" value="送信">
-		</td>
-</tr>
-</table>
+<form method=POST action="cgi/list_en.cgi">
+    <table>
+        <tr>
+            <th>
+                名前
+            </th>
+            <td>
+                <select name="annotator_id">
+                    <option value="annotator_a">annotator_a</option>
+                    <option value="annotator_b">annotator_b</option>
+                </select>
+                <!--<input name="annotator_id" size="10">-->
+            </td>
+        </tr>
+        <tr>
+            <th>
+                パスワード
+            </th>
+            <td>
+                <input type="password" name="password" size="10" maxlength="8">
+            </td>
+        </tr>
+        <tr>
+            <th>
+                記事セット
+            </th>
+            <td>
+                <select name="corpus_set_id">
+                    <option value="JE-en">JE-en</option>
+                    <!-- <option value="w201106-00000">00</option> -->
+                    <!-- <option value="w201106-00001">01</option> -->
+                    <!-- <option value="w201106-00002">02</option> -->
+                    <!-- <option value="w201106-00003">03</option> -->
+                    <!-- <option value="w201106-00004">04</option> -->
+                    <!-- <option value="w201106-00005">05</option> -->
+                    <!-- <option value="w201106-00006">06</option> -->
+                    <!-- <option value="w201106-00007">07</option> -->
+                    <!-- <option value="w201106-00008">08</option> -->
+                    <!-- <option value="w201106-00009">09</option> -->
+                    <!-- <option value="w201106-00010">10</option> -->
+                    <!-- <option value="w201106-00011">11</option> -->
+                    <!-- <option value="w201106-00012">12</option> -->
+                    <!-- <option value="w201106-00013">13</option> -->
+                    <!-- <option value="w201106-00014">14</option> -->
+                    <!-- <option value="w201106-00015">15</option> -->
+                    <!-- <option value="w201106-00016">16</option> -->
+                    <!-- <option value="w201106-00017">17</option> -->
+                    <!-- <option value="w201106-00018">18</option> -->
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                記事セット
+            </th>
+            <td>
+                <input TYPE="checkbox" NAME="skip" VALUE="skip">不適記事を表示しない
+            </td>
+        </tr>
+        <tr>
+            <th>
+            </th>
+            <td>
+                <input type="submit" value="送信">
+            </td>
+        </tr>
+    </table>
 </form>
 
 </body>

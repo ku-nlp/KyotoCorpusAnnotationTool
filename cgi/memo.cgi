@@ -5,41 +5,42 @@ use CGI;
 
 my $cgi = new CGI;
 
-our ($rootdir, $ext, $annot_path, $image_path);
+our ($rootdir, $annot_path, $image_path);
 require './cgi.conf';
 
-# CGI¥Ø¥Ã¥À¤Î½ĞÎÏ
-print $cgi->header({type => 'text/html', charset => 'euc-jp', expires => '-1d'});
+# CGIãƒ˜ãƒƒãƒ€ã®å‡ºåŠ›
+print $cgi->header({ type => 'text/html', charset => 'utf-8', expires => '-1d' });
 print <<EOF;
 <html>
 <head>
-<meta http-equiv="content-style-type" content="text/css; charset=euc-jp">
-<title>¥³¡¼¥Ñ¥¹ ´ÉÍı¥Ú¡¼¥¸</title>
-<style>
-<!--
+    <meta http-equiv="content-style-type" content="text/css; charset=utf-8">
+    <title>ã‚³ãƒ¼ãƒ‘ã‚¹ ç®¡ç†ãƒšãƒ¼ã‚¸</title>
+    <style>
+        <!--
 
-body {
-    font:bold 16px;
-    color:#444444;
-    background-color:#eee;
-    margin:20px;
-}
+        body {
+            font-size: 16px;
+            font-weight: bold;
+            color:#444444;
+            background-color:#eee;
+            margin:20px;
+        }
 
-.button {
-    margin-right:10px;
-}
+        .button {
+            margin-right:10px;
+        }
 
--->
-</style>
+        -->
+    </style>
 </head>
 <body>
 EOF
 
-print "<h3>¥¢¥Î¥Æ¡¼¥¿¥á¥âÆşÎÏ¥Ú¡¼¥¸</h3>\n";
+print "<h3>ã‚¢ãƒãƒ†ãƒ¼ã‚¿ãƒ¡ãƒ¢å…¥åŠ›ãƒšãƒ¼ã‚¸</h3>\n";
 
-print $cgi->start_html({title => '¥¢¥Î¥Æ¡¼¥¿¥á¥â', lang => 'ja', encoding => 'euc-jp'});
+print $cgi->start_html({ title => 'ã‚¢ãƒãƒ†ãƒ¼ã‚¿ãƒ¡ãƒ¢', lang => 'ja', encoding => 'utf-8' });
 
-# ºî¶È¼Ô¤ò¥Á¥§¥Ã¥¯
+# ä½œæ¥­è€…ã‚’ãƒã‚§ãƒƒã‚¯
 my ($annotator_id, $password, $corpus_set_id);
 if ($cgi->param('annotator_id')) {
     $annotator_id = $cgi->param('annotator_id');
@@ -49,24 +50,24 @@ if ($cgi->param('annotator_id')) {
 }
 
 unless ($annotator_id && $password) {
-    print "<p>¤Ş¤º¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
+    print "<p>ã¾ãšãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ãã ã•ã„ã€‚</p>\n";
     print $cgi->end_html;
     exit 1;
 }
 
-# ¥Õ¥¡¥¤¥ëÌ¾
+# ãƒ•ã‚¡ã‚¤ãƒ«å
 my ($file);
 if ($cgi->param('file')) {
     $file = $cgi->param('file');
 }
 
 unless ($file) {
-    print "<p>annotator_memo¥Õ¥¡¥¤¥ë¤ò»ØÄê¤·¤Æ¤¯¤À¤µ¤¤¡£</p>\n";
+    print "<p>annotator_memoãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã—ã¦ãã ã•ã„ã€‚</p>\n";
     print $cgi->end_html;
     exit 1;
 }
 
-# ¸Å¤¤¥á¥â
+# å¤ã„ãƒ¡ãƒ¢
 my ($oldmemo);
 if ($cgi->param('oldmemo')) {
     $oldmemo = $cgi->param('oldmemo');
@@ -74,7 +75,7 @@ if ($cgi->param('oldmemo')) {
 my $skip = $cgi->param('skip');
 
 # form
-print "<p>¥á¥â¤ò½ñ¤¤¤Æ¤¯¤À¤µ¤¤¡£</p>";
+print "<p>ãƒ¡ãƒ¢ã‚’æ›¸ã„ã¦ãã ã•ã„ã€‚</p>";
 print "<form method=POST action=\"save_memo.cgi\">\n";
 print "<textarea name=\"newmemo\" cols=\"50\" rows=\"3\" wrap=\"soft\">$oldmemo</textarea>";
 print "<p />";
