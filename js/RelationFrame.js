@@ -798,12 +798,13 @@ var RelationFrame = function() {
         return tags;
     }
 
-    this.initFeatureTagsDropdown = function(tagsParentElementId) {
+    this.initFeatureTagsDropdown = function(tagsParentElementId, tags) {
         let relFrame = this;
         let row = parseInt(tagsParentElementId.substring('featureTagsMenu'.length));
         $(`#${tagsParentElementId}`).empty();
         for (let i = 0; i < this.featureTags.length; i++) {
-            $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="featureTag">${this.featureTags[i]}</a></li>`);
+            let disabledClass = tags.indexOf(this.featureTags[i]) != -1 ? 'disabled' : '';
+            $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="featureTag ${disabledClass}">${this.featureTags[i]}</a></li>`);
         }
         $(`#${tagsParentElementId}`).on('click', 'a.featureTag', function() { 
             if ($(this).hasClass('disabled'))
@@ -999,7 +1000,8 @@ var RelationFrame = function() {
 
         this.featureTagInputs = [];
         for (let ti = 0; ti < this.bnst_num; ti++) {
-            this.initFeatureTagsDropdown(`featureTagsMenu${ti}`);
+            let tags = this.extractFeatureTags(this.bnst_data_f[ti]);
+            this.initFeatureTagsDropdown(`featureTagsMenu${ti}`, tags);
 
             let relFrame = this;
             this.featureTagInputs[ti] = new TagsInput({ 
@@ -1027,7 +1029,7 @@ var RelationFrame = function() {
                     //console.log('after='+relFrame.bnst_data_f[row]);
                 }
             });
-            this.featureTagInputs[ti].addData(this.extractFeatureTags(this.bnst_data_f[ti]));
+            this.featureTagInputs[ti].addData(tags);
         }
 
         // 改行させないため動的に min-width をセット
