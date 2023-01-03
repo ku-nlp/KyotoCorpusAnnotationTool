@@ -813,7 +813,7 @@ var RelationFrame = function() {
             $(this).addClass('disabled');
             let tagIndex = $(this).parent().index();
             relFrame.featureTagInputs[row].addTag(relFrame.featureTags[tagIndex]);
-            relFrame.write_bnst_feature_for_feature_tags(row);
+            relFrame.write_bnst_feature_for_feature_tags(row, relFrame.featureTagInputs[row].getTags());
         });
     }
 
@@ -1008,25 +1008,13 @@ var RelationFrame = function() {
                 selector: `featureTagsInput${ti}`,
                 duplicate: false,
                 max: this.featureTags.length,
-                deleteTagCallback: function(tag, indexTag, row) {
-                    //console.log('deleteTagCallback tag='+tag+' indexTag='+indexTag+ ' row='+row);
-                    //console.log('row='+this.row);
-                    //console.dir(this);
-                    //console.log('looking for parent ul');
-                    //console.dir($(this));
-                    //console.dir(tag.options);
-                    //console.log('max='+tag.options.max);
-                    //console.log('row2='+tag.options.row);
-                    //let dropdownElement = tag.parentElement.parentElement.children[0];
-                    //console.log('dropdownElement id='+dropdownElement.id);
-                    //let row = parseInt(dropdownElement.id.substring('featureTagsDropdown'.length));
-                    //console.log('row='+row);
-                    //let tagText = tag.childNodes[0].textContent;
-                    //$(dropdownElement.firstChild.children[0]).find(`a:contains('${tagText}')`).removeClass('disabled');
-                    //console.log('ti='+ti+ ' tag='+tag+' i='+i);
-                    //console.log('before='+relFrame.bnst_data_f[row]);
-                    //relFrame.write_bnst_feature_for_feature_tags(row);
-                    //console.log('after='+relFrame.bnst_data_f[row]);
+                deleteTagCallback: function(tag, indexTag, tags) {
+                    let dropdownElement = tag.parentElement.parentElement.children[0];
+                    let row = parseInt(dropdownElement.id.substring('featureTagsDropdown'.length));
+                    let tagText = tag.childNodes[0].textContent;
+                    $(dropdownElement.firstChild.children[0]).find(`a:contains('${tagText}')`).removeClass('disabled');
+                    tags.splice(tags.indexOf(tagText), 1);
+                    relFrame.write_bnst_feature_for_feature_tags(row, tags);
                 }
             });
             this.featureTagInputs[ti].addData(tags);
@@ -2730,7 +2718,7 @@ var RelationFrame = function() {
 	    }
     };
 
-    this.write_bnst_feature_for_feature_tags = function(current_bnst) {
+    this.write_bnst_feature_for_feature_tags = function(current_bnst, tags) {
         modify_flag = '*';
 
         // Remove previous tags.
@@ -2738,7 +2726,6 @@ var RelationFrame = function() {
             this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(`<${this.featureTags[i]}>`, '');
 
         // Add current tags.
-        let tags =  this.featureTagInputs[current_bnst].getInputString().split(',');
         let strTags = tags.map(tag => `<${tag}>`).join('');
         this.bnst_data_f[current_bnst] += strTags;
     }
