@@ -2057,7 +2057,7 @@ var RelationFrame = function() {
         
 	var table = document.getElementsByTagName("table")[0];
 	var col = table.rows[0].cells.length;
-	for (j = 0; j < col; j++) {
+	for (j = 0; j < col - 1; j++) {
 	    if (table.rows[0].cells[j].textContent == title) {
 		return;
 	    }
@@ -2070,7 +2070,7 @@ var RelationFrame = function() {
 	var isMemo = (title == 'メモ');
 	for (i = 0; i < table.rows.length; i++) {
             // 全ての行に１列ずつ追加
-            var newCell = table.rows[i].insertCell(-1);
+            var newCell = table.rows[i].insertCell(col - 1);
 	    newCell.align = "center";
             // タイトル行
             if(i==0) {
