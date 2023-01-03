@@ -583,14 +583,6 @@ ul.popup li:hover > ul {
     text-align: center;
 }
 
-.baseClauseDelimiter {
-    text-align: center;
-}
-
-.clauseDelimiter {
-    text-align: center;
-}
-
 .featureTag {
     height: 11px;
 }

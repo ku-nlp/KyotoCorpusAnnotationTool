@@ -860,7 +860,7 @@ var RelationFrame = function () {
         tr.appendChild(tdFeatureTags);
 
 	    thead.appendChild(tr);
-	    var tbody = document.createElement("tbody");
+	    const tbody = document.createElement("tbody");
 	    for(let ti = 0; ti < this.bnst_num; ti++){
             var tr = document.createElement("tr");
             for (var j = 0; j <= cols; j++) {
