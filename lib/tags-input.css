@@ -1,6 +1,7 @@
 .tags-input-wrapper{
     background: transparent;
-    padding: 10px;
+    /*padding: 10px;*/
+    padding: 4px;
     border-radius: 4px;
     /*max-width: 400px;*/
     border: 1px solid #ccc
@@ -21,7 +22,7 @@
     border-radius: 40px;
     padding: 0px 3px 0px 7px;
     margin-right: 5px;
-    margin-bottom:7px;
+    /*margin-bottom:7px;*/
     /*box-shadow: 0 5px 15px -2px rgba(250 , 14 , 126 , .7)*/
     /*box-shadow: 0 5px 15px -2px rgba(48, 48, 48, .7)*/
 }

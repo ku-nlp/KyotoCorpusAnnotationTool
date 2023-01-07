@@ -357,6 +357,7 @@ ul.popup {
 }
 
 ul.dropdown li {
+    line-height: 26px;
     font-weight: bold;
     float: left;
     zoom: 1;
