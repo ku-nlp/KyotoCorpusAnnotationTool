@@ -1967,16 +1967,20 @@ var RelationFrame = function () {
         // 格の数を更新する
         this.caseBoxNum += 1;
 
+        // newCol must be inserted before Memo col if it's shown or before the tags col if it's not.
+        let newCol = col - 2;
+        if (table.rows[0].cells[newCol].textContent != 'メモ')
+            newCol += 1;
         const isMemo = (title == 'メモ');
         for (i = 0; i < table.rows.length; i++) {
             // 全ての行に１列ずつ追加
-            const newCell = table.rows[i].insertCell(col - 1);
+            const newCell = table.rows[i].insertCell(newCol);
             newCell.align = "center";
             // タイトル行
             if (i == 0) {
                 newCell.innerHTML = title;
             } else {
-                newCell.id = `tag${i - 1}_${col}`;
+                newCell.id = `tag${i - 1}_${newCol}`;
                 newCell.setAttribute("class", "tag");
                 newCell.innerHTML = isMemo ? `<input type="text" name="name" id="${i - 1}`
                     + '" style="width: 80%" class="memo_tag text ui-widget-content ui-corner-all" value="'
