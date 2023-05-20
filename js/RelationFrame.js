@@ -53,34 +53,6 @@ var RelationFrame = function () {
     this.wrongTreeState = false;
     this.bnstTreeMap = null;
 
-    this.featureTags = [
-        '用言:動',
-        '用言:形',
-        '用言:判',
-        '体言',
-        '非用言格解析:動',
-        '非用言格解析:形',
-        'モダリティ-疑問',
-        'モダリティ-意志',
-        'モダリティ-勧誘',
-        'モダリティ-命令',
-        'モダリティ-禁止',
-        'モダリティ-評価:弱',
-        'モダリティ-評価:強',
-        'モダリティ-認識-推量',
-        'モダリティ-認識-蓋然性',
-        'モダリティ-認識-証拠性',
-        'モダリティ-依頼Ａ',
-        'モダリティ-依頼Ｂ',
-        '時制:過去',
-        '時制:非過去',
-        '否定表現',
-        '節-主辞',
-        '節-区切',
-    ];
-
-    this.featureTagInputs = null;
-
     // 品詞マーク
     this.pos_mark = {
         特殊: '*',
@@ -324,7 +296,7 @@ var RelationFrame = function () {
         inputDataList[sid]['caseBoxNum'] = this.caseBoxNum;
 
         // 係わり受けの編集をしないLRモードでは、全文表示を更新する
-        const removePrev = TREE_MODE === 'LR' ? false : true;
+        const removePrev = TREE_MODE !== 'LR';
         this.removeContent(removePrev);
         // 構文木文節テーブルの表示
         this.makeCaseTable();
@@ -607,14 +579,13 @@ var RelationFrame = function () {
             }
             this.sentence_table[i - 1] += this.mrph_data_all[m_num][0];
             // 品詞情報取得
-            var label;
             var mark;
-            label = this.mrph_data_all[m_num][3];
+            let label = this.mrph_data_all[m_num][3];
             if (
-                this.mrph_data_all[m_num][5] == '固有名詞' ||
-                this.mrph_data_all[m_num][5] == '人名' ||
-                this.mrph_data_all[m_num][5] == '地名' ||
-                this.mrph_data_all[m_num][5] == '組織名'
+                this.mrph_data_all[m_num][5] === '固有名詞' ||
+                this.mrph_data_all[m_num][5] === '人名' ||
+                this.mrph_data_all[m_num][5] === '地名' ||
+                this.mrph_data_all[m_num][5] === '組織名'
             ) {
                 label = this.mrph_data_all[m_num][5];
             }
@@ -770,34 +741,6 @@ var RelationFrame = function () {
         $('.rel-tree').css('min-width', maxWidth);
     };
 
-    this.extractFeatureTags = function (bnst_data_f) {
-        let tags = [];
-        for (let i = 0; i < this.featureTags.length; i++) {
-            if (bnst_data_f.indexOf('<' + this.featureTags[i] + '>') != -1) tags.push(this.featureTags[i]);
-        }
-        return tags;
-    };
-
-    this.initFeatureTagsDropdown = function (tagsParentElementId, tags) {
-        let relFrame = this;
-        let row = parseInt(tagsParentElementId.substring('featureTagsMenu'.length));
-        $(`#${tagsParentElementId}`).empty();
-        for (let i = 0; i < this.featureTags.length; i++) {
-            let disabledClass = tags.indexOf(this.featureTags[i]) != -1 ? 'disabled' : '';
-            $(`#${tagsParentElementId}`).append(
-                `<li style="position: relative; left: 20px; top: -260px;"><a class="featureTag ${disabledClass}">${this.featureTags[i]}</a></li>`,
-            );
-        }
-        $(`#${tagsParentElementId}`).on('click', 'a.featureTag', function () {
-            if ($(this).hasClass('disabled')) return;
-
-            $(this).addClass('disabled');
-            let tagIndex = $(this).parent().index();
-            relFrame.featureTagInputs[row].addTag(relFrame.featureTags[tagIndex]);
-            relFrame.write_bnst_feature_for_feature_tags(row, relFrame.featureTagInputs[row].getTags());
-        });
-    };
-
     // テーブル初期化
     this.makeCaseTableJa = function () {
         // 構文木を生成
@@ -814,10 +757,10 @@ var RelationFrame = function () {
             // 品詞情報取得
             var label = this.mrph_data_all[m_num][3];
             if (
-                this.mrph_data_all[m_num][5] == '固有名詞' ||
-                this.mrph_data_all[m_num][5] == '人名' ||
-                this.mrph_data_all[m_num][5] == '地名' ||
-                this.mrph_data_all[m_num][5] == '組織名'
+                this.mrph_data_all[m_num][5] === '固有名詞' ||
+                this.mrph_data_all[m_num][5] === '人名' ||
+                this.mrph_data_all[m_num][5] === '地名' ||
+                this.mrph_data_all[m_num][5] === '組織名'
             ) {
                 label = this.mrph_data_all[m_num][5];
             }
@@ -847,13 +790,6 @@ var RelationFrame = function () {
             td.appendChild(title);
             tr.appendChild(td);
         }
-
-        let tdFeatureTags = document.createElement('td');
-        tdFeatureTags.setAttribute('align', 'center');
-        tdFeatureTagsTitle = document.createTextNode('素性');
-        tdFeatureTags.append(tdFeatureTagsTitle);
-        tr.appendChild(tdFeatureTags);
-
         thead.appendChild(tr);
         const tbody = document.createElement('tbody');
         for (let ti = 0; ti < this.bnst_num; ti++) {
@@ -893,7 +829,7 @@ var RelationFrame = function () {
                 } else {
                     td.id = `tag${ti}_${j}`;
                     td.setAttribute('align', 'center');
-                    if (kaku == 'メモ') {
+                    if (kaku === 'メモ') {
                         var title = null;
                         td.innerHTML =
                             `<input type="text" name="name" id="${ti}` +
@@ -908,7 +844,7 @@ var RelationFrame = function () {
                         // タグ
                         titleText = this.make_string(ti, this.caseName[j]);
 
-                        if (kaku == 'メモ') {
+                        if (kaku === 'メモ') {
                             var tag = this.contextinfo[ti][kaku];
                             var val = tag.Data[0].data;
 
@@ -922,7 +858,7 @@ var RelationFrame = function () {
                             title.innerHTML = titleText;
                         }
 
-                        if (kaku == 'NE') {
+                        if (kaku === 'NE') {
                             td.style.backgroundColor = ColorNE;
                         }
                     }
@@ -939,57 +875,11 @@ var RelationFrame = function () {
 
                 tr.appendChild(td);
             }
-
-            let tdFeatureTags = document.createElement('td');
-
-            let featureTagsDropdown = document.createElement('ul');
-            featureTagsDropdown.id = `featureTagsDropdown${ti}`;
-            featureTagsDropdown.className = 'dropdown';
-
-            let addFeatureTagsButton = document.createElement('li');
-            let addFeatureTagsButtonLabel = document.createTextNode('\u00A0\u00A0+\u00A0\u00A0');
-
-            let featureTagsMenu = document.createElement('ul');
-            featureTagsMenu.id = `featureTagsMenu${ti}`;
-            featureTagsMenu.className = 'tool';
-
-            addFeatureTagsButton.appendChild(addFeatureTagsButtonLabel);
-            addFeatureTagsButton.appendChild(featureTagsMenu);
-            featureTagsDropdown.appendChild(addFeatureTagsButton);
-            tdFeatureTags.appendChild(featureTagsDropdown);
-
-            let featureTagsInput = document.createElement('input');
-            featureTagsInput.id = `featureTagsInput${ti}`;
-            tdFeatureTags.appendChild(featureTagsInput);
-
-            tr.appendChild(tdFeatureTags);
             tbody.appendChild(tr);
         }
         table.appendChild(thead);
         table.appendChild(tbody);
         document.getElementById('out').appendChild(table);
-
-        this.featureTagInputs = [];
-        for (let ti = 0; ti < this.bnst_num; ti++) {
-            let tags = this.extractFeatureTags(this.bnst_data_f[ti]);
-            this.initFeatureTagsDropdown(`featureTagsMenu${ti}`, tags);
-
-            let relFrame = this;
-            this.featureTagInputs[ti] = new TagsInput({
-                selector: `featureTagsInput${ti}`,
-                duplicate: false,
-                max: this.featureTags.length,
-                deleteTagCallback: function (tag, indexTag, tags) {
-                    let dropdownElement = tag.parentElement.parentElement.children[0];
-                    let row = parseInt(dropdownElement.id.substring('featureTagsDropdown'.length));
-                    let tagText = tag.childNodes[0].textContent;
-                    $(dropdownElement.firstChild.children[0]).find(`a:contains('${tagText}')`).removeClass('disabled');
-                    tags.splice(tags.indexOf(tagText), 1);
-                    relFrame.write_bnst_feature_for_feature_tags(row, tags);
-                },
-            });
-            this.featureTagInputs[ti].addData(tags);
-        }
 
         // 改行させないため動的に min-width をセット
         // 一旦改行が発生しないくらいの幅を設定てから解像度にあわせてmaxWidthを取得
@@ -1013,7 +903,7 @@ var RelationFrame = function () {
 
         let wrongTreeState = false;
         this.bnstTreeMap = new Array();
-        for (var i = 0; i < tree_lines.length; i++) {
+        for (let i = 0; i < tree_lines.length; i++) {
             const m = tree_lines[i].match(/<span class="bnst" id="bnst([0-9]+)">/);
             if (m[1] != i) {
                 wrongTreeState = true;
@@ -1032,7 +922,7 @@ var RelationFrame = function () {
 
         //console.log(tree_lines);
 
-        for (var i = 0; i < this.bnst_num; i++) {
+        for (let i = 0; i < this.bnst_num; i++) {
             $(`div#tree${i}`).html(tree_lines[i]);
             //this.setBnstContextEvent(i);
         }
@@ -1046,14 +936,14 @@ var RelationFrame = function () {
         let bmark;
         let crossflag;
 
-        for (var i = 0; i < this.bnst_num; i++) {
+        for (let i = 0; i < this.bnst_num; i++) {
             active_column[i] = 0;
         }
 
         const last_id = this.bnst_num - 1;
         $(`div#bnst${last_id}.title.bnst`).css('background-color', BnstColor);
 
-        for (i = 0; i < this.bnst_num - 1; i++) {
+        for (let i = 0; i < this.bnst_num - 1; i++) {
             if (this.bnst_data_dpnd[i] == -1) {
                 // color = 'green';
                 // $("div#" + i + ".title.bnst").css('background-color', 'green');
@@ -1062,7 +952,7 @@ var RelationFrame = function () {
                 $(`div#bnst${i}.title.bnst`).css('background-color', BnstColor);
             }
 
-            para_row = this.bnst_data_type[i] == 'P' ? 1 : 0;
+            para_row = this.bnst_data_type[i] === 'P' ? 1 : 0;
 
             bmark = this.orig_bnst_data_end[i] == 0 ? 1 : 0;
 
@@ -1072,55 +962,55 @@ var RelationFrame = function () {
                 const elem = $(id)[0];
 
                 if (j < this.bnst_data_dpnd[i]) {
-                    if (active_column[j] == 2) {
+                    if (active_column[j] === 2) {
                         crossflag = 1;
-                        elem.innerHTML = para_row == 1 ? '╋' : '╂';
+                        elem.innerHTML = para_row === 1 ? '╋' : '╂';
                         elem.className = 'tree vertical edit';
                         elem.style.backgroundColor = BnstAnotherColor;
-                    } else if (active_column[j] == 1) {
+                    } else if (active_column[j] === 1) {
                         crossflag = 1;
-                        elem.innerHTML = para_row == 1 ? '┿' : '┼';
+                        elem.innerHTML = para_row === 1 ? '┿' : '┼';
                         elem.className = 'tree vertical edit';
                         elem.style.backgroundColor = BnstAnotherColor;
                     } else {
-                        elem.innerHTML = para_row == 1 ? '━' : '─';
+                        elem.innerHTML = para_row === 1 ? '━' : '─';
                         elem.className = 'tree';
                         elem.style.backgroundColor = '';
                     }
                 } else if (j == this.bnst_data_dpnd[i]) {
-                    if (this.bnst_data_type[i] == 'P') {
+                    if (this.bnst_data_type[i] === 'P') {
                         elem.innerHTML = 'Ｐ';
-                    } else if (this.bnst_data_type[i] == 'I') {
+                    } else if (this.bnst_data_type[i] === 'I') {
                         elem.innerHTML = 'Ｉ';
-                    } else if (this.bnst_data_type[i] == 'A') {
+                    } else if (this.bnst_data_type[i] === 'A') {
                         elem.innerHTML = 'Ａ';
                     } else {
-                        if (active_column[j] == 2) {
+                        if (active_column[j] === 2) {
                             elem.innerHTML = '┨';
                         } else {
-                            elem.innerHTML = active_column[j] == 1 ? '┤' : '┐';
+                            elem.innerHTML = active_column[j] === 1 ? '┤' : '┐';
                         }
                         elem.className = 'tree vertical edit';
                     }
 
-                    if (active_column[j] == 2) {
+                    if (active_column[j] === 2) {
                         //すでにＰからの太線があればそのまま
                     } else if (para_row) {
                         active_column[j] = 2;
                     } else {
                         active_column[j] = 1;
                     }
-                } else if (active_column[j] == 2) {
+                } else if (active_column[j] === 2) {
                     elem.innerHTML = '┃';
                     elem.className = 'tree vertical edit';
-                } else if (active_column[j] == 1) {
+                } else if (active_column[j] === 1) {
                     elem.innerHTML = '│';
                     elem.className = 'tree vertical edit';
                 } else {
                     elem.innerHTML = '　';
                     elem.className = 'tree';
                 }
-                if (bmark == 1 && crossflag == 0) {
+                if (bmark === 1 && crossflag === 0) {
                     elem.style.backgroundColor = BnstColor;
                     if (this.orig_bnst_data_end[j] == 1) {
                         bmark = 0;
@@ -1240,10 +1130,10 @@ var RelationFrame = function () {
                 // 品詞情報取得
                 var label = mrph_data_all[m_num][3];
                 if (
-                    mrph_data_all[m_num][5] == '固有名詞' ||
-                    mrph_data_all[m_num][5] == '人名' ||
-                    mrph_data_all[m_num][5] == '地名' ||
-                    mrph_data_all[m_num][5] == '組織名'
+                    mrph_data_all[m_num][5] === '固有名詞' ||
+                    mrph_data_all[m_num][5] === '人名' ||
+                    mrph_data_all[m_num][5] === '地名' ||
+                    mrph_data_all[m_num][5] === '組織名'
                 ) {
                     label = mrph_data_all[m_num][5];
                 }
@@ -1339,14 +1229,14 @@ var RelationFrame = function () {
                     sentence_table[j - 1] += mrph_data_all[m_num][0];
                 }
                 // 品詞情報取得
-                var label;
-                var mark;
+                let label;
+                let mark;
                 label = mrph_data_all[m_num][3];
                 if (
-                    mrph_data_all[m_num][5] == '固有名詞' ||
-                    mrph_data_all[m_num][5] == '人名' ||
-                    mrph_data_all[m_num][5] == '地名' ||
-                    mrph_data_all[m_num][5] == '組織名'
+                    mrph_data_all[m_num][5] === '固有名詞' ||
+                    mrph_data_all[m_num][5] === '人名' ||
+                    mrph_data_all[m_num][5] === '地名' ||
+                    mrph_data_all[m_num][5] === '組織名'
                 ) {
                     label = mrph_data_all[m_num][5];
                 }
@@ -1461,11 +1351,11 @@ var RelationFrame = function () {
 
             //構文木の線引き
             let para_row;
-            const active_column = new Array();
-            var bmark;
-            var crossflag;
+            const active_column = [];
+            let bmark;
+            let crossflag;
 
-            for (var i = 0; i < bnst_num; i++) {
+            for (let i = 0; i < bnst_num; i++) {
                 active_column[i] = 0;
             }
 
@@ -1475,7 +1365,7 @@ var RelationFrame = function () {
                     $(`div#${si}_${i}.title_bnst`).css('background-color', BnstAnotherColor);
                 }
 
-                para_row = bnst_data_type[i] == 'P' ? 1 : 0;
+                para_row = bnst_data_type[i] === 'P' ? 1 : 0;
 
                 bmark = orig_bnst_data_end[i] == 0 ? 1 : 0;
 
@@ -1485,54 +1375,54 @@ var RelationFrame = function () {
                     const elem = $(id)[0];
 
                     if (j < bnst_data_dpnd[i]) {
-                        if (active_column[j] == 2) {
+                        if (active_column[j] === 2) {
                             crossflag = 1;
-                            elem.innerHTML = para_row == 1 ? '╋' : '╂';
+                            elem.innerHTML = para_row === 1 ? '╋' : '╂';
                             elem.className = 'tree vertical';
                             elem.style.backgroundColor = BnstAnotherColor;
-                        } else if (active_column[j] == 1) {
+                        } else if (active_column[j] === 1) {
                             crossflag = 1;
-                            elem.innerHTML = para_row == 1 ? '┿' : '┼';
+                            elem.innerHTML = para_row === 1 ? '┿' : '┼';
                             elem.className = 'tree vertical';
                             elem.style.backgroundColor = BnstAnotherColor;
                         } else {
-                            elem.innerHTML = para_row == 1 ? '━' : '─';
+                            elem.innerHTML = para_row === 1 ? '━' : '─';
                             elem.className = 'tree';
                         }
-                    } else if (j == bnst_data_dpnd[i]) {
-                        if (bnst_data_type[i] == 'P') {
+                    } else if (j === bnst_data_dpnd[i]) {
+                        if (bnst_data_type[i] === 'P') {
                             elem.innerHTML = 'Ｐ';
-                        } else if (bnst_data_type[i] == 'I') {
+                        } else if (bnst_data_type[i] === 'I') {
                             elem.innerHTML = 'Ｉ';
-                        } else if (bnst_data_type[i] == 'A') {
+                        } else if (bnst_data_type[i] === 'A') {
                             elem.innerHTML = 'Ａ';
                         } else {
-                            if (active_column[j] == 2) {
+                            if (active_column[j] === 2) {
                                 elem.innerHTML = '┨';
                             } else {
-                                elem.innerHTML = active_column[j] == 1 ? '┤' : '┐';
+                                elem.innerHTML = active_column[j] === 1 ? '┤' : '┐';
                             }
                             elem.className = 'tree vertical';
                         }
 
-                        if (active_column[j] == 2) {
+                        if (active_column[j] === 2) {
                             //すでにＰからの太線があればそのまま
                         } else if (para_row) {
                             active_column[j] = 2;
                         } else {
                             active_column[j] = 1;
                         }
-                    } else if (active_column[j] == 2) {
+                    } else if (active_column[j] === 2) {
                         elem.innerHTML = '┃';
                         elem.className = 'tree vertical';
-                    } else if (active_column[j] == 1) {
+                    } else if (active_column[j] === 1) {
                         elem.innerHTML = '│';
                         elem.className = 'tree vertical';
                     } else {
                         elem.innerHTML = '　';
                         elem.className = 'tree';
                     }
-                    if (bmark == 1 && crossflag == 0 && orig_bnst_data_end[j] == 1) {
+                    if (bmark === 1 && crossflag === 0 && orig_bnst_data_end[j] == 1) {
                         bmark = 0;
                     }
                 }
@@ -1551,9 +1441,9 @@ var RelationFrame = function () {
         if (tagData.dependant < 0) {
             return;
         }
-        var si = 0;
-        for (var si = 0; si <= this.currentShowIndex; si++) {
-            if (tagData.SID == inputFileList[si]) {
+        let si = 0;
+        for (si = 0; si <= this.currentShowIndex; si++) {
+            if (tagData.SID === inputFileList[si]) {
                 break;
             }
         }
@@ -1611,9 +1501,7 @@ var RelationFrame = function () {
         });
 
         const selectedId = $(cell).attr('id');
-        if (!selectedId) return;
-
-        if (kaku != 'メモ') {
+        if (kaku !== 'メモ') {
             myRelationFrame.currentCellId = selectedId;
         }
 
@@ -1625,13 +1513,13 @@ var RelationFrame = function () {
         $('.active').removeClass('active');
         $('.active-ne').removeClass('active-ne');
 
-        if (kaku == 'NE') {
+        if (kaku === 'NE') {
             $('#dialogdemo1').dialog('close');
             this.populate_ne_tag_edit(i, kaku);
             $('#dialogdemone').dialog({ modal: false });
             $('#dialogdemone').dialog('open');
             $(cell).addClass('active-ne');
-        } else if (kaku != 'メモ') {
+        } else if (kaku !== 'メモ') {
             $('#dialogdemone').dialog('close');
             this.populate_tag_edit();
             $('#dialogdemo1').dialog({ modal: false });
@@ -1655,9 +1543,9 @@ var RelationFrame = function () {
         $('#ne_tag_input').empty();
 
         $('#ne_tag_list').append('<ul>');
-        for (var i = 0; i < NETags.length; i++) {
+        for (let i = 0; i < NETags.length; i++) {
             //$('#ne_tag_list').append('<li><a class="ne_tag">' +  NETags[i] + '</a></li>')
-            var checked = '';
+            let checked = '';
             if (
                 this.contextinfo[sidx] &&
                 this.contextinfo[sidx][kaku] &&
@@ -1666,7 +1554,7 @@ var RelationFrame = function () {
                 checked = 'checked="checked"';
             }
             $('#ne_tag_list').append(
-                `<li><input type="radio" class="ne_radio" name="ne_radio" ${checked}id="` +
+                `<li><input type="radio" class="ne_radio" name="ne_radio" ${checked} id="` +
                     i +
                     '"><a class="ne_tag">' +
                     NETags[i] +
@@ -1683,23 +1571,23 @@ var RelationFrame = function () {
         }
         $('#ne_tag_list').append('</ul>');
         const inputList = this.ne_candidate(sidx);
-        for (var i = 0; i < inputList.length; i++) {
+        for (let i = 0; i < inputList.length; i++) {
             $('#ne_tag_input').append(
                 `<p><input type="submit"  class="ne_button" id="ne_button_${i}" value="${inputList[i]}"/></p>`,
             );
         }
 
         let oldtag;
-        let oldtext = '';
+        let oldText = '';
         if (this.contextinfo[sidx] && typeof this.contextinfo[sidx][kaku] != 'undefined') {
             m = this.contextinfo[sidx][kaku].Data[0].data.match(/([^:]+):(.+)/);
             oldtag = m[1];
-            oldtext = m[2];
+            oldText = m[2];
         }
 
         $('#ne_tag_input').append(
             '<p><input type="text" name="name" id="ne_edit_text" style="width: 60%" class="text ui-widget-content ui-corner-all" value="' +
-                oldtext +
+                oldText +
                 '"/><img class="setBtn" src="css/images/set_of.png" onmouseover="this.src=\'css/images/set_on.png\'" onmouseout="this.src=\'css/images/set_of.png\'" onclick="ne_mode_free()" id="ne_free_input"/></p>',
         );
     };
@@ -1714,8 +1602,8 @@ var RelationFrame = function () {
         $('#ne_opt_tag_list').empty();
         //$('#ne_opt_tag_list').append('<fieldset>');
         let genHtml = '<fieldset>';
-        for (var i = 0; i < NE_OPT_TAG.length; i++) {
-            var checked = '';
+        for (let i = 0; i < NE_OPT_TAG.length; i++) {
+            let checked = '';
             if (
                 this.contextinfo[sidx] &&
                 this.contextinfo[sidx][`NE-OPT-${NE_OPT_TAG[i]}`] &&
@@ -1725,7 +1613,7 @@ var RelationFrame = function () {
             }
 
             genHtml +=
-                `<li><input type="checkbox" class="ne_opt_check" name="ne_check" ${checked}  id="` +
+                `<li><input type="checkbox" class="ne_opt_check" name="ne_check" ${checked} id="` +
                 i +
                 '"><a class="ne_tag">' +
                 NE_OPT_TAG[i] +
@@ -1733,8 +1621,8 @@ var RelationFrame = function () {
         }
 
         genHtml += '<p>Type:</p>';
-        for (var i = 0; i < NE_OPT_TYPE.length; i++) {
-            var checked = '';
+        for (let i = 0; i < NE_OPT_TYPE.length; i++) {
+            let checked = '';
             if (
                 this.contextinfo[sidx] &&
                 this.contextinfo[sidx]['NE-OPT-TYPE'] &&
@@ -1744,7 +1632,7 @@ var RelationFrame = function () {
             }
 
             genHtml +=
-                `&nbsp;<input type="radio" class="ne_opt_radio" name="ne_opt_radio" ${checked}  id="` +
+                `&nbsp;<input type="radio" class="ne_opt_radio" name="ne_opt_radio" ${checked} id="` +
                 i +
                 '"><a class="ne_tag">' +
                 NE_OPT_TYPE[i] +
@@ -1797,7 +1685,7 @@ var RelationFrame = function () {
                     (tag.semiequal ? '[≒]' : '') +
                     '</a></li>',
             );
-            if (kaku == '=') {
+            if (kaku === '=') {
                 $('h3.equalopt').show();
                 $('#tag_equalopt1_list').append(
                     `<li><a href="#" class="equalopt1" id="${k}">` +
@@ -1849,7 +1737,7 @@ var RelationFrame = function () {
         }
 
         // フリー入力フォームの値が空の場合
-        if (tag_name == '') {
+        if (tag_name === '') {
             alert('タグを入力してください');
             return;
         }
@@ -1860,11 +1748,11 @@ var RelationFrame = function () {
         const bnst_index = parseInt(m[1], 10); // + 1;
         const kaku = this.caseName[m[2]];
 
-        if (tag_name == '不特定:人') {
+        if (tag_name === '不特定:人') {
             tag_name += $('#people_count').val();
-        } else if (tag_name == '不特定:物') {
+        } else if (tag_name === '不特定:物') {
             tag_name += $('#things_count').val();
-        } else if (tag_name == '不特定:状況') {
+        } else if (tag_name === '不特定:状況') {
             tag_name += $('#status_count').val();
         }
 
@@ -1884,7 +1772,7 @@ var RelationFrame = function () {
         );
 
         // 特殊タグを含むかどうかによって色を設定
-        color = this.check_have_extra_tag(this.contextinfo, bnst_index, kaku) ? 'red' : 'black';
+        const color = this.check_have_extra_tag(this.contextinfo, bnst_index, kaku) ? 'red' : 'black';
         $(`#${tag_id} > span`).css('color', color);
     };
 
@@ -1957,7 +1845,7 @@ var RelationFrame = function () {
         this.rewrite_bnst_feature_for_ellipsis(i, kaku, -1);
 
         // 色の更新
-        color = this.check_have_extra_tag(this.contextinfo, i, kaku) ? 'red' : 'black';
+        const color = this.check_have_extra_tag(this.contextinfo, i, kaku) ? 'red' : 'black';
 
         // 表示文字列の更新
         this.make_string(i, kaku);
@@ -1971,8 +1859,8 @@ var RelationFrame = function () {
 
         const table = document.getElementsByTagName('table')[0];
         const col = table.rows[0].cells.length;
-        for (j = 0; j < col - 1; j++) {
-            if (table.rows[0].cells[j].textContent == title) {
+        for (j = 0; j < col; j++) {
+            if (table.rows[0].cells[j].textContent === title) {
                 return;
             }
         }
@@ -1981,19 +1869,16 @@ var RelationFrame = function () {
         // 格の数を更新する
         this.caseBoxNum += 1;
 
-        // newCol must be inserted before Memo col if it's shown or before the tags col if it's not.
-        let newCol = col - 2;
-        if (table.rows[0].cells[newCol].textContent != 'メモ') newCol += 1;
-        const isMemo = title == 'メモ';
+        const isMemo = title === 'メモ';
         for (i = 0; i < table.rows.length; i++) {
             // 全ての行に１列ずつ追加
-            const newCell = table.rows[i].insertCell(newCol);
+            const newCell = table.rows[i].insertCell(-1);
             newCell.align = 'center';
             // タイトル行
-            if (i == 0) {
+            if (i === 0) {
                 newCell.innerHTML = title;
             } else {
-                newCell.id = `tag${i - 1}_${newCol}`;
+                newCell.id = `tag${i - 1}_${col}`;
                 newCell.setAttribute('class', 'tag');
                 newCell.innerHTML = isMemo
                     ? `<input type="text" name="name" id="${i - 1}` +
@@ -2019,11 +1904,11 @@ var RelationFrame = function () {
     // weak_suffixのチェック
     this.check_weak_suffix = function (m) {
         if (
-            m[3] == '接尾辞' &&
+            m[3] === '接尾辞' &&
             !m[2].match(STRONG_SUFFIX) &&
-            m[5] != '名詞性名詞助数辞' &&
-            m[5] != '形容詞性述語接尾辞' &&
-            m[5] != '動詞性接尾辞'
+            m[5] !== '名詞性名詞助数辞' &&
+            m[5] !== '形容詞性述語接尾辞' &&
+            m[5] !== '動詞性接尾辞'
         ) {
             return 1;
         }
@@ -2032,10 +1917,10 @@ var RelationFrame = function () {
 
     // メモタグ
     this.memo_mode = function (i, input, kaku) {
-        let oldtext = '';
+        let oldText = '';
         let isUpdate = false;
         if (this.contextinfo[i] && this.contextinfo[i][kaku]) {
-            oldtext = this.contextinfo[i][kaku].Data[0].data;
+            oldText = this.contextinfo[i][kaku].Data[0].data;
             isUpdate = true;
         }
 
@@ -2046,7 +1931,7 @@ var RelationFrame = function () {
             delete this.contextinfo[i][kaku];
         }
         // 文字列が編集されたとき
-        else if (oldtext != input) {
+        else if (oldText !== input) {
             modify_flag = '*';
             // feature の更新
             if (isUpdate) {
@@ -2095,16 +1980,16 @@ var RelationFrame = function () {
         // $case は 'NE'
         let m2;
         let oldtag;
-        let oldtext = '';
+        let oldText = '';
         if (this.contextinfo[i] && typeof this.contextinfo[i][kaku] != 'undefined') {
             m2 = this.contextinfo[i][kaku].Data[0].data.match(/([^:]+):(.+)/);
             oldtag = m2[1];
-            oldtext = m2[2];
+            oldText = m2[2];
         }
 
         if (netag) {
             // 変更なし
-            if ((input === oldtext && netag === oldtag) || (!input && !oldtext)) {
+            if ((input === oldText && netag === oldtag) || (!input && !oldText)) {
                 return;
             }
 
@@ -2164,8 +2049,8 @@ var RelationFrame = function () {
         // 文字列がなくなったとき
         if (isDelete || !input) {
             this.delete_bnst_feature_for_ne(i);
-            //this.renew_flag_for_ne(i, j, oldtext, 1);
-            this.delete_mrph_feature_for_ne(i, oldtext);
+            //this.renew_flag_for_ne(i, j, oldText, 1);
+            this.delete_mrph_feature_for_ne(i, oldText);
             delete this.contextinfo[i][kaku];
             $(`#${tag_id} > span`).css('color', 'black');
 
@@ -2178,10 +2063,10 @@ var RelationFrame = function () {
 
         // 文字列が編集されたとき
         // feature の更新
-        if (oldtext) {
+        if (oldText) {
             this.delete_bnst_feature_for_ne(i);
-            //this.renew_flag_for_ne(i, j, oldtext, 1);
-            this.delete_mrph_feature_for_ne(i, oldtext);
+            //this.renew_flag_for_ne(i, j, oldText, 1);
+            this.delete_mrph_feature_for_ne(i, oldText);
             delete this.contextinfo[i][kaku];
         }
         this.write_bnst_feature_for_ne(i, input, netag);
@@ -2244,8 +2129,8 @@ var RelationFrame = function () {
     this.write_mrph_feature_for_ne = function (current_bnst, ne, tag) {
         let my_mrph_num = this.bnst_data_start[current_bnst + 1] - 1;
         let mrph = this.mrph_data_all[my_mrph_num][0];
-        var re = new RegExp(`${escapeRegExp(mrph)}$`);
-        while (my_mrph_num > 0 && ne.search(re) == -1) {
+        let re = new RegExp(`${escapeRegExp(mrph)}$`);
+        while (my_mrph_num > 0 && ne.search(re) === -1) {
             // TODO added my_mrph_num >= 0. Is it ok?
             my_mrph_num--;
             mrph = this.mrph_data_all[my_mrph_num][0];
@@ -2257,7 +2142,7 @@ var RelationFrame = function () {
         if (my_mrph_num <= 0) {
             return;
         }
-        var re = new RegExp(`${escapeRegExp(mrph)}$`);
+        re = new RegExp(`${escapeRegExp(mrph)}$`);
         ne = ne.replace(re, '');
         my_mrph_num--;
         mrph = this.mrph_data_all[my_mrph_num][0];
@@ -2291,7 +2176,7 @@ var RelationFrame = function () {
         this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(/<NE-OPTIONAL:[^\>]*\>/, '');
         if (
             !this.contextinfo[current_bnst][kaku] ||
-            this.contextinfo[current_bnst][kaku].Data[0].data.search('OPTIONAL') == -1
+            this.contextinfo[current_bnst][kaku].Data[0].data.search('OPTIONAL') === -1
         ) {
             return;
         }
@@ -2422,27 +2307,27 @@ var RelationFrame = function () {
             stop = cand_b > b_strt.length ? mn_all - 1 : b_strt[cand_b + 1] - 1;
 
             // 開始点
-            for (var a = start; a <= stop; a++) {
+            for (let a = start; a <= stop; a++) {
                 if (
-                    m_d_all[a][3] != '特殊' || // 特殊以外
-                    (m_d_all[a][5] == '記号' && // 特殊なら記号だけ可
-                        m_d_all[a][0] != '・')
+                    m_d_all[a][3] !== '特殊' || // 特殊以外
+                    (m_d_all[a][5] === '記号' && // 特殊なら記号だけ可
+                        m_d_all[a][0] !== '・')
                 ) {
                     // ただし、"・"は除く
                     start = a;
                     break;
                 }
             }
-            for (var a = stop; a >= start; a--) {
+            for (let a = stop; a >= start; a--) {
                 if (
                     (!m_d_all[a][3].match(/^(?:特殊|助詞|助動詞|判定詞)$/) && !this.check_weak_suffix(m_d_all[a])) ||
-                    (m_d_all[a][3] == '特殊' && m_d_all[a][5] == '記号' && m_d_all[a][0] != '・')
+                    (m_d_all[a][3] === '特殊' && m_d_all[a][5] === '記号' && m_d_all[a][0] !== '・')
                 ) {
                     stop = a;
                     break;
                 }
             }
-            for (var a = stop; a >= start; a--) {
+            for (let a = stop; a >= start; a--) {
                 if (!m_d_all[a][3].match(/^(特殊)$/)) {
                     stop = a;
                     break;
@@ -2525,15 +2410,15 @@ var RelationFrame = function () {
             equalStr += tagData.semiequal ? '≒' : '';
 
             // 不特定など
-            if (kaku == 'メモ') {
+            if (kaku === 'メモ') {
                 this.bnst_data_f[current_bnst] += `<memo text="${tagData.data}"/>`;
             } else {
-                var mode = '';
+                let mode = '';
                 if (tagi > 0 && tagData.andor != '') {
                     mode = `" mode="${tagData.andor}`;
                 }
 
-                var sentence = tagData.dependant == -1 ? '' : tagData.SID;
+                let sentence = tagData.dependant == -1 ? '' : tagData.SID;
                 this.bnst_data_f[current_bnst] += sentence
                     ? `<rel type="${kaku}${equalStr}${mode}` +
                       '" target="' +
@@ -2581,14 +2466,14 @@ var RelationFrame = function () {
 
         // 最後に追加したものを編集する
         const tagData = this.contextinfo[i][kaku].Data[tag_index];
-        const oldtext = tagData.data;
+        const oldText = tagData.data;
 
         // 文字列がなくなったとき
-        if (input.length == 0) {
+        if (input.length === 0) {
             //&delete_mode($i, $j, $case, $mark); // TODO
         }
         // 文字列が編集されたとき
-        else if (oldtext != input) {
+        else if (oldText !== input) {
             // feature の更新
             this.rewrite_bnst_feature_for_ellipsis(
                 i,
@@ -2615,7 +2500,7 @@ var RelationFrame = function () {
 
         modify_flag = '*';
         const tagData = this.contextinfo[i][kaku].Data[tag_index];
-        const target = tagData.data;
+        // const target = tagData.data;
 
         if (equalopt) {
             tagData.equalopt = tagData.equalopt == equalopt ? 0 : equalopt;
@@ -2647,7 +2532,7 @@ var RelationFrame = function () {
         let re;
 
         const kakuEqual = kaku.replace(/\(/g, '\\(').replace(/\)/g, '\\)') + EQUAL_OPT_DELETE;
-        re = kaku == 'メモ' ? new RegExp('<memo text=".*?"/>') : new RegExp(`\<rel type="${kakuEqual}".*?\/\>`, 'g');
+        re = kaku === 'メモ' ? new RegExp('<memo text=".*?"/>') : new RegExp(`\<rel type="${kakuEqual}".*?\/\>`, 'g');
 
         this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(re, '');
 
@@ -2680,18 +2565,12 @@ var RelationFrame = function () {
             var re = new RegExp(`${escapeRegExp(mrph)}$`);
             ne = ne.replace(re, '');
             if (this.mrph_data_all[my_mrph_num].length > 12 && this.mrph_data_all[my_mrph_num][12])
-                this.mrph_data_all[my_mrph_num][12] = this.mrph_data_all[my_mrph_num][12].replace(
-                    /\<(NE:[^\>]+)\>/,
-                    '',
-                );
+                this.mrph_data_all[my_mrph_num][12] = this.mrph_data_all[my_mrph_num][12].replace(/<(NE:[^>]+)>/, '');
             // Originally, only element 12 was updated.
             // For some data though, it's also needed to cleanup element 11 to remove all traces
             // of the NE tag.
             if (this.mrph_data_all[my_mrph_num].length > 11 && this.mrph_data_all[my_mrph_num][11])
-                this.mrph_data_all[my_mrph_num][11] = this.mrph_data_all[my_mrph_num][11].replace(
-                    /\<(NE:[^\>]+)\>/,
-                    '',
-                );
+                this.mrph_data_all[my_mrph_num][11] = this.mrph_data_all[my_mrph_num][11].replace(/<(NE:[^>]+)>/, '');
 
             my_mrph_num--;
             if (my_mrph_num < 0) {
@@ -2699,18 +2578,6 @@ var RelationFrame = function () {
             }
             mrph = this.mrph_data_all[my_mrph_num][0];
         }
-    };
-
-    this.write_bnst_feature_for_feature_tags = function (current_bnst, tags) {
-        modify_flag = '*';
-
-        // Remove previous tags.
-        for (let i = 0; i < this.featureTags.length; i++)
-            this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(`<${this.featureTags[i]}>`, '');
-
-        // Add current tags.
-        let strTags = tags.map(tag => `<${tag}>`).join('');
-        this.bnst_data_f[current_bnst] += strTags;
     };
 
     // タグ表示文字列更新、featureを返却
@@ -2726,7 +2593,7 @@ var RelationFrame = function () {
 
                     let nprev = 0;
                     for (let j = this.currentShowIndex; j >= 0; j--) {
-                        if (tagData.SID == inputFileList[j]) {
+                        if (tagData.SID === inputFileList[j]) {
                             break;
                         }
                         nprev++;
@@ -2756,7 +2623,7 @@ var RelationFrame = function () {
             const $span = $('span', tag_id);
             $span.html(bnst_f);
 
-            color = this.check_have_extra_tag(this.contextinfo, current_bnst, kaku) ? 'red' : 'black';
+            const color = this.check_have_extra_tag(this.contextinfo, current_bnst, kaku) ? 'red' : 'black';
             $span.css('color', color);
 
             $(`td${tag_id}`).css('background-color', '');
@@ -2803,7 +2670,7 @@ var RelationFrame = function () {
             }
 
             // date = strftime("%Y/%m/%d", localtime);
-            var date = new Date();
+            const date = new Date();
             const year = date.getFullYear();
             let month = date.getMonth() + 1;
             let day = date.getDate();
@@ -2813,14 +2680,14 @@ var RelationFrame = function () {
             if (day < 10) {
                 day = `0${day}`;
             }
-            var date = `${year}/${month}/${day}`;
+            const date_str = `${year}/${month}/${day}`;
 
             const output_lines = [];
 
             // info
             this.fileInfo = this.fileInfo.match(/MOD:/)
-                ? this.fileInfo.replace(/MOD:[^ ]*/, `MOD:${date}`)
-                : `${this.fileInfo} MOD:${date}`;
+                ? this.fileInfo.replace(/MOD:[^ ]*/, `MOD:${date_str}`)
+                : `${this.fileInfo} MOD:${date_str}`;
             // memo
             const text = $('#memo').val();
             if (text != undefined) {
@@ -2837,7 +2704,7 @@ var RelationFrame = function () {
 
             let output_sentence = '';
             let j = 0;
-            for (var i = 0; i < this.mrph_num; i++) {
+            for (let i = 0; i < this.mrph_num; i++) {
                 if (this.mrph_data_start[i] == 1) {
                     var bline = null;
                     var tline = null;
@@ -2878,7 +2745,7 @@ var RelationFrame = function () {
                 }
 
                 const mrph = this.mrph_data_all[i];
-                output_sentence += LANG == 'en' ? `${mrph[0]} ` : mrph[0];
+                output_sentence += LANG === 'en' ? `${mrph[0]} ` : mrph[0];
                 if (
                     this.mrph_data_all[i][0] === '' ||
                     this.mrph_data_all[i][1] === '' ||
@@ -2902,7 +2769,7 @@ var RelationFrame = function () {
             // console.log(output_lines.join("\n"));
             output_lines.push('EOS');
 
-            if (output_sentence != this.input_sentence) {
+            if (output_sentence !== this.input_sentence) {
                 alert(
                     '入力データと修正データが不整合です.\n【入力データ】' +
                         this.input_sentence +
