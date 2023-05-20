@@ -7,7 +7,7 @@ body {
     /*background-image: url('background.jpg');*/
     font-size: 14px;
     font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
 
 h3 {
@@ -16,7 +16,6 @@ h3 {
     font-size: 16px;
     color: #444444;
 }
-
 
 #page-wrap {
     width: 800px;
@@ -46,7 +45,7 @@ p {
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
-    background-color: #DDDDDD;
+    background-color: #dddddd;
     /* height:1em; */
     /*white-space:nowrap; */
 }
@@ -77,7 +76,7 @@ p {
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
-    background-color: #CBE1F1;
+    background-color: #cbe1f1;
     /* height:3em; */
 }
 
@@ -114,7 +113,6 @@ p {
     vertical-align: middle;
 }
 
-
 #findBtn {
     vertical-align: middle;
 }
@@ -127,7 +125,6 @@ p {
     margin: 10px;
 }
 
-
 .file-list input {
     margin-left: 20px;
     margin-top: 6px;
@@ -138,7 +135,6 @@ p {
     margin-top: 6px;
     font-weight: bold;
 }
-
 
 #menu-bar {
     margin: 20px;
@@ -161,24 +157,24 @@ p {
 }
 
 #editable-table {
-    border: 1px solid #FFFFFF;
+    border: 1px solid #ffffff;
 }
 
 #editable-table tr th {
-    border: solid 1px #FFFFFF;
+    border: solid 1px #ffffff;
     padding: 3px 5px;
     white-space: nowrap;
 }
 
 #editable-table tr td {
-    border: solid 1px #FFFFFF;
+    border: solid 1px #ffffff;
     padding: 3px 5px;
     line-height: 20px;
     white-space: nowrap;
 }
 
 #editable-table th {
-    background-color: #DDDDDD;
+    background-color: #dddddd;
     font-weight: bold;
     color: #444444;
 }
@@ -188,7 +184,7 @@ p {
 }
 
 #editable-table thead {
-    background-color: #DDDDDD;
+    background-color: #dddddd;
 }
 
 #saveBtn {
@@ -214,9 +210,9 @@ p {
 
 .sid {
     margin: 0;
-    border: 1px solid #EEEEEE;
+    border: 1px solid #eeeeee;
     padding: 10px 15px;
-    background-color: #DDDDDD;
+    background-color: #dddddd;
 }
 
 .tag {
@@ -224,19 +220,18 @@ p {
 }
 
 .tag:hover {
-
 }
 
 .neTag {
-    background-color: #F7E1BB;
+    background-color: #f7e1bb;
 }
 
 .active {
-    background-color: #DBD0E1;
+    background-color: #dbd0e1;
 }
 
 .active-ne {
-    background-color: #F1CD8D !important;
+    background-color: #f1cd8d !important;
 }
 
 .top.en {
@@ -261,11 +256,11 @@ p {
 }
 
 .tree.vertical {
-/ / font-size: 20 px;
+    font-size: 20 px;
 }
 
 .tree.vertical.edit {
-/ / font-size: 29 px;
+    font-size: 29 px;
 }
 
 .tree:hover {
@@ -277,15 +272,15 @@ p {
 }
 
 .treeCorner.selected {
-    background-color: #D0E9AB;
+    background-color: #d0e9ab;
 }
 
 .bnst {
-    background-color: #F9D9D5;
+    background-color: #f9d9d5;
 }
 
 .bnst:hover {
-    background-color: #F9C1BA;
+    background-color: #f9c1ba;
 }
 
 .nil {
@@ -304,7 +299,6 @@ a.kaku.disabled {
 a.kaku.disabled:hover {
     color: grey;
 }
-
 
 .title {
     float: left;
@@ -325,7 +319,7 @@ a.kaku.disabled:hover {
 
 /* #selectable .ui-selecting { background: #FECA40; } */
 #selectable .ui-selected {
-    background: #F39814;
+    background: #f39814;
     color: white;
 }
 
@@ -342,7 +336,6 @@ a.kaku.disabled:hover {
     font-size: 1.4em;
     height: 18px;
 }
-
 
 /*
   LEVEL ONE
@@ -391,7 +384,6 @@ ul.dropdown li:hover {
     position: relative;
 }
 
-
 /*
   LEVEL TWO
   */
@@ -430,7 +422,6 @@ ul.dropdown li:hover > ul {
     visibility: visible;
 }
 
-
 /*
  * layout
  */
@@ -451,7 +442,6 @@ button {
 .hidden {
     display: none;
 }
-
 
 /*
   pop-up
@@ -490,12 +480,12 @@ button {
 }
 
 .ui-layout-south ul li:hover {
-    background-color: #D0E9AB;
+    background-color: #d0e9ab;
 }
 
 .ui-layout-south ul li:hover ul {
     display: block;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
 
 ul.popup ul {
@@ -507,7 +497,7 @@ ul.popup ul {
 
 ul.popup ul li {
     font-weight: normal;
-    background: #FFFFFF;
+    background: #ffffff;
     color: #000000;
     border-bottom: 1px solid #ccc;
     float: none;
@@ -533,7 +523,6 @@ ul.popup li:hover > ul {
     visibility: visible;
 }
 
-
 /* 文節・形態素 */
 
 #wmrph-table {
@@ -544,7 +533,9 @@ ul.popup li:hover > ul {
     vertical-align: middle;
 }
 
-#wmrph-table tr, th, td {
+#wmrph-table tr,
+th,
+td {
     border: 0;
     padding: 2px 5px;
     vertical-align: middle;
@@ -561,17 +552,18 @@ ul.popup li:hover > ul {
 }
 
 .kb_bg {
-    background-color: #DDDDDD;
+    background-color: #dddddd;
     font-weight: bold;
     color: #444444;
 }
 
 .box {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border: 1px solid #000000;
 }
 
-.pos, .conj {
+.pos,
+.conj {
     cursor: pointer;
 }
 

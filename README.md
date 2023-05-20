@@ -20,6 +20,7 @@
 ## コーパスデータ設定
 
 - `cgi/cgi.conf の rootdir` 変数に、管理したいデータのパスを設定する。
+
   - デフォルトは`data/files`
 
 - データを設置する
@@ -33,6 +34,7 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 ```
 
 - `$rootdir/../out-html` というディレクトリを作っておく。
+
   - デフォルトは `data/out-html`
 
 - `left/right dependency` 対応版の、言語ごとの設定は `cgi/cgi_{ja,en,zh}.conf` に入力する。
@@ -47,10 +49,10 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 ## 起動
 
 1. ブラウザから対応する URL にアクセスする。
-    - right dependency、日本語のみに対応したツールは `http://xxx/<username>/annot/`
-    - left/right dependency の日本語、英語、中国語に対応したツールは `http://xxx/<username>/annot/{ja,en,zh}.html`
+   - right dependency、日本語のみに対応したツールは `http://xxx/<username>/annot/`
+   - left/right dependency の日本語、英語、中国語に対応したツールは `http://xxx/<username>/annot/{ja,en,zh}.html`
 2. ユーザ名、パスワードを入力し、データセットを選択する。
-    - `cgi/list.cgi` もしくは `cgi/list_{ja,en,zh}.cgi` 9 行目の PASSWD でユーザ名、パスワードを設定しておく必要がある。
+   - `cgi/list.cgi` もしくは `cgi/list_{ja,en,zh}.cgi` 9 行目の PASSWD でユーザ名、パスワードを設定しておく必要がある。
 3. 編集したい記事の編集ボタンを押すと HTML のページがロードされアノテーションツールが起動する。
 
 ## 操作方法
@@ -59,7 +61,7 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 
 - 「格追加」メニュー
 
-    メニュー項目から追加したい格を選択するとカラムが追加される
+  メニュー項目から追加したい格を選択するとカラムが追加される
 
 ### 検索
 
@@ -69,10 +71,12 @@ find /path/to/txt-files/ -type f | grep txt$ | xargs -t -l -P 3 bash ../../../sc
 ### 編集ページ
 
 - 構文木
+
   - 係り受け関係の表示。
   - 文節をクリックで形態素・文節情報画面を開く
 
 - タグ表示
+
   - タグの表示
   - セルをクリックで、タグ編集ダイアログを表示。
 
