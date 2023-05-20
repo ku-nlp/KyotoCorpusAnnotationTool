@@ -9,7 +9,7 @@ var JumanGrammer = function () {
 
     // 品詞情報と活用のcontext menuのclassのマッピング
     this.context_class_table = {};
-    this.direct_input_class = "conj-direct-input";
+    this.direct_input_class = 'conj-direct-input';
 
     const me = this;
 
@@ -24,7 +24,6 @@ var JumanGrammer = function () {
         // コンテキストメニュー
         this.setPosContextEvent();
         this.setConjContextEvent();
-
     };
 
     // me.doneNumが3になるまで再帰
@@ -42,56 +41,55 @@ var JumanGrammer = function () {
         // 品詞
         $.ajax({
             url: JUMAN_DATA_PATH + posDataFile[LANG],
-            type: "get",
+            type: 'get',
             dataType: 'html',
             success: this.parsePosData(),
             async: false,
             error: function (a, b, c) {
                 // console.log(c.toString());
-                alert("error:read pos data");
-            }
+                alert('error:read pos data');
+            },
         });
     };
 
     this.parsePosData = function () {
         const that = this;
         return function (data) {
-            const lines = data.split("\n");
+            const lines = data.split('\n');
             const num = lines.length;
             that.pos_data = [];
             for (let i = 0; i < num; i++) {
-                const array = lines[i].split(" ");
+                const array = lines[i].split(' ');
                 that.pos_data.push(array);
             }
             me.doneNum++;
             // console.log(that.pos_data);
         };
-
     };
 
     this.setConjTable = function () {
         // 活用入力
         $.ajax({
             url: `${JUMAN_DATA_PATH}conj.dat`,
-            type: "get",
+            type: 'get',
             dataType: 'html',
             success: this.parseConjData(),
             async: false,
             error: function (a, b, c) {
                 // console.log(c.toString());
-                alert("error:read pos data");
-            }
+                alert('error:read pos data');
+            },
         });
     };
 
     this.parseConjData = function () {
         const that = this;
         return function (data) {
-            const lines = data.split("\n");
+            const lines = data.split('\n');
             const num = lines.length;
 
             for (let conj_num = 0; conj_num < num; conj_num++) {
-                const array = lines[conj_num].split(" ");
+                const array = lines[conj_num].split(' ');
                 that.conj_data[conj_num] = array;
 
                 const length = that.conj_data[conj_num].length;
@@ -110,14 +108,14 @@ var JumanGrammer = function () {
         // 活用入力
         $.ajax({
             url: `${JUMAN_DATA_PATH}rel.dat`,
-            type: "get",
+            type: 'get',
             dataType: 'html',
             success: this.parseRelData(),
             async: false,
             error: function (a, b, c) {
                 // console.log(c.toString());
-                alert("error:read pos data");
-            }
+                alert('error:read pos data');
+            },
         });
     };
 
@@ -125,7 +123,7 @@ var JumanGrammer = function () {
         const that = this;
         return function (data) {
             // 関係入力
-            const lines = data.split("\n");
+            const lines = data.split('\n');
             const num = lines.length;
 
             for (let i = 0; i < num; i++) {
@@ -139,9 +137,7 @@ var JumanGrammer = function () {
         };
     };
 
-
     this.setPosContextEvent = function () {
-
         const pos_data = this.pos_data;
         const pos_num = pos_data.length;
         const data = {};
@@ -152,7 +148,6 @@ var JumanGrammer = function () {
                 data[key].name = key;
                 data[key].i = pos_i;
                 data[key].j = 0;
-
             } else {
                 key = pos_data[pos_i][0];
                 data[key] = {};
@@ -188,7 +183,7 @@ var JumanGrammer = function () {
                     } else {
                         for (const elem in options.items) {
                             const obj = options.items[elem].items;
-                            if (obj && (key in obj)) {
+                            if (obj && key in obj) {
                                 i = obj[key].i;
                                 j = obj[key].j;
                                 break;
@@ -198,7 +193,7 @@ var JumanGrammer = function () {
                     const m_num = this[0].m_num;
                     myWmrphFrame.reset_pos(m_num, i, j);
                 },
-                items: data
+                items: data,
             });
         });
     };
@@ -216,7 +211,6 @@ var JumanGrammer = function () {
                 var selector = `.${className}`;
                 this.context_class_table[label] = className;
                 this.makeConjContextMenu(label, selector, true); //true:活用形あり
-
             } else if (this.pos_data[i].length > 0) {
                 for (let j = 1; j < this.pos_data[i].length; j++) {
                     label = `${pos}:${this.pos_data[i][j]}`;
@@ -233,8 +227,7 @@ var JumanGrammer = function () {
         }
         // 活用がないもの(直接入力)
         selector = `.${this.direct_input_class}`;
-        this.makeConjContextMenu("", selector, false); //直接入力のみ
-
+        this.makeConjContextMenu('', selector, false); //直接入力のみ
     };
 
     // context menu作成
@@ -264,8 +257,8 @@ var JumanGrammer = function () {
             }
         }
 
-        data["直接入力"] = {};
-        data["直接入力"].name = "直接入力";
+        data['直接入力'] = {};
+        data['直接入力'].name = '直接入力';
 
         $(function () {
             $.contextMenu({
@@ -275,16 +268,15 @@ var JumanGrammer = function () {
                 delay: 100,
                 callback: function (key, options) {
                     const m_num = this[0].m_num;
-                    if (key == "直接入力") {
+                    if (key == '直接入力') {
                         myWmrphFrame.target_m_num = m_num;
-                        document.getElementById("conj-textbox").value = "";
+                        document.getElementById('conj-textbox').value = '';
                         $('#conj-input-dialog').dialog('open');
-
                     } else {
                         // conjデータのインデックス取得
                         for (const elem in options.items) {
                             const obj = options.items[elem].items;
-                            if (obj && (key in obj)) {
+                            if (obj && key in obj) {
                                 i = obj[key].i;
                                 j = obj[key].j;
                                 break;
@@ -293,10 +285,8 @@ var JumanGrammer = function () {
                         myWmrphFrame.reset_conj(m_num, i, j);
                     }
                 },
-                items: data
+                items: data,
             });
         });
-
     };
-
 };

@@ -5,9 +5,8 @@
 // ast = 無視してください
 
 var Tree = function () {
-
     this.print_dtree = function (tree_lines, node, mark, b) {
-        let local_buffer = "";
+        let local_buffer = '';
         let children = [];
 
         //var mark = marks.join("");
@@ -43,19 +42,22 @@ var Tree = function () {
                 // } else {
                 local_buffer += `<span class="treeCorner" id="treeCorner${index}">`;
                 // }
-                if (marks[m] == "L") {
+                if (marks[m] == 'L') {
                     local_buffer += '┌';
-                } else if (marks[m] == "R") {
+                } else if (marks[m] == 'R') {
                     local_buffer += '└';
                 } else {
                     local_buffer += '├';
                 }
                 local_buffer += '</span>';
             } else {
-                local_buffer += marks[m] == "l" ||
-                marks[m] == "r" ||
-                (marks[m] == "L" && (marks[m + 1] == "r" || marks[m + 1] == "R")) ||
-                (marks[m] == "R" && (marks[m + 1] == "l" || marks[m + 1] == "L")) ? '│' : '　';
+                local_buffer +=
+                    marks[m] == 'l' ||
+                    marks[m] == 'r' ||
+                    (marks[m] == 'L' && (marks[m + 1] == 'r' || marks[m + 1] == 'R')) ||
+                    (marks[m] == 'R' && (marks[m + 1] == 'l' || marks[m + 1] == 'L'))
+                        ? '│'
+                        : '　';
             }
         }
 
@@ -64,9 +66,9 @@ var Tree = function () {
         if (b.length > 0) {
             let p_num = b.length;
             if (p_num < 10) {
-                p_num = "p_num ";
+                p_num = 'p_num ';
             }
-            b.push("p_num local_buffer");
+            b.push('p_num local_buffer');
         } else {
             tree_lines.push(local_buffer); // + "\n";
         }
@@ -90,10 +92,9 @@ var Tree = function () {
         }
 
         //return output_str;
-    }
+    };
 
     this.format_dtree = function (dpnd, bnsts, types) {
-
         const nodes = [];
 
         // dpnd_ref, pre_children_ref, post_children_refを作る
@@ -104,7 +105,7 @@ var Tree = function () {
                 content: bnsts[i],
                 type: types[i],
                 pre_children: [],
-                post_children: []
+                post_children: [],
             });
             //nodes[i].num = i;
         }
@@ -131,7 +132,5 @@ var Tree = function () {
         }
         //console.log(nodes);
         return nodes;
-    }
-
-}
-
+    };
+};

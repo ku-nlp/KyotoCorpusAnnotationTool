@@ -18,7 +18,6 @@ param.annotator_id = null;
 
 var mrph_num = 0;
 
-
 window.onload = function () {
     // 初回のみバックアップをとる
     const backupFlag = 1;
@@ -28,9 +27,9 @@ window.onload = function () {
 function loadData(backupFlag) {
     // annotationデータダウンロード、コールバックで画面表示
     const url = String(window.location);
-    param.article_id = getParameterByName("article_id");
-    param.corpus_set_id = getParameterByName("corpus_set_id");
-    param.annotator_id = getParameterByName("annotator_id");
+    param.article_id = getParameterByName('article_id');
+    param.corpus_set_id = getParameterByName('corpus_set_id');
+    param.annotator_id = getParameterByName('annotator_id');
     const data = downloadData(param.article_id, param.corpus_set_id, param.annotator_id, backupFlag);
 }
 
@@ -51,11 +50,11 @@ function initFlag() {
 
 // クエリ文字列を取得
 function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     const regexS = `[\\?&]${name}=([^&#]*)`;
     const regex = new RegExp(regexS);
     const results = regex.exec(window.location.search);
-    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
 // データダウンロード
@@ -66,15 +65,15 @@ function downloadData(article_id, corpus_set_id, annotator_id, backupFlag) {
             article_id,
             corpus_set_id,
             annotator_id,
-            backupFlag
+            backupFlag,
         },
-        type: "post",
+        type: 'post',
         cache: false,
         success: showDisplay,
         error: function (a, b, c) {
             const message = getErrorMessage(a.responseText);
             alert(`データのダウンロードに失敗しました。\n${message}`);
-        }
+        },
     });
 }
 
@@ -88,9 +87,9 @@ function showDisplay(data) {
 
 function parseResultData(data) {
     const retlist = [];
-    const nodes = $(data).find("file");
+    const nodes = $(data).find('file');
     for (let i = 0; i < nodes.length; i++) {
-        const ret = $(nodes[i]).find("data").text();
+        const ret = $(nodes[i]).find('data').text();
         retlist.push(ret);
     }
     return retlist;
@@ -107,15 +106,15 @@ function uploadData(filename, contents) {
             corpus_set_id,
             annotator_id,
             filename,
-            content: contents
+            content: contents,
         },
-        type: "post",
+        type: 'post',
         cache: false,
         success: endUpload,
         error: function (a, b, c) {
             const message = getErrorMessage(a.responseText);
             alert(`ファイルのアップロードに失敗しました。\n${message}`);
-        }
+        },
     });
 }
 
@@ -134,15 +133,14 @@ function save() {
     // 文節画面があればとじる
     if (myWmrphFrame.active_b_num_start != -1) {
         myWmrphFrame.ok();
-        innerLayout.close("south");
+        innerLayout.close('south');
     }
-    ;
     myRelationFrame.write_sentence();
 }
 
 // 終了
 function quit() {
-    if (modify_flag === "*") {
+    if (modify_flag === '*') {
         $('#quit-dialog').dialog('open');
         return;
     }
@@ -159,58 +157,55 @@ function notify_quit() {
             article_id,
             corpus_set_id,
             annotator_id,
-            quitFlg: true
+            quitFlg: true,
         },
-        type: "post",
+        type: 'post',
         cache: false,
         success: endQuit,
         error: function (a, b, c) {
             const message = getErrorMessage(a.responseText);
             alert(`終了処理に失敗しました。\n${message}`);
-        }
+        },
     });
 }
-
 
 // 終了通知成功時のコールバック
 function endQuit(data) {
     try {
-        const annotator_id = getParameterByName("annotator_id");
-        const password = getParameterByName("password");
-        const corpus_set_id = getParameterByName("corpus_set_id");
-        const skip = getParameterByName("skip");
+        const annotator_id = getParameterByName('annotator_id');
+        const password = getParameterByName('password');
+        const corpus_set_id = getParameterByName('corpus_set_id');
+        const skip = getParameterByName('skip');
 
         const search = `?annotator_id=${annotator_id}&corpus_set_id=${corpus_set_id}&password=${password}&skip=${skip}`;
         window.opener.location.search = search;
 
         window.close();
-
     } catch (e) {
-        alert("終了処理に失敗しました。\n管理画面が更新できません。手動で画面を閉じてください。");
+        alert('終了処理に失敗しました。\n管理画面が更新できません。手動で画面を閉じてください。');
     }
 }
 
 function getErrorMessage(text) {
-    const re = new RegExp("<pre>((.*)\n)+<\/pre>");
+    const re = new RegExp('<pre>((.*)\n)+</pre>');
     const m = text.match(re);
     if (m) {
         return m[2];
     }
-    return "";
+    return '';
 }
-
 
 function handleFileSelect(evt) {
     const { files } = evt.target; // FileList object
     // Loop through the FileList
-    for (let i = 0, f; f = files[i]; i++) {
+    for (let i = 0, f; (f = files[i]); i++) {
         const reader = new FileReader();
         // Closure to capture the file information.
         reader.onload = function (e) {
             parseString(e.target.result);
         };
         // Read in the file
-        reader.readAsText(f, "UTF-8");
+        reader.readAsText(f, 'UTF-8');
     }
 
     setTimeout(function () {
@@ -244,7 +239,7 @@ function nextSentence() {
 
 // 検索
 function search() {
-    const txt = document.getElementById("searchText").value;
+    const txt = document.getElementById('searchText').value;
     myRelationFrame.search(txt);
 }
 
@@ -257,7 +252,7 @@ function redoTree() {
 }
 
 function conj_input_dialog_done(that) {
-    const txt = document.getElementById("conj-textbox").value;
+    const txt = document.getElementById('conj-textbox').value;
     myWmrphFrame.dialog_input_done(txt);
 }
 
@@ -267,12 +262,12 @@ function select_tag(that) {
 }
 
 function select_sentence_tag(that) {
-    const element_id = $(that).attr("id");
+    const element_id = $(that).attr('id');
     myRelationFrame.append_sentence_tag(element_id);
 }
 
 function select_free_tag() {
-    const tag_name = document.getElementById("free_tag").value;
+    const tag_name = document.getElementById('free_tag').value;
     myRelationFrame.append_tag($.trim(tag_name));
 }
 
@@ -305,22 +300,22 @@ function change_mode(mode) {
 }
 
 function ne_mode(input) {
-    var input = $("#ne_edit_text").text();
+    var input = $('#ne_edit_text').text();
     //var input = $(input).text()
     myRelationFrame.ne_mode(input);
 }
 
 function ne_mode_free() {
-    const input = $("#ne_edit_text").val();
+    const input = $('#ne_edit_text').val();
     myRelationFrame.ne_mode(input);
 }
 
 function memo_tag_blur(that) {
     const memo_index = parseInt($(that).attr('id'), 10);
     const memo = $(that).val();
-    myRelationFrame.memo_mode(memo_index, memo, "メモ");
+    myRelationFrame.memo_mode(memo_index, memo, 'メモ');
 }
 
 function file_memo_blur() {
-    modify_flag = "*";
+    modify_flag = '*';
 }

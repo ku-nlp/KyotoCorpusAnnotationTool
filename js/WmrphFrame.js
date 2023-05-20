@@ -1,21 +1,20 @@
 function removeSpaces(inputObj) {
-    inputObj.value = inputObj.value.replace(/ +/g, "");
+    inputObj.value = inputObj.value.replace(/ +/g, '');
 }
 
 let WmrphFrame = function () {
-
-    this.title = "";
+    this.title = '';
     this.active_b_num_start = -1;
     this.active_b_num_end = -1;
     this.bnst_data_btype_new_m = {};
     this.bnst_data_btype_new_label = {};
     this.target_m_num = null;
 
-    const me = this;              //Eventのコールバック等から利用
+    const me = this; //Eventのコールバック等から利用
 
     // 初期化
     this.init = function () {
-        this.title = "";
+        this.title = '';
         this.active_b_num_start = -1;
         this.active_b_num_end = -1;
         this.bnst_data_btype_new_m = {};
@@ -25,10 +24,9 @@ let WmrphFrame = function () {
         this.wmrph_table = null;
     };
 
-
     // 形態素編集画面の要素削除
     this.removeContent = function () {
-        $("#wmrph_content").empty();
+        $('#wmrph_content').empty();
     };
 
     // OKボタン
@@ -48,7 +46,6 @@ let WmrphFrame = function () {
 
     // 活用型、活用形更新
     this.dialog_input_done = function (input_text) {
-
         if (!input_text.match(/:/)) {
             alert('入力形式が不正です');
             return;
@@ -66,7 +63,6 @@ let WmrphFrame = function () {
         // tableの値更新
         const elem = document.getElementById(`conj-${this.target_m_num}`);
         elem.innerHTML = new_label;
-
     };
 
     // 品詞変更
@@ -106,7 +102,6 @@ let WmrphFrame = function () {
         label = `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
         const new_types = myJumanGrammer.rel_table[label];
         if (old_types == new_types) {
-            ;
         } else {
             const conjElem = document.getElementById(`conj-${m_num}`);
             conjElem.className = `${this.getConjContextClass(label)} conj`;
@@ -136,7 +131,7 @@ let WmrphFrame = function () {
         myRelationFrame.mrph_data_all[m_num][7] = myJumanGrammer.conj_data[i][0];
         myRelationFrame.mrph_data_all[m_num][8] = i + 1;
         myRelationFrame.mrph_data_all[m_num][9] = myJumanGrammer.conj_data[i][j];
-        myRelationFrame.mrph_data_all[m_num][9] = myRelationFrame.mrph_data_all[m_num][9].replace(/\(.*\)$/, "");
+        myRelationFrame.mrph_data_all[m_num][9] = myRelationFrame.mrph_data_all[m_num][9].replace(/\(.*\)$/, '');
         myRelationFrame.mrph_data_all[m_num][10] = j;
 
         // 原形の（例えば）「な」を「だ」に置き換える
@@ -165,14 +160,12 @@ let WmrphFrame = function () {
         elem.innerHTML = label;
     };
 
-
     // 文節の表示
     this.show_bnst = function (b_num, un_initialize_flag) {
         if (this.active_b_num_start == -1) {
-
             // 文節形態素編集フレームを開く
-            innerLayout.open("south");
-            $("#wmrph_buttons").show();
+            innerLayout.open('south');
+            $('#wmrph_buttons').show();
 
             if (!un_initialize_flag) {
                 current_modify_flag = null;
@@ -183,22 +176,22 @@ let WmrphFrame = function () {
 
             // ### "OK" "追加"などのボタンを配置するフレームを準備
             // tableタイトル行をつくる
-            const table = document.createElement("table");
-            table.id = "wmrph-table";
+            const table = document.createElement('table');
+            table.id = 'wmrph-table';
             // table.setAttribute("border", "0");
             // table.setAttribute("cellSpacing", "5px");
             // table.setAttribute("cellPadding", "10px");
-            const thead = document.createElement("thead");
-            const tr = document.createElement("tr");
+            const thead = document.createElement('thead');
+            const tr = document.createElement('tr');
 
             const cols = WmrphMenuArray.length;
             for (let j = 0; j < cols; j++) {
                 if (WmrphMenuArray[j].title != undefined) {
-                    var td = document.createElement("td");
+                    var td = document.createElement('td');
                     var text = WmrphMenuArray[j].title;
                     var title = document.createTextNode(text);
-                    if (text != "") {
-                        td.className = "kb_bg";
+                    if (text != '') {
+                        td.className = 'kb_bg';
                     }
                     td.appendChild(title);
                     tr.appendChild(td);
@@ -206,20 +199,29 @@ let WmrphFrame = function () {
             }
             thead.appendChild(tr);
             table.appendChild(thead);
-            $("#wmrph_content").append(table);
+            $('#wmrph_content').append(table);
 
             for (let i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num + 1]; i++) {
                 if (TREE_MODE === 'R') {
-                    this.show_mrph(i, b_num, i == myRelationFrame.bnst_data_start[b_num] ? myRelationFrame.bnst_data_btype[b_num] : '', "top");
+                    this.show_mrph(
+                        i,
+                        b_num,
+                        i == myRelationFrame.bnst_data_start[b_num] ? myRelationFrame.bnst_data_btype[b_num] : '',
+                        'top',
+                    );
                 } else {
-                    this.show_mrph(i, b_num, myRelationFrame.bnst_data_btype[b_num], "top");
+                    this.show_mrph(i, b_num, myRelationFrame.bnst_data_btype[b_num], 'top');
                 }
             }
-
         } else if (b_num == this.active_b_num_end + 1) {
             this.active_b_num_end = b_num;
             for (let i = myRelationFrame.bnst_data_start[b_num]; i < myRelationFrame.bnst_data_start[b_num + 1]; i++) {
-                this.show_mrph(i, b_num, i == myRelationFrame.bnst_data_start[b_num] ? myRelationFrame.bnst_data_btype[b_num] : '', "top");
+                this.show_mrph(
+                    i,
+                    b_num,
+                    i == myRelationFrame.bnst_data_start[b_num] ? myRelationFrame.bnst_data_btype[b_num] : '',
+                    'top',
+                );
             }
         } else {
             alert('連続する文節しか修正できません.');
@@ -229,17 +231,16 @@ let WmrphFrame = function () {
 
     // 形態素行表示
     this.show_mrph = function (m_num, b_num, b_type, direction) {
-
         // 最初の形態素は強制的にBにする
         if (m_num == 0 && b_type !== '*') {
             b_type = '*';
         }
 
         // 行 element作成
-        const row = document.createElement("div");
+        const row = document.createElement('div');
         row.id = m_num;
-        row.className = "row";
-        $("#wmrph_content").append(row);
+        row.className = 'row';
+        $('#wmrph_content').append(row);
 
         // var label;
         let suffix;
@@ -247,7 +248,7 @@ let WmrphFrame = function () {
         this.bnst_data_btype_new_m[m_num] = b_type;
 
         // 文節区切りボタン
-        const btypeBtn = document.createElement("img");
+        const btypeBtn = document.createElement('img');
 
         if (b_type === '*') {
             this.bnst_data_btype_new_label[m_num] = 'B';
@@ -286,15 +287,15 @@ let WmrphFrame = function () {
 
         // btypeBtn.label = this.bnst_data_btype_new_label[m_num];
         // btypeBtn.innerHTML = this.bnst_data_btype_new_label[m_num];
-        btypeBtn.className = "btype";
+        btypeBtn.className = 'btype';
 
         // table body
-        const table = document.getElementById("wmrph-table");
+        const table = document.getElementById('wmrph-table');
 
-        const tbody = document.createElement("tbody");
-        const tr = document.createElement("tr");
+        const tbody = document.createElement('tbody');
+        const tr = document.createElement('tr');
 
-        let td = document.createElement("td");
+        let td = document.createElement('td');
         td.appendChild(btypeBtn);
 
         const btype_btn_click = function (m_num) {
@@ -347,10 +348,10 @@ let WmrphFrame = function () {
         tr.appendChild(td);
 
         // 表記
-        const hyoki = document.createElement("div");
-        hyoki.className = "hyoki";
-        var input = document.createElement("input");
-        input.type = "text";
+        const hyoki = document.createElement('div');
+        hyoki.className = 'hyoki';
+        var input = document.createElement('input');
+        input.type = 'text';
         input.value = myRelationFrame.mrph_data_all[m_num][0];
         hyoki.appendChild(input);
         const hyoki_change = function (m_num) {
@@ -364,7 +365,7 @@ let WmrphFrame = function () {
         };
         $(input).change(hyoki_change(m_num));
 
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(hyoki);
         tr.appendChild(td);
 
@@ -375,10 +376,10 @@ let WmrphFrame = function () {
         }
 
         // 読み
-        const yomi = document.createElement("div");
-        yomi.className = "yomi";
-        var input = document.createElement("input");
-        input.type = "text";
+        const yomi = document.createElement('div');
+        yomi.className = 'yomi';
+        var input = document.createElement('input');
+        input.type = 'text';
         if (myRelationFrame.mrph_data_all[m_num][1] !== undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][1];
         }
@@ -393,16 +394,16 @@ let WmrphFrame = function () {
         };
         $(input).change(yomi_change(m_num));
 
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(yomi);
         tr.appendChild(td);
 
         // 原形
-        const genkei = document.createElement("div");
-        genkei.className = "genkei";
+        const genkei = document.createElement('div');
+        genkei.className = 'genkei';
         // genkei.innerHTML = myRelationFrame.mrph_data_all[m_num][2];
-        var input = document.createElement("input");
-        input.type = "text";
+        var input = document.createElement('input');
+        input.type = 'text';
         input.id = `genkei-${row.id}`;
         if (myRelationFrame.mrph_data_all[m_num][2] !== undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][2];
@@ -418,26 +419,32 @@ let WmrphFrame = function () {
         };
         $(input).change(genkei_change(m_num));
 
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(genkei);
         tr.appendChild(td);
 
         // 品詞
-        let label = "&nbsp;";
-        if ((myRelationFrame.mrph_data_all[m_num][5] !== undefined) && (myRelationFrame.mrph_data_all[m_num][3] !== undefined)) {
-            label = myRelationFrame.mrph_data_all[m_num][5] === '*' ? myRelationFrame.mrph_data_all[m_num][3] : `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
+        let label = '&nbsp;';
+        if (
+            myRelationFrame.mrph_data_all[m_num][5] !== undefined &&
+            myRelationFrame.mrph_data_all[m_num][3] !== undefined
+        ) {
+            label =
+                myRelationFrame.mrph_data_all[m_num][5] === '*'
+                    ? myRelationFrame.mrph_data_all[m_num][3]
+                    : `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
         }
 
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.innerHTML = label;
         td.m_num = m_num;
         td.id = `pos-${m_num}`;
-        td.className = "context-menu-sub pos";
+        td.className = 'context-menu-sub pos';
         tr.appendChild(td);
 
         // 活用 --> 〜型:〜形(〜) or なし
         //if (LANG == 'ja') {
-        label = "なし";
+        label = 'なし';
         if (myRelationFrame.mrph_data_all[m_num][7] !== undefined && myRelationFrame.mrph_data_all[m_num][7] !== '*') {
             label = `${myRelationFrame.mrph_data_all[m_num][7]}:${myRelationFrame.mrph_data_all[m_num][9]}`;
             suffix = myJumanGrammer.conj_table[label];
@@ -446,9 +453,12 @@ let WmrphFrame = function () {
             }
         }
 
-        td = document.createElement("td");
-        let label2 = "";
-        if ((myRelationFrame.mrph_data_all[m_num][3] !== undefined) && (myRelationFrame.mrph_data_all[m_num][5] !== undefined)) {
+        td = document.createElement('td');
+        let label2 = '';
+        if (
+            myRelationFrame.mrph_data_all[m_num][3] !== undefined &&
+            myRelationFrame.mrph_data_all[m_num][5] !== undefined
+        ) {
             label2 = `${myRelationFrame.mrph_data_all[m_num][3]}:${myRelationFrame.mrph_data_all[m_num][5]}`;
         }
 
@@ -460,11 +470,11 @@ let WmrphFrame = function () {
         //        }
 
         // 意味情報
-        const imi = document.createElement("div");
-        imi.className = "imi";
+        const imi = document.createElement('div');
+        imi.className = 'imi';
         // genkei.innerHTML = myRelationFrame.mrph_data_all[m_num][2];
-        var input = document.createElement("input");
-        input.type = "text";
+        var input = document.createElement('input');
+        input.type = 'text';
         input.id = `imi-${row.id}`;
         if (myRelationFrame.mrph_data_all[m_num][11] !== undefined) {
             input.value = myRelationFrame.mrph_data_all[m_num][11];
@@ -475,27 +485,27 @@ let WmrphFrame = function () {
                 modify_flag = '*';
                 current_modify_flag = '*';
                 this.value = this.value.replace(/^\s+|\s+$/g, '');
-                myRelationFrame.mrph_data_all[m_num][11] = this.value === '' ? "NIL" : this.value;
+                myRelationFrame.mrph_data_all[m_num][11] = this.value === '' ? 'NIL' : this.value;
             };
         };
         $(input).change(imi_change(m_num));
 
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(imi);
         tr.appendChild(td);
 
         // 基本句-主辞
-        var baseClauseHead = document.createElement("div");
-        baseClauseHead.className = "baseClauseHead";
-        var input = document.createElement("input");
-        input.type = "checkbox";
-        input.id = "baseClauseHead-"+row.id;
+        var baseClauseHead = document.createElement('div');
+        baseClauseHead.className = 'baseClauseHead';
+        var input = document.createElement('input');
+        input.type = 'checkbox';
+        input.id = 'baseClauseHead-' + row.id;
         if (myRelationFrame.mrph_data_all[m_num][12] != undefined) {
             input.checked = myRelationFrame.mrph_data_all[m_num][12] === '<基本句-主辞>';
         }
         baseClauseHead.appendChild(input);
-        var baseClauseHead_change = function(m_num) {
-            return function() {
+        var baseClauseHead_change = function (m_num) {
+            return function () {
                 modify_flag = '*';
                 current_modify_flag = '*';
                 if (myRelationFrame.mrph_data_all[m_num][11] == undefined) {
@@ -506,13 +516,13 @@ let WmrphFrame = function () {
         };
         $(input).change(baseClauseHead_change(m_num));
 
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(baseClauseHead);
         tr.appendChild(td);
 
         //     ### 複製ボタン
-        const cpBtn = document.createElement("img");
-        cpBtn.className = "copy";
+        const cpBtn = document.createElement('img');
+        cpBtn.className = 'copy';
         cpBtn.onclick = this.insert_mrph(b_num, m_num - myRelationFrame.bnst_data_start[b_num] + 1);
         cpBtn.src = `${IMAGE_PATH}copy_of.png`;
         $(cpBtn).mouseover(function () {
@@ -523,12 +533,12 @@ let WmrphFrame = function () {
         });
 
         $(row).append(cpBtn);
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(cpBtn);
         tr.appendChild(td);
 
         //     ### 削除ボタン
-        const delBtn = document.createElement("img");
+        const delBtn = document.createElement('img');
         delBtn.src = `${IMAGE_PATH}del_of.png`;
         $(delBtn).mouseover(function () {
             this.src = `${IMAGE_PATH}del_on.png`;
@@ -537,14 +547,14 @@ let WmrphFrame = function () {
             this.src = `${IMAGE_PATH}del_of.png`;
         });
 
-        delBtn.className = "delete";
+        delBtn.className = 'delete';
         delBtn.onclick = this.delete_mrph(b_num, m_num, false); // 第3引数が偽ならdelete
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(delBtn);
         tr.appendChild(td);
 
         //     ### クリアボタン
-        const clBtn = document.createElement("img");
+        const clBtn = document.createElement('img');
         clBtn.src = `${IMAGE_PATH}clear_of.png`;
         $(clBtn).mouseover(function () {
             this.src = `${IMAGE_PATH}clear_on.png`;
@@ -554,7 +564,7 @@ let WmrphFrame = function () {
         });
 
         clBtn.onclick = this.delete_mrph(b_num, m_num, true); // 第3引数が真ならclear
-        td = document.createElement("td");
+        td = document.createElement('td');
         td.appendChild(clBtn);
         tr.appendChild(td);
         tbody.appendChild(tr);
@@ -562,21 +572,30 @@ let WmrphFrame = function () {
     };
 
     this.getConjContextClass = function (label2) {
-        return label2 in myJumanGrammer.context_class_table ? myJumanGrammer.context_class_table[label2] : myJumanGrammer.direct_input_class;
+        return label2 in myJumanGrammer.context_class_table
+            ? myJumanGrammer.context_class_table[label2]
+            : myJumanGrammer.direct_input_class;
     };
-
 
     // 形態素の追加・複製のfunctionを返す
     this.insert_mrph = function (b_num, flag) {
         // event用のfunctionを返す
         return function () {
             try {
-                let m_num = flag ? myRelationFrame.bnst_data_start[b_num] + flag : myRelationFrame.bnst_data_start[b_num + 1];
+                let m_num = flag
+                    ? myRelationFrame.bnst_data_start[b_num] + flag
+                    : myRelationFrame.bnst_data_start[b_num + 1];
 
                 // 固有表現中であれば追加を許可しない
-                if (myRelationFrame.mrph_data_all[m_num - 1] && myRelationFrame.mrph_data_all[m_num] && (myRelationFrame.mrph_data_all[m_num - 1][12] && myRelationFrame.mrph_data_all[m_num][12]) && (flag && myRelationFrame.mrph_data_all[m_num - 1][12].match(/\<NE:[^\>]+\>/) ||
-                    myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^:]+:middle>/) ||
-                    myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^:]+:tail>/))) {
+                if (
+                    myRelationFrame.mrph_data_all[m_num - 1] &&
+                    myRelationFrame.mrph_data_all[m_num] &&
+                    myRelationFrame.mrph_data_all[m_num - 1][12] &&
+                    myRelationFrame.mrph_data_all[m_num][12] &&
+                    ((flag && myRelationFrame.mrph_data_all[m_num - 1][12].match(/\<NE:[^\>]+\>/)) ||
+                        myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^:]+:middle>/) ||
+                        myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^:]+:tail>/))
+                ) {
                     alert('固有表現タグをはずしてから編集してください');
                     return;
                 }
@@ -595,13 +614,27 @@ let WmrphFrame = function () {
                     // 追加
                     m_num = myRelationFrame.bnst_data_start[b_num + 1] - 1;
 
-                    myRelationFrame.mrph_data_all.splice(m_num, 0, ['', '', '', '', '', '', '', '*', 0, '*', 0, "NIL", ""]);
+                    myRelationFrame.mrph_data_all.splice(m_num, 0, [
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '*',
+                        0,
+                        '*',
+                        0,
+                        'NIL',
+                        '',
+                    ]);
                     myRelationFrame.mrph_data_start.splice(m_num, 0, 0);
 
                     if (TREE_MODE === 'R') {
-                        me.show_mrph(m_num, b_num, '', "top");
+                        me.show_mrph(m_num, b_num, '', 'top');
                     } else {
-                        me.show_mrph(m_num, b_num, '*', "top");
+                        me.show_mrph(m_num, b_num, '*', 'top');
                     }
                 } else {
                     // 複製
@@ -628,7 +661,6 @@ let WmrphFrame = function () {
                         me.show_bnst(b_num, true); // un_initialize_flagをtrueに
                     }
                 }
-
             } catch (e) {
                 alert(e);
             }
@@ -639,8 +671,10 @@ let WmrphFrame = function () {
     this.delete_mrph = function (b_num, m_num, clearflag) {
         return function () {
             try {
-                if (myRelationFrame.mrph_data_all[m_num][12]
-                    && myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^>]+>/)) {
+                if (
+                    myRelationFrame.mrph_data_all[m_num][12] &&
+                    myRelationFrame.mrph_data_all[m_num][12].match(/<NE:[^>]+>/)
+                ) {
                     alert('固有表現タグをはずしてから編集してください');
                     return;
                 }
@@ -651,7 +685,7 @@ let WmrphFrame = function () {
                 if (clearflag) {
                     // 表記、読み、原形をクリア
                     for (let i = 0; i < 3; i++) {
-                        myRelationFrame.mrph_data_all[m_num][i] = "";
+                        myRelationFrame.mrph_data_all[m_num][i] = '';
                     }
                 } else {
                     // 削除
@@ -677,7 +711,6 @@ let WmrphFrame = function () {
                 for (b_num = b_num_start; b_num <= b_num_end; b_num++) {
                     me.show_bnst(b_num, true);
                 }
-
             } catch (e) {
                 alert(e);
             }
@@ -740,7 +773,6 @@ let WmrphFrame = function () {
 
             // 係先(文節番号)の修正
             if (diff !== 0) {
-
                 // 格のdependencyを修正
                 const curSntIndex = myRelationFrame.currentShowIndex;
                 for (let si = curSntIndex; si < inputFileList.length; si++) {
@@ -750,9 +782,11 @@ let WmrphFrame = function () {
                         for (const kaku in contextInfo) {
                             for (let j = 0; j < contextInfo[kaku].Data.length; j++) {
                                 const data = contextInfo[kaku].Data[j];
-                                if (data.dependant
-                                    && data.dependant > this.active_b_num_start
-                                    && data.SID == inputFileList[curSntIndex]) {
+                                if (
+                                    data.dependant &&
+                                    data.dependant > this.active_b_num_start &&
+                                    data.SID == inputFileList[curSntIndex]
+                                ) {
                                     data.dependant = parseInt(data.dependant, 10) + diff;
                                 }
                             }
@@ -760,15 +794,17 @@ let WmrphFrame = function () {
                     }
                 }
 
-                for (let i = 0;
-                     (TREE_MODE === 'R' && i < this.active_b_num_start) ||
-                     (TREE_MODE === 'LR' && i < old_bnst_num);
-                     i++) {
-
+                for (
+                    let i = 0;
+                    (TREE_MODE === 'R' && i < this.active_b_num_start) || (TREE_MODE === 'LR' && i < old_bnst_num);
+                    i++
+                ) {
                     // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
-                    if (i != this.active_b_num_start
-                        && this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]
-                        && myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
+                    if (
+                        i != this.active_b_num_start &&
+                        this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i] &&
+                        myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end
+                    ) {
                         myRelationFrame.bnst_data_dpnd[i] = TREE_MODE === 'R' ? -1 : this.active_b_num_start;
                     }
                     // 表示中の文節列より後に係る場合
@@ -780,10 +816,13 @@ let WmrphFrame = function () {
                 // 文節をくっつけたとき
                 if (diff < 0) {
                     // 後から前にずらす
-                    for (let i = (this.active_b_num_end + diff + 1); i < myRelationFrame.bnst_num; i++) {
+                    for (let i = this.active_b_num_end + diff + 1; i < myRelationFrame.bnst_num; i++) {
                         // ルートをずらさない
                         if (TREE_MODE === 'R') {
-                            myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + diff;
+                            myRelationFrame.bnst_data_dpnd[i] =
+                                myRelationFrame.bnst_data_dpnd[i - diff] == -1
+                                    ? -1
+                                    : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + diff;
                         } else {
                             myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff];
                         }
@@ -799,14 +838,21 @@ let WmrphFrame = function () {
                 else {
                     // 前から後にずらす
                     if (TREE_MODE === 'R') {
-                        for (let i = (myRelationFrame.bnst_num - 1); i > this.active_b_num_end; i--) {
+                        for (let i = myRelationFrame.bnst_num - 1; i > this.active_b_num_end; i--) {
                             if (i - diff > this.active_b_num_end) {
                                 // ルートをずらさない
-                                myRelationFrame.bnst_data_dpnd[i] = myRelationFrame.bnst_data_dpnd[i - diff] == -1 ? -1 : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + diff;
+                                myRelationFrame.bnst_data_dpnd[i] =
+                                    myRelationFrame.bnst_data_dpnd[i - diff] == -1
+                                        ? -1
+                                        : parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10) + diff;
                                 myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
                                 myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
                                 myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i - diff];
-                                myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i - diff]);
+                                myRelationFrame.contextinfo[i] = jQuery.extend(
+                                    true,
+                                    {},
+                                    myRelationFrame.contextinfo[i - diff],
+                                );
                             } else {
                                 myRelationFrame.bnst_data_dpnd[i] = -1;
                                 myRelationFrame.bnst_data_type[i] = null;
@@ -816,13 +862,20 @@ let WmrphFrame = function () {
                             }
                         }
                     } else {
-                        for (let i = (myRelationFrame.bnst_num - 1); i > this.active_b_num_end; i--) {
+                        for (let i = myRelationFrame.bnst_num - 1; i > this.active_b_num_end; i--) {
                             if (i - diff > this.active_b_num_end) {
-                                myRelationFrame.bnst_data_dpnd[i] = parseInt(myRelationFrame.bnst_data_dpnd[i - diff], 10);
+                                myRelationFrame.bnst_data_dpnd[i] = parseInt(
+                                    myRelationFrame.bnst_data_dpnd[i - diff],
+                                    10,
+                                );
                                 myRelationFrame.bnst_data_type[i] = myRelationFrame.bnst_data_type[i - diff];
                                 myRelationFrame.bnst_data_btype[i] = myRelationFrame.bnst_data_btype[i - diff];
                                 myRelationFrame.bnst_data_f[i] = myRelationFrame.bnst_data_f[i - diff];
-                                myRelationFrame.contextinfo[i] = jQuery.extend(true, {}, myRelationFrame.contextinfo[i - diff]);
+                                myRelationFrame.contextinfo[i] = jQuery.extend(
+                                    true,
+                                    {},
+                                    myRelationFrame.contextinfo[i - diff],
+                                );
                             } else {
                                 myRelationFrame.bnst_data_dpnd[i] = -1;
                                 myRelationFrame.bnst_data_type[i] = null;
@@ -834,21 +887,22 @@ let WmrphFrame = function () {
                     }
                 }
                 if (TREE_MODE === 'R') {
-                    for (let i = this.active_b_num_start; i <= (this.active_b_num_end + diff); i++) {
+                    for (let i = this.active_b_num_start; i <= this.active_b_num_end + diff; i++) {
                         myRelationFrame.bnst_data_dpnd[i] = -1;
                         // myRelationFrame.bnst_data_f[i] = ''; // タグ情報をクリアしない
                     }
                 } else {
                     if (diff > 0) {
-                        myRelationFrame.bnst_data_dpnd[this.active_b_num_end + diff] = myRelationFrame.bnst_data_dpnd[this.active_b_num_start];
-                        for (let i = this.active_b_num_start; i < (this.active_b_num_end + diff); i++) {
+                        myRelationFrame.bnst_data_dpnd[this.active_b_num_end + diff] =
+                            myRelationFrame.bnst_data_dpnd[this.active_b_num_start];
+                        for (let i = this.active_b_num_start; i < this.active_b_num_end + diff; i++) {
                             //if (myRelationFrame.bnst_data_dpnd[i] != -1) {
                             myRelationFrame.bnst_data_dpnd[i] = i + 1;
                             //}
                         }
                     } else if (isRoot) {
                         myRelationFrame.bnst_data_dpnd[this.active_b_num_start] = -1;
-                        for (let i = this.active_b_num_start + 1; i <= (this.active_b_num_end + diff); i++) {
+                        for (let i = this.active_b_num_start + 1; i <= this.active_b_num_end + diff; i++) {
                             myRelationFrame.bnst_data_dpnd[i] = this.active_b_num_start;
                         }
                     } else {
@@ -868,7 +922,11 @@ let WmrphFrame = function () {
             const modify_bnst = {};
             for (let i = 0; i < myRelationFrame.mrph_num; i++) {
                 if (myRelationFrame.mrph_data_start[i] == 1) {
-                    if (bnst_num >= this.active_b_num_start && bnst_num <= this.active_b_num_end + diff && myRelationFrame.bnst_data_btype[bnst_num] != this.bnst_data_btype_new_m[i]) {
+                    if (
+                        bnst_num >= this.active_b_num_start &&
+                        bnst_num <= this.active_b_num_end + diff &&
+                        myRelationFrame.bnst_data_btype[bnst_num] != this.bnst_data_btype_new_m[i]
+                    ) {
                         myRelationFrame.bnst_data_btype[bnst_num] = this.bnst_data_btype_new_m[i];
                         const b_i = myRelationFrame.orig_bnst_num[bnst_num];
                         modify_bnst[b_i] = true;
@@ -881,7 +939,7 @@ let WmrphFrame = function () {
             let orig_bnst_num = 0;
             myRelationFrame.orig_bnst_data_num = {}; // 初期化
             for (let i = 0; i < bnst_num; i++) {
-                if (myRelationFrame.bnst_data_btype[i] === "*") {
+                if (myRelationFrame.bnst_data_btype[i] === '*') {
                     myRelationFrame.orig_bnst_data_num[i] = orig_bnst_num;
                     myRelationFrame.orig_bnst_data_start[i] = 1;
                     myRelationFrame.orig_bnst_data_end[i] = 1;
@@ -902,27 +960,32 @@ let WmrphFrame = function () {
 
             const orig_diff = orig_bnst_num - myRelationFrame.orig_bnst_num; // 文節の差分
             if (orig_diff !== 0) {
-
                 // 係先(文節番号)の修正
-                for (let i = 0;
-                     (TREE_MODE === 'R' && i < this.active_b_num_start) ||
-                     (TREE_MODE === 'LR' && i < myRelationFrame.bnst_num);
-                     i++) {
-
+                for (
+                    let i = 0;
+                    (TREE_MODE === 'R' && i < this.active_b_num_start) ||
+                    (TREE_MODE === 'LR' && i < myRelationFrame.bnst_num);
+                    i++
+                ) {
                     // 基本句の属している文節の番号を取得
                     const b_i = myRelationFrame.orig_bnst_data_num[i];
 
                     // 表示中の文節列のどこかに係る場合 (どこに係るかは未定義にする)
-                    if ((this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i]) &&
-                        myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end) {
-                        if ((myRelationFrame.orig_bnst_data_end[i] == 1) &&
-                            (myRelationFrame.bnst_data_dpnd[i] == -1)) {
+                    if (
+                        this.active_b_num_start <= myRelationFrame.bnst_data_dpnd[i] &&
+                        myRelationFrame.bnst_data_dpnd[i] <= this.active_b_num_end
+                    ) {
+                        if (myRelationFrame.orig_bnst_data_end[i] == 1 && myRelationFrame.bnst_data_dpnd[i] == -1) {
                             myRelationFrame.orig_bnst_data_dpnd[b_i] = TREE_MODE === 'R' ? -1 : this.active_b_num_end;
                         }
                     }
                     // 表示中の文節列より後に係る場合
-                    else if (myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end && myRelationFrame.orig_bnst_data_end[i] == 1) {
-                        myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + orig_diff;
+                    else if (
+                        myRelationFrame.bnst_data_dpnd[i] > this.active_b_num_end &&
+                        myRelationFrame.orig_bnst_data_end[i] == 1
+                    ) {
+                        myRelationFrame.orig_bnst_data_dpnd[b_i] =
+                            parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i], 10) + orig_diff;
                         // console.log(b_i + " " + myRelationFrame.orig_bnst_data_dpnd[b_i]);
                     }
                 }
@@ -930,24 +993,30 @@ let WmrphFrame = function () {
                 // 文節をくっつけた場合
                 if (orig_diff < 0) {
                     // 後から前にずらす
-                    for (let i = (this.active_b_num_end + orig_diff + 1); i < myRelationFrame.bnst_num; i++) {
-                        if (myRelationFrame.bnst_data_btype[i] === "*") {
+                    for (let i = this.active_b_num_end + orig_diff + 1; i < myRelationFrame.bnst_num; i++) {
+                        if (myRelationFrame.bnst_data_btype[i] === '*') {
                             const b_i = myRelationFrame.orig_bnst_data_num[i]; // 基本句番号iに対応する文節番号
                             const b_i_diff = parseInt(b_i, 10) - parseInt(orig_diff, 10);
-                            myRelationFrame.orig_bnst_data_dpnd[b_i] = parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
-                            myRelationFrame.orig_bnst_data_type[b_i] = myRelationFrame.orig_bnst_data_type[b_i_diff] || "D";
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] =
+                                parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
+                            myRelationFrame.orig_bnst_data_type[b_i] =
+                                myRelationFrame.orig_bnst_data_type[b_i_diff] || 'D';
                             myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
                         }
                     }
-
-                } else { // 文節が増えた場合
+                } else {
+                    // 文節が増えた場合
                     // 前から後ろにずらす
-                    for (let i = (myRelationFrame.bnst_num - 1); i >= (this.active_b_num_end + orig_diff); i--) {
-                        if (myRelationFrame.bnst_data_btype[i] === "*") {
+                    for (let i = myRelationFrame.bnst_num - 1; i >= this.active_b_num_end + orig_diff; i--) {
+                        if (myRelationFrame.bnst_data_btype[i] === '*') {
                             const b_i = myRelationFrame.orig_bnst_data_num[i]; // 基本句番号iに対応する文節番号
                             const b_i_diff = parseInt(b_i, 10) - orig_diff;
-                            myRelationFrame.orig_bnst_data_dpnd[b_i] = myRelationFrame.orig_bnst_data_dpnd[b_i_diff] == -1 ? -1 : parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
-                            myRelationFrame.orig_bnst_data_type[b_i] = myRelationFrame.orig_bnst_data_type[b_i_diff] || "D";
+                            myRelationFrame.orig_bnst_data_dpnd[b_i] =
+                                myRelationFrame.orig_bnst_data_dpnd[b_i_diff] == -1
+                                    ? -1
+                                    : parseInt(myRelationFrame.orig_bnst_data_dpnd[b_i_diff], 10) + orig_diff;
+                            myRelationFrame.orig_bnst_data_type[b_i] =
+                                myRelationFrame.orig_bnst_data_type[b_i_diff] || 'D';
                             myRelationFrame.orig_bnst_data_f[b_i] = myRelationFrame.orig_bnst_data_f[b_i_diff];
                             myRelationFrame.orig_bnst_data_f[b_i_diff] = '';
                         }
@@ -963,8 +1032,7 @@ let WmrphFrame = function () {
 
             for (let i = 0; i < myRelationFrame.bnst_num; i++) {
                 const b_i = myRelationFrame.orig_bnst_data_num[i];
-                if ((myRelationFrame.orig_bnst_data_end[i] == 1) &&
-                    (myRelationFrame.bnst_data_dpnd[i] == -1)) {
+                if (myRelationFrame.orig_bnst_data_end[i] == 1 && myRelationFrame.bnst_data_dpnd[i] == -1) {
                     myRelationFrame.orig_bnst_data_dpnd[b_i] = -1;
                 } else if (myRelationFrame.orig_bnst_data_end[i] == 1) {
                     const j = myRelationFrame.bnst_data_dpnd[i]; // かかりうけ先
