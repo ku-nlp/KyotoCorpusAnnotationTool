@@ -97,7 +97,7 @@ function parseResultData(data) {
 
 // 同期ファイルアップロード
 function uploadData(filename, contents) {
-    const {article_id, corpus_set_id, annotator_id} = param;
+    const { article_id, corpus_set_id, annotator_id } = param;
 
     $.ajax({
         url: UPLOAD_URL,
@@ -150,7 +150,7 @@ function quit() {
 
 // サーバへ終了通知
 function notify_quit() {
-    const {article_id, corpus_set_id, annotator_id} = param;
+    const { article_id, corpus_set_id, annotator_id } = param;
     $.ajax({
         url: UPLOAD_URL,
         data: {
@@ -196,7 +196,7 @@ function getErrorMessage(text) {
 }
 
 function handleFileSelect(evt) {
-    const {files} = evt.target; // FileList object
+    const { files } = evt.target; // FileList object
     // Loop through the FileList
     for (let i = 0, f; (f = files[i]); i++) {
         const reader = new FileReader();
