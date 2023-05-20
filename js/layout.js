@@ -9,14 +9,14 @@ const layoutOptions = {
     west__size: 400,
     center__childOptions: {
         inset: {
-            top: 20
-            , bottom: 20
-            , left: 20
-            , right: 20
-        }
+            top: 20,
+            bottom: 20,
+            left: 20,
+            right: 20,
+        },
 
-        , south__initClosed: true
-    }
+        south__initClosed: true,
+    },
 };
 
 let outerLayout;
@@ -29,7 +29,7 @@ $(document).ready(function () {
     $('#wmrph_ok').click('click', function () {
         if (!innerLayout.state.south.isClosed) {
             myWmrphFrame.ok();
-            innerLayout.close("south");
+            innerLayout.close('south');
         }
     });
 
@@ -39,6 +39,5 @@ $(document).ready(function () {
         }
     });
 
-    $("#wmrph_buttons").hide();
-
+    $('#wmrph_buttons').hide();
 });

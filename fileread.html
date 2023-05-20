@@ -1,16 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-<head>
+  <head>
     <title>京都大学コーパスアノテーションツール</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
     <!-- lib -->
     <script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="lib/jquery-ui-1.10.1.custom.min.js"></script>
     <script type="text/javascript" src="lib/jquery.layout-latest.min.js"></script>
     <script type="text/javascript" src="lib/jquery.dropdownPlain.js" language="javascript"></script>
     <script type="text/javascript" src="lib/jquery.contextMenu.js"></script>
+    <link rel="stylesheet" href="lib/tags-input.css" type="text/css" />
+    <script type="text/javascript" src="lib/tags-input.js" language="javascript"></script>
 
     <!-- js -->
     <script type="text/javascript" src="js/setting.js"></script>
@@ -24,575 +25,643 @@
     <script type="text/javascript" src="js/escapeSelector.js"></script>
 
     <!-- css -->
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.1.10.1.css"/>
-    <link rel="stylesheet" type="text/css" href="css/layout-default-latest.css">
-    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"/>
-    <link rel="stylesheet" type="text/css" href="css/jquery.contextMenu.css">
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.1.10.1.css" />
+    <link rel="stylesheet" type="text/css" href="css/layout-default-latest.css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.contextMenu.css" />
 
     <script type="text/javascript">
+      $(document).ready(function () {
+        $('#dialogdemo1').dialog({
+          autoOpen: false,
+          title: 'タグ編集',
+          closeOnEscape: false,
+          modal: true,
+          <!-- minHeight: 'auto', -->
+          autoResize: true,
+          close: function (event) {
+            $('.active').removeClass('active');
+            $('.active-ne').removeClass('active-ne');
+          },
+          buttons: {
+            閉じる: function () {
+              $(this).dialog('close');
+              myRelationFrame.switch_select_mode(false);
+            },
+          },
+        });
 
-        $(document).ready(function () {
-            $('#dialogdemo1').dialog({
-                autoOpen: false,
-                title: 'タグ編集',
-                closeOnEscape: false,
-                modal: true,
-                <!-- minHeight: 'auto', -->
-                autoResize: true,
-                close: function (event) {
-                    $(".active").removeClass("active");
-                    $(".active-ne").removeClass("active-ne");
-                },
-                buttons: {
-                    "閉じる": function () {
-                        $(this).dialog('close');
-                        myRelationFrame.switch_select_mode(false);
-                    }
+        $('#dialogdemone').dialog({
+          autoOpen: false,
+          title: 'タグ編集',
+          closeOnEscape: false,
+          modal: true,
+          autoResize: true,
+          buttons: {
+            タグ削除: function () {
+              myRelationFrame.delete_ne_tag();
+              $(this).dialog('close');
+            },
+            閉じる: function () {
+              $(this).dialog('close');
+            },
+          },
+          close: function (event) {
+            $('.active').removeClass('active');
+            $('.active-ne').removeClass('active-ne');
+          },
+          open: function (event) {
+            $(event.target).addClass('active');
+          },
+        });
+
+        $('#conj-input-dialog').dialog({
+          autoOpen: false,
+          title: '活用形入力',
+          closeOnEscape: false,
+          modal: true,
+          autoResize: true,
+          m_num: '',
+          buttons: {
+            設定: function () {
+              conj_input_dialog_done(this);
+              $(this).dialog('close');
+            },
+            キャンセル: function () {
+              $(this).dialog('close');
+            },
+          },
+        });
+
+        $('input.memo_tag').blur(function () {
+          var memo = $(this).val();
+          myRelationFrame.memo_mode($(this).id, memo, 'メモ');
+        });
+
+        $('#memo').blur(function () {
+          file_memo_blur();
+        });
+
+        $('#next-dialog').dialog({
+          autoOpen: false,
+          title: '次の文へ移動',
+          closeOnEscape: false,
+          modal: true,
+          autoResize: true,
+          buttons: {
+            キャンセル: function () {
+              $(this).dialog('close');
+            },
+            保存して次の文へ移動: function () {
+              myRelationFrame.write_sentence();
+              <!-- 編集フラグが更新された=アップデート完了 -->
+              var checkDone = function () {
+                if (modify_flag == '*') {
+                  $('body').css('cursor', 'progress');
+                  setTimeout(function () {
+                    checkDone();
+                  }, 100);
+                } else {
+                  $('body').css('cursor', 'default');
+                  myRelationFrame.jump(1);
                 }
-            });
+              };
+              checkDone();
+              $(this).dialog('close');
+            },
+            変更を破棄して次の文へ移動: function () {
+              myRelationFrame.undo();
+              myRelationFrame.jump(1);
+              initFlag();
+              $(this).dialog('close');
+            },
+          },
+        });
 
-            $('#dialogdemone').dialog({
-                autoOpen: false,
-                title: 'タグ編集',
-                closeOnEscape: false,
-                modal: true,
-                autoResize: true,
-                buttons: {
-                    "タグ削除": function () {
-                        myRelationFrame.delete_ne_tag();
-                        $(this).dialog('close');
-                    },
-                    "閉じる": function () {
-                        $(this).dialog('close');
-                    }
-                },
-                close: function (event) {
-                    $(".active").removeClass("active");
-                    $(".active-ne").removeClass("active-ne");
-                },
-                open: function (event) {
-                    $(event.target).addClass("active");
+        $('#prev-dialog').dialog({
+          autoOpen: false,
+          title: '前の文へ移動',
+          closeOnEscape: false,
+          modal: true,
+          autoResize: true,
+          buttons: {
+            キャンセル: function () {
+              $(this).dialog('close');
+            },
+            保存して前の文へ移動: function () {
+              myRelationFrame.write_sentence();
+              <!-- 編集フラグが更新された=アップデート完了 -->
+              var checkDone = function () {
+                if (modify_flag == '*') {
+                  $('body').css('cursor', 'progress');
+                  setTimeout(function () {
+                    checkDone();
+                  }, 100);
+                } else {
+                  $('body').css('cursor', 'default');
+                  myRelationFrame.jump(-1);
                 }
-            });
+              };
+              checkDone();
+              $(this).dialog('close');
+            },
+            変更を破棄して前の文へ移動: function () {
+              myRelationFrame.undo();
+              myRelationFrame.jump(-1);
+              initFlag();
+              $(this).dialog('close');
+            },
+          },
+        });
 
-            $('#conj-input-dialog').dialog({
-                autoOpen: false,
-                title: '活用形入力',
-                closeOnEscape: false,
-                modal: true,
-                autoResize: true,
-                m_num: "",
-                buttons: {
-                    "設定": function () {
-                        conj_input_dialog_done(this);
-                        $(this).dialog('close');
-                    },
-                    "キャンセル": function () {
-                        $(this).dialog('close');
-                    }
-                }
-            });
-
-            $("input.memo_tag").blur(function () {
-                var memo = $(this).val();
-                myRelationFrame.memo_mode($(this).id, memo, "メモ");
-            });
-
-            $("#memo").blur(function () {
-                file_memo_blur();
-            });
-
-            $('#next-dialog').dialog({
-                autoOpen: false,
-                title: '次の文へ移動',
-                closeOnEscape: false,
-                modal: true,
-                autoResize: true,
-                buttons: {
-                    "キャンセル": function () {
-                        $(this).dialog('close');
-                    },
-                    "保存して次の文へ移動": function () {
-                        myRelationFrame.write_sentence()
-                        <!-- 編集フラグが更新された=アップデート完了 -->
-                        var checkDone = function () {
-                            if (modify_flag == "*") {
-                                $("body").css("cursor", "progress");
-                                setTimeout(function () {
-                                    checkDone();
-                                }, 100);
-                            } else {
-                                $("body").css("cursor", "default");
-                                myRelationFrame.jump(1);
-                            }
-                        };
-                        checkDone();
-                        $(this).dialog('close');
-                    },
-                    "変更を破棄して次の文へ移動": function () {
-                        myRelationFrame.undo();
-                        myRelationFrame.jump(1);
-                        initFlag();
-                        $(this).dialog('close');
-                    }
-                }
-            });
-
-            $('#prev-dialog').dialog({
-                autoOpen: false,
-                title: '前の文へ移動',
-                closeOnEscape: false,
-                modal: true,
-                autoResize: true,
-                buttons: {
-                    "キャンセル": function () {
-                        $(this).dialog('close');
-                    },
-                    "保存して前の文へ移動": function () {
-                        myRelationFrame.write_sentence()
-                        <!-- 編集フラグが更新された=アップデート完了 -->
-                        var checkDone = function () {
-                            if (modify_flag == "*") {
-                                $("body").css("cursor", "progress");
-                                setTimeout(function () {
-                                    checkDone();
-                                }, 100);
-                            } else {
-                                $("body").css("cursor", "default");
-                                myRelationFrame.jump(-1);
-                            }
-                        };
-                        checkDone();
-                        $(this).dialog('close');
-                    },
-                    "変更を破棄して前の文へ移動": function () {
-                        myRelationFrame.undo();
-                        myRelationFrame.jump(-1);
-                        initFlag();
-                        $(this).dialog('close');
-                    }
-                }
-            });
-
-            $('#quit-dialog').dialog({
-                autoOpen: false,
-                title: '終了',
-                closeOnEscape: false,
-                modal: true,
-                autoResize: true,
-                buttons: {
-                    "終了をキャンセル": function () {
-                        $(this).dialog('close');
-                    },
-                    "保存して終了": function () {
-                        if (myRelationFrame.write_sentence()) {
-                            <!-- 編集フラグが更新された=アップデート完了 -->
-                            var checkDone = function () {
-                                if (modify_flag == "*") {
-                                    $("body").css("cursor", "progress");
-                                    setTimeout(function () {
-                                        checkDone();
-                                    }, 100);
-                                } else {
-                                    $("body").css("cursor", "default");
-                                    notify_quit();
-                                }
-                            };
-                            checkDone();
-                            $(this).dialog('close');
-                        }
-                    },
-                    "変更を破棄して終了": function () {
-                        myRelationFrame.undo();
-                        notify_quit();
-                        $(this).dialog('close');
-                    }
-                }
-            });
-
-            $('#wrong-tree-dialog').dialog({
-                autoOpen: false,
-                title: '構文木の修正が必要です。',
-                closeOnEscape: false,
-                modal: true,
-                autoResize: true,
-                buttons: {
-                    "キャンセル": function () {
-                        $(this).dialog('close');
-                    }
-                }
-            });
-
-            function getParam(key) {
-                var url = location.href;
-                var split_pos = url.indexOf("?");
-                var parameters = [url.slice(0, split_pos), url.slice(split_pos + 1)];
-                //        console.log(parameters);
-                if (parameters.length < 2) {
-                    return "";
-                }
-                params = parameters[1].split("&");
-                var paramsArray = [];
-                for (i = 0; i < params.length; i++) {
-                    neet = params[i].split("=");
-                    paramsArray.push(neet[0]);
-                    paramsArray[neet[0]] = neet[1];
-                }
-                if (paramsArray[key] == undefined) {
-                    return undefined;
-                }
-                return decodeURIComponent(paramsArray[key]);
-            };
-
-            $("#searchText").val(getParam("query"));
-
-            var sid = getParam("sid")
-            if (sid !== undefined) {
-                var f = function () {
-                    var current_sid = inputFileList[myRelationFrame.currentShowIndex];
-                    for (; current_sid != sid; current_sid = inputFileList[myRelationFrame.currentShowIndex]) {
-                        nextSentence();
-                        if (current_sid == inputFileList[myRelationFrame.currentShowIndex]) { //last
-                            break;
-                        }
-                    }
-                    ;
+        $('#quit-dialog').dialog({
+          autoOpen: false,
+          title: '終了',
+          closeOnEscape: false,
+          modal: true,
+          autoResize: true,
+          buttons: {
+            終了をキャンセル: function () {
+              $(this).dialog('close');
+            },
+            保存して終了: function () {
+              if (myRelationFrame.write_sentence()) {
+                <!-- 編集フラグが更新された=アップデート完了 -->
+                var checkDone = function () {
+                  if (modify_flag == '*') {
+                    $('body').css('cursor', 'progress');
+                    setTimeout(function () {
+                      checkDone();
+                    }, 100);
+                  } else {
+                    $('body').css('cursor', 'default');
+                    notify_quit();
+                  }
                 };
-                setTimeout(f, 1000);
+                checkDone();
+                $(this).dialog('close');
+              }
+            },
+            変更を破棄して終了: function () {
+              myRelationFrame.undo();
+              notify_quit();
+              $(this).dialog('close');
+            },
+          },
+        });
+
+        $('#wrong-tree-dialog').dialog({
+          autoOpen: false,
+          title: '構文木の修正が必要です。',
+          closeOnEscape: false,
+          modal: true,
+          autoResize: true,
+          buttons: {
+            キャンセル: function () {
+              $(this).dialog('close');
+            },
+          },
+        });
+
+        function getParam(key) {
+          var url = location.href;
+          var split_pos = url.indexOf('?');
+          var parameters = [url.slice(0, split_pos), url.slice(split_pos + 1)];
+          //        console.log(parameters);
+          if (parameters.length < 2) {
+            return '';
+          }
+          params = parameters[1].split('&');
+          var paramsArray = [];
+          for (i = 0; i < params.length; i++) {
+            neet = params[i].split('=');
+            paramsArray.push(neet[0]);
+            paramsArray[neet[0]] = neet[1];
+          }
+          if (paramsArray[key] == undefined) {
+            return undefined;
+          }
+          return decodeURIComponent(paramsArray[key]);
+        }
+
+        $('#searchText').val(getParam('query'));
+
+        var sid = getParam('sid');
+        if (sid !== undefined) {
+          var f = function () {
+            var current_sid = inputFileList[myRelationFrame.currentShowIndex];
+            for (; current_sid != sid; current_sid = inputFileList[myRelationFrame.currentShowIndex]) {
+              nextSentence();
+              if (current_sid == inputFileList[myRelationFrame.currentShowIndex]) {
+                //last
+                break;
+              }
             }
-            ;
+          };
+          setTimeout(f, 1000);
+        }
+      }); <!-- ready -->
+      $(document).on('click', '.tag', function () {
+        myRelationFrame.click_cell(this);
+      });
 
-        }); <!-- ready -->
+      $(document).on('click', '.treeCorner', function () {
+        myRelationFrame.click_corner(this);
+      });
 
-        $(document).on("click", ".tag", function () {
-            myRelationFrame.click_cell(this);
+      $(document).on('mouseover', '.tag_sub_span', function () {
+        myRelationFrame.highlight_target(this, true);
+      });
+
+      $(document).on('mouseleave', '.tag_sub_span', function () {
+        myRelationFrame.highlight_target(this, false);
+      });
+
+      $(document).on('click', '.ui-dialog-titlebar-close', function () {
+        myRelationFrame.switch_select_mode(false);
+      });
+
+      $(document).on('click', '.ne_button', function () {
+        myRelationFrame.ne_mode($(this).val());
+      });
+
+      $(document).on('click', '.ne_radio', function () {
+        $('.ne#accordion').accordion({ active: 1 });
+        var ne_tag_index = $(this).attr('id');
+        if (ne_tag_index == NETags.length - 1) {
+          myRelationFrame.populate_ne_opt();
+        } else {
+          myRelationFrame.clear_ne_opt();
+        }
+        netag = NETags[ne_tag_index];
+        $('#ne_input_title').text(netag);
+      });
+
+      $(document).on('click', '.ui-dialog .dialog-close', function (e) {
+        $(this).closest('#dialogdemo1').dialog('close');
+      });
+
+      $(document).on('click', '#editable-table .bnst', function (e) {
+        outerLayout = $('body').layout(layoutOptions);
+        myRelationFrame.clickBnst(this);
+      });
+
+      $(document).on('click', 'a.tagselect', function () {
+        select_tag(this);
+      });
+
+      $(document).on('click', '.title_bnst', function () {
+        //  .title .bnst
+        select_sentence_tag(this);
+      });
+
+      $(document).on('click', '#delbtn', function () {
+        $($('.delcheck:checked').get().reverse()).each(function () {
+          var index = $(this).attr('id');
+          delete_tag(index);
         });
+      });
 
-        $(document).on("click", ".treeCorner", function () {
-            myRelationFrame.click_corner(this);
-        });
+      $(document).on('click', 'img.edit_ok', function () {
+        var index = $(this).attr('id');
+        //var input = $(this).val();
+        edit_tag(index);
+      });
 
-        $(document).on("mouseover", ".tag_sub_span", function () {
-            myRelationFrame.highlight_target(this, true);
-        });
+      $(document).on('click', 'a.nearly', function () {
+        var index = $(this).attr('id');
+        edit_nearly_tag(0, index);
+      });
 
-        $(document).on("mouseleave", ".tag_sub_span", function () {
-            myRelationFrame.highlight_target(this, false);
-        });
+      $(document).on('click', 'a.equalopt1', function () {
+        var index = $(this).attr('id');
+        edit_nearly_tag(1, index);
+      });
 
-        $(document).on("click", ".ui-dialog-titlebar-close", function () {
-            myRelationFrame.switch_select_mode(false);
-        });
+      $(document).on('click', 'a.equalopt2', function () {
+        var index = $(this).attr('id');
+        edit_nearly_tag(2, index);
+      });
 
-        $(document).on("click", ".ne_button", function () {
-            myRelationFrame.ne_mode($(this).val());
-        });
+      $(document).on('click', 'a.kaku', function () {
+        var kaku = $(this).text();
+        $(this).addClass('disabled');
+        add_col(kaku);
+      });
 
-        $(document).on("click", ".ne_radio", function () {
-            $(".ne#accordion").accordion({active: 1});
-            var ne_tag_index = $(this).attr('id');
-            if (ne_tag_index == (NETags.length - 1)) {
-                myRelationFrame.populate_ne_opt();
-            } else {
-                myRelationFrame.clear_ne_opt();
-            }
-            netag = NETags[ne_tag_index];
-            $("#ne_input_title").text(netag);
-        });
+      $(document).on('click', 'a.mode', function () {
+        var mode = $(this).attr('id');
+        change_mode(mode);
+      });
 
-        $(document).on("click", ".ui-dialog .dialog-close", function (e) {
-            $(this).closest("#dialogdemo1").dialog("close");
-        });
+      $(document).on('click', '#editable-table .tree', function (event) {
+        var type = 'D';
+        if (event.ctrlKey || event.metaKey) {
+          type = 'P';
+        } else if (event.shiftKey) {
+          type = 'I';
+        } else if (event.altKey) {
+          type = 'A';
+        }
+        var id = $(this).attr('id');
+        m = id.match(/(\d+)_(\d+)/);
+        if (m) {
+          var i = m[1];
+          var j = m[2];
+          myRelationFrame.reset_dpnd(i, j, type);
+        }
+      });
 
-        $(document).on("click", "#editable-table .bnst", function (e) {
-            outerLayout = $('body').layout(layoutOptions);
-            myRelationFrame.clickBnst(this);
-        });
-
-        $(document).on("click", "a.tagselect", function () {
-            select_tag(this);
-        });
-
-        $(document).on("click", ".title_bnst", function () { //  .title .bnst
-            select_sentence_tag(this);
-        });
-
-        $(document).on("click", "#delbtn", function () {
-            $($(".delcheck:checked").get().reverse()).each(function () {
-                var index = $(this).attr('id');
-                delete_tag(index);
-            });
-        });
-
-        $(document).on("click", "img.edit_ok", function () {
-            var index = $(this).attr('id');
-            //var input = $(this).val();
-            edit_tag(index);
-        });
-
-        $(document).on("click", "a.nearly", function () {
-            var index = $(this).attr('id');
-            edit_nearly_tag(0, index);
-        });
-
-        $(document).on("click", "a.equalopt1", function () {
-            var index = $(this).attr('id');
-            edit_nearly_tag(1, index);
-        });
-
-        $(document).on("click", "a.equalopt2", function () {
-            var index = $(this).attr('id');
-            edit_nearly_tag(2, index);
-        });
-
-        $(document).on("click", "a.kaku", function () {
-            var kaku = $(this).text();
-            $(this).addClass("disabled");
-            add_col(kaku);
-        });
-
-        $(document).on("click", "a.mode", function () {
-            var mode = $(this).attr('id');
-            change_mode(mode);
-        });
-
-        $(document).on("click", "#editable-table .tree", function (event) {
-            var type = "D";
-            if (event.ctrlKey || event.metaKey) {
-                type = "P";
-            } else if (event.shiftKey) {
-                type = "I";
-            } else if (event.altKey) {
-                type = "A";
-            }
-            var id = $(this).attr('id');
-            m = id.match(/(\d+)_(\d+)/);
-            if (m) {
-                var i = m[1];
-                var j = m[2];
-                myRelationFrame.reset_dpnd(i, j, type);
-            }
-        });
-
-        <!-- NE OPTの詳細 -->
-        $(document).on("change", ".ne_opt_check", function (event) {
-            myRelationFrame.update_ne_opt();
-        });
-        $(document).on("change", ".ne_opt_radio", function (event) {
-            myRelationFrame.update_ne_opt();
-        });
-
-
+      <!-- NE OPTの詳細 -->
+      $(document).on('change', '.ne_opt_check', function (event) {
+        myRelationFrame.update_ne_opt();
+      });
+      $(document).on('change', '.ne_opt_radio', function (event) {
+        myRelationFrame.update_ne_opt();
+      });
     </script>
-</head>
+  </head>
 
-<body>
-<div class="ui-layout-center">
+  <body>
     <div class="ui-layout-center">
+      <div class="ui-layout-center">
+        <p>
+          <span class="tit">編集ページ</span>
+          <!-- <img src="prev_of.png" class="prev"><img src="next_of.png" class="next" /> -->
+          <img
+            class="prev"
+            src="css/images/prev_of.png"
+            onmouseover="this.src='css/images/prev_on.png'"
+            onmouseout="this.src='css/images/prev_of.png'"
+            onClick="preSentence()"
+            align="middle"
+          />
+          <img
+            class="next"
+            src="css/images/next_of.png"
+            onmouseover="this.src='css/images/next_on.png'"
+            onmouseout="this.src='css/images/next_of.png'"
+            onClick="nextSentence()"
+            align="middle"
+          />
 
-        <p><span class="tit">編集ページ</span>
-            <!-- <img src="prev_of.png" class="prev"><img src="next_of.png" class="next" /> -->
-            <img class="prev" src="css/images/prev_of.png" onmouseover="this.src='css/images/prev_on.png'"
-                 onmouseout="this.src='css/images/prev_of.png'" onClick="preSentence()" align="middle"/>
-            <img class="next" src="css/images/next_of.png" onmouseover="this.src='css/images/next_on.png'"
-                 onmouseout="this.src='css/images/next_of.png'" onClick="nextSentence()" align="middle"/>
-
-            <input type="text" size="20" id="searchText">
-            <img src="css/images/search_of.png" onmouseover="this.src='css/images/search_on.png'"
-                 onmouseout="this.src='css/images/search_of.png'" value="検索" id="findBtn" onclick="search()"
-                 align="middle">
+          <input type="text" size="20" id="searchText" />
+          <img
+            src="css/images/search_of.png"
+            onmouseover="this.src='css/images/search_on.png'"
+            onmouseout="this.src='css/images/search_of.png'"
+            value="検索"
+            id="findBtn"
+            onclick="search()"
+            align="middle"
+          />
         </p>
 
         <div id="fileinfo">
-            <div id="comment"></div>
-            <div id="memoContainer">MEMO:<input id="memo" type="text" size="40"/></div>
+          <div id="comment"></div>
+          <div id="memoContainer">MEMO:<input id="memo" type="text" size="40" /></div>
         </div>
         <div id="sentence"></div>
 
         <div id="bnst-frame" class=".clear">
-            <div id="menu-bar">
+          <div id="menu-bar">
+            <!-- <input type="image" src="css/images/undo_of.png" onmouseover="this.src='css/images/undo_on.png'" onmouseout="this.src='css/images/undo_of.png'" value="undo" id="undoBtn" onclick="undoTree()"> -->
+            <!-- <div id="undoRedo"> -->
+            <!--   <input type="button" value="UNDO" id="undoBtn" onclick="undoTree()"/> -->
+            <!--   <input type="button" value="REDO" id="redoBtn" onclick="redoTree()"/> -->
+            <!-- </div> -->
+            <ul class="dropdown">
+              <!-- 格追加 -->
+              <li>
+                <img
+                  src="css/images/menu_02_of.png"
+                  onmouseover="this.src='css/images/menu_02_on.png'"
+                  onmouseout="this.src='css/images/menu_02_of.png'"
+                  align="middle"
+                />
+                <ul class="tool" id="case_list"></ul>
+              </li>
 
-                <!-- <input type="image" src="css/images/undo_of.png" onmouseover="this.src='css/images/undo_on.png'" onmouseout="this.src='css/images/undo_of.png'" value="undo" id="undoBtn" onclick="undoTree()"> -->
-                <!-- <div id="undoRedo"> -->
-                <!--   <input type="button" value="UNDO" id="undoBtn" onclick="undoTree()"/> -->
-                <!--   <input type="button" value="REDO" id="redoBtn" onclick="redoTree()"/> -->
-                <!-- </div> -->
-                <ul class="dropdown">
+              <li>
+                <img
+                  src="css/images/menu_03_of.png"
+                  onmouseover="this.src='css/images/menu_03_on.png'"
+                  onmouseout="this.src='css/images/menu_03_of.png'"
+                  align="middle"
+                />
+                <ul class="tool" id="compound_case_list"></ul>
+              </li>
 
-                    <!-- 格追加 -->
-                    <li><img src="css/images/menu_02_of.png" onmouseover="this.src='css/images/menu_02_on.png'"
-                             onmouseout="this.src='css/images/menu_02_of.png'" align="middle"/>
-                        <ul class="tool" id="case_list">
-                        </ul>
-                    </li>
-
-                    <li><img src="css/images/menu_03_of.png" onmouseover="this.src='css/images/menu_03_on.png'"
-                             onmouseout="this.src='css/images/menu_03_of.png'" align="middle"/>
-                        <ul class="tool" id="compound_case_list">
-                        </ul>
-                    </li>
-
-                    <li><img id="modify_mode" src="css/images/menu_04_of.png"
-                             onmouseover="this.src='css/images/menu_04_on.png'"
-                             onmouseout="this.src='css/images/menu_04_of.png'" align="middle"/>
-                        <ul class="tool">
-                            <li><a class="mode" id="OVERWRITE">修正</a></li>
-                            <li><a class="mode" id="ADD_AND">追加（AND）</a></li>
-                            <li><a class="mode" id="ADD_OR">追加（OR）</a></li>
-                            <li><a class="mode" id="ADD_QUESTION">追加（?）</a></li>
-                        </ul>
-                    </li>
+              <li>
+                <img
+                  id="modify_mode"
+                  src="css/images/menu_04_of.png"
+                  onmouseover="this.src='css/images/menu_04_on.png'"
+                  onmouseout="this.src='css/images/menu_04_of.png'"
+                  align="middle"
+                />
+                <ul class="tool">
+                  <li><a class="mode" id="OVERWRITE">修正</a></li>
+                  <li><a class="mode" id="ADD_AND">追加（AND）</a></li>
+                  <li><a class="mode" id="ADD_OR">追加（OR）</a></li>
+                  <li><a class="mode" id="ADD_QUESTION">追加（?）</a></li>
                 </ul>
+              </li>
+            </ul>
+          </div>
 
-            </div>
+          <div class="clear"></div>
 
-            <div class="clear"></div>
+          <div id="out"></div>
 
-            <div id="out"></div>
-
-            <input type="image" src="css/images/save_of.png" onmouseover="this.src='css/images/save_on.png'"
-                   onmouseout="this.src='css/images/save_of.png'" value="save" id="saveBtn" onclick="save()">
-            <input type="image" src="css/images/end_of.png" onmouseover="this.src='css/images/end_on.png'"
-                   onmouseout="this.src='css/images/end_of.png'" value="quit" id="quitBtn" onclick="quit()">
-
+          <input
+            type="image"
+            src="css/images/save_of.png"
+            onmouseover="this.src='css/images/save_on.png'"
+            onmouseout="this.src='css/images/save_of.png'"
+            value="save"
+            id="saveBtn"
+            onclick="save()"
+          />
+          <input
+            type="image"
+            src="css/images/end_of.png"
+            onmouseover="this.src='css/images/end_on.png'"
+            onmouseout="this.src='css/images/end_of.png'"
+            value="quit"
+            id="quitBtn"
+            onclick="quit()"
+          />
         </div>
 
         <div id="next-dialog" size="auto">
-            <p>
-                Saveされていません
-            <p>
+          <p>Saveされていません</p>
+
+          <p></p>
         </div>
 
         <div id="prev-dialog" size="auto">
-            <p>
-                Saveされていません
-            <p>
+          <p>Saveされていません</p>
+
+          <p></p>
         </div>
 
         <div id="quit-dialog" size="auto">
-            <p>
-                Saveされていません
-            <p>
+          <p>Saveされていません</p>
+
+          <p></p>
         </div>
 
         <div id="wrong-tree-dialog" size="auto">
-            <p>
-                交差しないように構文木を修正してください。
-            <p>
+          <p>交差しないように構文木を修正してください。</p>
+
+          <p></p>
         </div>
+      </div>
 
-
-    </div>
-
-    <!-- 形態素・文節情報 -->
-    <div class="ui-layout-south" id="wmrph">
+      <!-- 形態素・文節情報 -->
+      <div class="ui-layout-south" id="wmrph">
         <p class="tit">形態素・文節操作</p>
-        <img src="css/images/comp_of.png" onmouseover="this.src='css/images/comp_on.png'"
-             onmouseout="this.src='css/images/comp_of.png'" id="wmrph_ok">
-        <img src="css/images/add_of.png" onmouseover="this.src='css/images/add_on.png'"
-             onmouseout="this.src='css/images/add_of.png'" id="wmrph_add">
+        <img
+          src="css/images/comp_of.png"
+          onmouseover="this.src='css/images/comp_on.png'"
+          onmouseout="this.src='css/images/comp_of.png'"
+          id="wmrph_ok"
+        />
+        <img
+          src="css/images/add_of.png"
+          onmouseover="this.src='css/images/add_on.png'"
+          onmouseout="this.src='css/images/add_of.png'"
+          id="wmrph_add"
+        />
 
         <div id="wmrph_content"></div>
 
         <div id="conj-input-dialog">
-            <input type="text" size="20" id="conj-textbox">
-            <p>
-                活用型:活用形という形で入力してください<br/>(例:「母音動詞:基本形」)
-            <p>
+          <input type="text" size="20" id="conj-textbox" />
+          <p>活用型:活用形という形で入力してください<br />(例:「母音動詞:基本形」)</p>
+
+          <p></p>
         </div>
-
+      </div>
     </div>
-</div>
 
-<!-- 全文表示画面 -->
-<div class="ui-layout-west">
-    <p><span class="tit">全文表示</span>
+    <!-- 全文表示画面 -->
+    <div class="ui-layout-west">
+      <p>
+        <span class="tit">全文表示</span>
         <!-- <div align="center"> -->
-        <img src="css/images/rl_of.png"
-             onmouseover="this.src='css/images/rl_on.png'"
-             onmouseout="this.src='css/images/rl_of.png'"
-             class="reloadBtn" onClick="javascript:reloadData()"/>
-    </p>
-    <!-- </div> -->
-    <div id="all-sentence"></div>
-</div>
+        <img
+          src="css/images/rl_of.png"
+          onmouseover="this.src='css/images/rl_on.png'"
+          onmouseout="this.src='css/images/rl_of.png'"
+          class="reloadBtn"
+          onClick="javascript:reloadData()"
+        />
+      </p>
+      <!-- </div> -->
+      <div id="all-sentence"></div>
+    </div>
 
-<!-- jQuery UI Widjet -->
-<div id="dialogdemo1">
-    <!-- <ul id="menu"> -->
-    <div id="accordion">
+    <!-- jQuery UI Widjet -->
+    <div id="dialogdemo1">
+      <!-- <ul id="menu"> -->
+      <div id="accordion">
         <h3>構文木操作</h3>
         <div>
-            <li id="dialog-tree-select" onclick="select_tree_tag()"><a href="#">タグ選択</a></li>
-            <!-- class="dialog-close" -->
-            <li id="dialog-menu-cancel" onclick="cancel_tree_tag()" class="ui-state-disabled"><a href="#">キャンセル</a></li>
-            <div id="tag_edit_list">
-            </div>
+          <li id="dialog-tree-select" onclick="select_tree_tag()"><a href="#">タグ選択</a></li>
+          <!-- class="dialog-close" -->
+          <li id="dialog-menu-cancel" onclick="cancel_tree_tag()" class="ui-state-disabled">
+            <a href="#">キャンセル</a>
+          </li>
+          <div id="tag_edit_list"></div>
         </div>
 
         <h3 class="delete">削除</h3>
-        <div id="tag_delete_list">
-        </div>
+        <div id="tag_delete_list"></div>
 
         <h3>選択</h3>
         <div id="basic_tag_list">
-            <li><a href="#" class="tagselect">著者</a></li>
-            <li><a href="#" class="tagselect">読者</a></li>
-            <li><a href="#" class="tagselect">不特定:人</a>
-                <input type="text" name="name" id="people_count" style="width: 20%"
-                       class="text ui-widget-content ui-corner-all" value=""/>
-            </li>
-            <li><a href="#" class="tagselect">不特定:物</a>
-                <input type="text" name="name" id="things_count" style="width: 20%"
-                       class="text ui-widget-content ui-corner-all" value=""/>
-            </li>
-            <li><a href="#" class="tagselect">不特定:状況</a>
-                <input type="text" name="name" id="status_count" style="width: 20%"
-                       class="text ui-widget-content ui-corner-all" value=""/>
-            </li>
-            <li><a href="#" class="tagselect">前文</a></li>
-            <li><a href="#" class="tagselect">後文</a></li>
-            <li><a href="#" class="tagselect">対象外</a></li>
-            <li><a href="#" class="tagselect">なし</a></li>
-            <br/>
-            <li class="tagselect_other">文外 その他</li>
-            <li>
-                <input type="text" name="name" id="free_tag" style="width: 60%;"
-                       class="text ui-widget-content ui-corner-all" value=""/>
-                <img class="setBtn" src="css/images/set_of.png" onmouseover="this.src='css/images/set_on.png'"
-                     onmouseout="this.src='css/images/set_of.png'" onclick="select_free_tag()"/>
-            </li>
+          <li><a href="#" class="tagselect">著者</a></li>
+          <li><a href="#" class="tagselect">読者</a></li>
+          <li>
+            <a href="#" class="tagselect">不特定:人</a>
+            <input
+              type="text"
+              name="name"
+              id="people_count"
+              style="width: 20%"
+              class="text ui-widget-content ui-corner-all"
+              value=""
+            />
+          </li>
+          <li>
+            <a href="#" class="tagselect">不特定:物</a>
+            <input
+              type="text"
+              name="name"
+              id="things_count"
+              style="width: 20%"
+              class="text ui-widget-content ui-corner-all"
+              value=""
+            />
+          </li>
+          <li>
+            <a href="#" class="tagselect">不特定:状況</a>
+            <input
+              type="text"
+              name="name"
+              id="status_count"
+              style="width: 20%"
+              class="text ui-widget-content ui-corner-all"
+              value=""
+            />
+          </li>
+          <li><a href="#" class="tagselect">前文</a></li>
+          <li><a href="#" class="tagselect">後文</a></li>
+          <li><a href="#" class="tagselect">対象外</a></li>
+          <li><a href="#" class="tagselect">なし</a></li>
+          <br />
+          <li class="tagselect_other">文外 その他</li>
+          <li>
+            <input
+              type="text"
+              name="name"
+              id="free_tag"
+              style="width: 60%"
+              class="text ui-widget-content ui-corner-all"
+              value=""
+            />
+            <img
+              class="setBtn"
+              src="css/images/set_of.png"
+              onmouseover="this.src='css/images/set_on.png'"
+              onmouseout="this.src='css/images/set_of.png'"
+              onclick="select_free_tag()"
+            />
+          </li>
         </div>
         <h3 class="semiequal">≒</h3>
-        <div id="tag_nearly_list">
-        </div>
+        <div id="tag_nearly_list"></div>
         <h3 class="equalopt">構文</h3>
-        <div id="tag_equalopt1_list">
-        </div>
+        <div id="tag_equalopt1_list"></div>
         <h3 class="equalopt">役職</h3>
-        <div id="tag_equalopt2_list">
-        </div>
-
-
+        <div id="tag_equalopt2_list"></div>
+      </div>
     </div>
-</div>
 
-<div id="dialogdemone">
-    <div class="ne" id="accordion">
+    <div id="dialogdemone">
+      <div class="ne" id="accordion">
         <h3>選択</h3>
-        <div id="ne_tag_list">
-        </div>
+        <div id="ne_tag_list"></div>
         <h3 id="ne_input_title">入力</h3>
         <div id="ne_tag_detail">
-            <div id="ne_opt_tag_list">
-                <!-- <h4>OPTIONAL詳細</h4> -->
-            </div>
-            <div id="ne_tag_input">
-            </div>
+          <div id="ne_opt_tag_list">
+            <!-- <h4>OPTIONAL詳細</h4> -->
+          </div>
+          <div id="ne_tag_input"></div>
         </div>
+      </div>
     </div>
-</div>
-
-
-</body>
+  </body>
 </html>
