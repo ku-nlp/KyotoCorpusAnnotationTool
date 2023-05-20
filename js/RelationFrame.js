@@ -54,6 +54,34 @@ var RelationFrame = function () {
     this.wrongTreeState = false;
     this.bnstTreeMap = null;
 
+    this.featureTags = [
+        "用言:動",
+        "用言:形",
+        "用言:判",
+        "体言",
+        "非用言格解析:動",
+        "非用言格解析:形",
+        "モダリティ-疑問",
+        "モダリティ-意志",
+        "モダリティ-勧誘",
+        "モダリティ-命令",
+        "モダリティ-禁止",
+        "モダリティ-評価:弱",
+        "モダリティ-評価:強",
+        "モダリティ-認識-推量",
+        "モダリティ-認識-蓋然性",
+        "モダリティ-認識-証拠性",
+        "モダリティ-依頼Ａ",
+        "モダリティ-依頼Ｂ",
+        "時制:過去",
+        "時制:非過去",
+        "否定表現",
+        "節-主辞",
+        "節-区切"
+    ];
+        
+    this.featureTagInputs = null;
+
     // 品詞マーク
     this.pos_mark = {
         '特殊': '*',
@@ -748,6 +776,34 @@ var RelationFrame = function () {
 
     };
 
+    this.extractFeatureTags = function(bnst_data_f) {
+        let tags = [];
+        for (let i = 0; i < this.featureTags.length; i++) {
+            if (bnst_data_f.indexOf('<' + this.featureTags[i] + '>') != -1)
+                tags.push(this.featureTags[i]);
+        }
+        return tags;
+    }
+
+    this.initFeatureTagsDropdown = function(tagsParentElementId, tags) {
+        let relFrame = this;
+        let row = parseInt(tagsParentElementId.substring('featureTagsMenu'.length));
+        $(`#${tagsParentElementId}`).empty();
+        for (let i = 0; i < this.featureTags.length; i++) {
+            let disabledClass = tags.indexOf(this.featureTags[i]) != -1 ? 'disabled' : '';
+            $(`#${tagsParentElementId}`).append(`<li style="position: relative; left: 20px; top: -260px;"><a class="featureTag ${disabledClass}">${this.featureTags[i]}</a></li>`);
+        }
+        $(`#${tagsParentElementId}`).on('click', 'a.featureTag', function() { 
+            if ($(this).hasClass('disabled'))
+                return;
+
+            $(this).addClass('disabled');
+            let tagIndex = $(this).parent().index();
+            relFrame.featureTagInputs[row].addTag(relFrame.featureTags[tagIndex]);
+            relFrame.write_bnst_feature_for_feature_tags(row, relFrame.featureTagInputs[row].getTags());
+        });
+    }
+
     // テーブル初期化
     this.makeCaseTableJa = function () {
 
@@ -795,10 +851,17 @@ var RelationFrame = function () {
             }
             td.appendChild(title);
             tr.appendChild(td);
-        }
-        thead.appendChild(tr);
-        const tbody = document.createElement("tbody");
-        for (let ti = 0; ti < this.bnst_num; ti++) {
+	    }
+
+        let tdFeatureTags = document.createElement("td");
+        tdFeatureTags.setAttribute("align", "center");
+        tdFeatureTagsTitle = document.createTextNode("素性");
+        tdFeatureTags.append(tdFeatureTagsTitle);
+        tr.appendChild(tdFeatureTags);
+
+	    thead.appendChild(tr);
+	    const tbody = document.createElement("tbody");
+	    for(let ti = 0; ti < this.bnst_num; ti++){
             var tr = document.createElement("tr");
             for (var j = 0; j <= cols; j++) {
                 const kaku = this.caseName[j];
@@ -884,11 +947,57 @@ var RelationFrame = function () {
                 tr.appendChild(td);
 
             }
+            
+            let tdFeatureTags = document.createElement("td");
+
+            let featureTagsDropdown = document.createElement("ul");
+            featureTagsDropdown.id = `featureTagsDropdown${ti}`;
+            featureTagsDropdown.className = "dropdown";
+            
+            let addFeatureTagsButton = document.createElement("li");
+            let addFeatureTagsButtonLabel = document.createTextNode("\u00A0\u00A0+\u00A0\u00A0");
+
+            let featureTagsMenu = document.createElement("ul");
+            featureTagsMenu.id = `featureTagsMenu${ti}`;
+            featureTagsMenu.className = "tool";
+           
+            addFeatureTagsButton.appendChild(addFeatureTagsButtonLabel);
+            addFeatureTagsButton.appendChild(featureTagsMenu);
+            featureTagsDropdown.appendChild(addFeatureTagsButton);
+            tdFeatureTags.appendChild(featureTagsDropdown);
+
+            let featureTagsInput = document.createElement("input");
+            featureTagsInput.id = `featureTagsInput${ti}`;
+            tdFeatureTags.appendChild(featureTagsInput);
+
+            tr.appendChild(tdFeatureTags);
             tbody.appendChild(tr);
         }
         table.appendChild(thead);
         table.appendChild(tbody);
         document.getElementById("out").appendChild(table);
+
+        this.featureTagInputs = [];
+        for (let ti = 0; ti < this.bnst_num; ti++) {
+            let tags = this.extractFeatureTags(this.bnst_data_f[ti]);
+            this.initFeatureTagsDropdown(`featureTagsMenu${ti}`, tags);
+
+            let relFrame = this;
+            this.featureTagInputs[ti] = new TagsInput({ 
+                selector: `featureTagsInput${ti}`,
+                duplicate: false,
+                max: this.featureTags.length,
+                deleteTagCallback: function(tag, indexTag, tags) {
+                    let dropdownElement = tag.parentElement.parentElement.children[0];
+                    let row = parseInt(dropdownElement.id.substring('featureTagsDropdown'.length));
+                    let tagText = tag.childNodes[0].textContent;
+                    $(dropdownElement.firstChild.children[0]).find(`a:contains('${tagText}')`).removeClass('disabled');
+                    tags.splice(tags.indexOf(tagText), 1);
+                    relFrame.write_bnst_feature_for_feature_tags(row, tags);
+                }
+            });
+            this.featureTagInputs[ti].addData(tags);
+        }
 
         // 改行させないため動的に min-width をセット
         // 一旦改行が発生しないくらいの幅を設定てから解像度にあわせてmaxWidthを取得
@@ -901,7 +1010,6 @@ var RelationFrame = function () {
             }
         });
         $(".rel-tree").css("min-width", maxWidth);
-
     };
 
 
@@ -1524,6 +1632,9 @@ var RelationFrame = function () {
         });
 
         const selectedId = $(cell).attr('id');
+        if (!selectedId)
+            return;
+
         if (kaku != 'メモ') {
             myRelationFrame.currentCellId = selectedId;
         }
@@ -1846,7 +1957,7 @@ var RelationFrame = function () {
 
         const table = document.getElementsByTagName("table")[0];
         const col = table.rows[0].cells.length;
-        for (j = 0; j < col; j++) {
+        for (j = 0; j < col - 1; j++) {
             if (table.rows[0].cells[j].textContent == title) {
                 return;
             }
@@ -1856,16 +1967,20 @@ var RelationFrame = function () {
         // 格の数を更新する
         this.caseBoxNum += 1;
 
+        // newCol must be inserted before Memo col if it's shown or before the tags col if it's not.
+        let newCol = col - 2;
+        if (table.rows[0].cells[newCol].textContent != 'メモ')
+            newCol += 1;
         const isMemo = (title == 'メモ');
         for (i = 0; i < table.rows.length; i++) {
             // 全ての行に１列ずつ追加
-            const newCell = table.rows[i].insertCell(-1);
+            const newCell = table.rows[i].insertCell(newCol);
             newCell.align = "center";
             // タイトル行
             if (i == 0) {
                 newCell.innerHTML = title;
             } else {
-                newCell.id = `tag${i - 1}_${col}`;
+                newCell.id = `tag${i - 1}_${newCol}`;
                 newCell.setAttribute("class", "tag");
                 newCell.innerHTML = isMemo ? `<input type="text" name="name" id="${i - 1}`
                     + '" style="width: 80%" class="memo_tag text ui-widget-content ui-corner-all" value="'
@@ -2487,6 +2602,18 @@ var RelationFrame = function () {
             mrph = this.mrph_data_all[my_mrph_num][0];
         }
     };
+
+    this.write_bnst_feature_for_feature_tags = function(current_bnst, tags) {
+        modify_flag = '*';
+
+        // Remove previous tags.
+        for (let i = 0; i < this.featureTags.length; i++)
+            this.bnst_data_f[current_bnst] = this.bnst_data_f[current_bnst].replace(`<${this.featureTags[i]}>`, '');
+
+        // Add current tags.
+        let strTags = tags.map(tag => `<${tag}>`).join('');
+        this.bnst_data_f[current_bnst] += strTags;
+    }
 
     // タグ表示文字列更新、featureを返却
     this.make_string = function (current_bnst, kaku) {

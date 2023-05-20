@@ -63,14 +63,15 @@ BnstColor = '#F9D9D5';
 BackgroundColor = '#A6A6A6';
 BnstAnotherColor = '#D0E9AB';
 
-WmrphMenuArray = [{"title": ""},
-    {"title": "表記"},
-    {"title": "読み"},
-    {"title": "原形"},
-    {"title": "品詞"},
-    {"title": "活用形"},
-    {"title": "意味情報"},
-    {"title": ""},
-    {"title": ""},
-    {"title": ""}
-];
+WmrphMenuArray = [{ "title" : "" },
+             { "title" : "表記" },
+             { "title" : "読み" },
+             { "title" : "原形" },
+             { "title" : "品詞" },
+             { "title" : "活用形" },
+             { "title" : "意味情報" },
+             { "title" : "基本句-主辞" },
+             { "title" : "" },
+             { "title" : "" },
+             { "title" : "" }
+            ];

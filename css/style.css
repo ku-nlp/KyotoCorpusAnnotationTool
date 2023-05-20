@@ -357,6 +357,7 @@ ul.popup {
 }
 
 ul.dropdown li {
+    line-height: 26px;
     font-weight: bold;
     float: left;
     zoom: 1;
@@ -577,4 +578,20 @@ ul.popup li:hover > ul {
 .limit-context-size {
     max-height: 300px;
     overflow-y: scroll;
+}
+
+.baseClauseHead {
+    text-align: center;
+}
+
+.featureTag {
+    height: 11px;
+}
+
+a.featureTag.disabled {
+    color: grey;
+}
+
+a.featureTag.disabled:hover {
+    color: grey;
 }

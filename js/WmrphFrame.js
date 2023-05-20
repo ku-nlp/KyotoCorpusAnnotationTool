@@ -484,6 +484,32 @@ let WmrphFrame = function () {
         td.appendChild(imi);
         tr.appendChild(td);
 
+        // 基本句-主辞
+        var baseClauseHead = document.createElement("div");
+        baseClauseHead.className = "baseClauseHead";
+        var input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = "baseClauseHead-"+row.id;
+        if (myRelationFrame.mrph_data_all[m_num][12] != undefined) {
+            input.checked = myRelationFrame.mrph_data_all[m_num][12] === '<基本句-主辞>';
+        }
+        baseClauseHead.appendChild(input);
+        var baseClauseHead_change = function(m_num) {
+            return function() {
+                modify_flag = '*';
+                current_modify_flag = '*';
+                if (myRelationFrame.mrph_data_all[m_num][11] == undefined) {
+                    myRelationFrame.mrph_data_all[m_num][11] = 'NIL';
+                }
+                myRelationFrame.mrph_data_all[m_num][12] = this.checked ? '<基本句-主辞>' : '';
+            };
+        };
+        $(input).change(baseClauseHead_change(m_num));
+
+        td = document.createElement("td");
+        td.appendChild(baseClauseHead);
+        tr.appendChild(td);
+
         //     ### 複製ボタン
         const cpBtn = document.createElement("img");
         cpBtn.className = "copy";
