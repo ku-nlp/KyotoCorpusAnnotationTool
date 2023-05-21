@@ -4,6 +4,7 @@ import sys
 import textwrap
 from typing import Any
 from pathlib import Path
+from multiprocessing import Pool
 
 from rhoknp import KNP, Document
 from rhoknp.props import FeatureDict, MemoTag, SemanticsDict
@@ -91,12 +92,15 @@ def add_silver_features(orig_document: Document, knp: KNP) -> Document:
         memo_tags.append(base_phrase.memo_tag)
         base_phrase_features.append(base_phrase.features)
 
-    semantics: list[SemanticsDict] = []
+    morpheme_features: list[FeatureDict] = []
+    morpheme_semantics: list[SemanticsDict] = []
     special_conjtypes: dict[int, tuple] = {}
     special_conjforms: dict[int, tuple] = {}
     special_poses: dict[int, tuple] = {}
     for morpheme in orig_document.morphemes:
-        semantics.append(morpheme.semantics)
+        morpheme_features.append(morpheme.features.copy())
+        morpheme.features.clear()
+        morpheme_semantics.append(morpheme.semantics)
         # Change morpheme attributes that KNP does not support to avoid parsing errors.
         # Changed attributes are restored after parsing.
         if morpheme.conjtype == "ナ形容詞" and morpheme.conjform == "ダ列文語基本形":
@@ -147,8 +151,11 @@ def add_silver_features(orig_document: Document, knp: KNP) -> Document:
         base_phrase.memo_tag = memo_tag
         base_phrase.features.update(features)
 
-    for morpheme, semantics in zip(document.morphemes, semantics):
+    for morpheme, features, semantics in zip(document.morphemes, morpheme_features, morpheme_semantics):
+        morpheme.features.update(features)
         morpheme.semantics.update(semantics)
+        if not morpheme.semantics:
+            morpheme.semantics.is_nil = True
         if special_conjtype := special_conjtypes.get(morpheme.global_index):
             morpheme.conjtype, morpheme.conjtype_id = special_conjtype
         if special_conjform := special_conjforms.get(morpheme.global_index):
@@ -159,34 +166,34 @@ def add_silver_features(orig_document: Document, knp: KNP) -> Document:
     return document
 
 
+def process_knp_file(knp_file: Path, doc_id_format: str) -> None:
+    with knp_file.open(mode="r") as f:
+        documents = [Document.from_knp(knp_text) for knp_text in chunk_by_document(f, doc_id_format=doc_id_format)]
+    documents_with_silver = batch_add_silver_features(documents)
+    output_knp_text = "".join(document.to_knp() for document in documents_with_silver)
+    knp_file.write_text(output_knp_text)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("paths", type=Path, nargs="*", help="path or glob to input knp dir")
-    # parser.add_argument("--jobs", "-j", default=1, type=int, help="number of jobs")
+    parser.add_argument("--jobs", "-j", default=1, type=int, help="number of jobs")
     parser.add_argument(
         "--doc-id-format", default="default", type=str, help="doc id format to identify document boundary"
     )
     args = parser.parse_args()
 
+    knp_files: list[Path] = []
     for path in args.paths:
         if path.exists() is False:
             print(f"{path} not found and skipped", file=sys.stderr)
             continue
-        for knp_file in path.glob("**/*.knp") if path.is_dir() else [path]:
-            with knp_file.open(mode="r") as f:
-                documents = [
-                    Document.from_knp(knp_text) for knp_text in chunk_by_document(f, doc_id_format=args.doc_id_format)
-                ]
-            documents_with_silver = batch_add_silver_features(documents)
-            output_knp_text = "".join(document.to_knp() for document in documents_with_silver)
-            knp_file.write_text(output_knp_text)
+        knp_files.extend(path.glob("**/*.knp") if path.is_dir() else [path])
 
-    # chunk_size = len(knp_texts) // args.jobs + int(len(knp_texts) % args.jobs > 0)
-    # iterable = [
-    #     (knp_texts[slice(start, start + chunk_size)], output_root) for start in range(0, len(knp_texts), chunk_size)
-    # ]
-    # with mp.Pool(args.jobs) as pool:
-    #     pool.starmap(assign_features_and_save, iterable)
+    with Pool(args.jobs) as pool:
+        results = [pool.apply_async(process_knp_file, (knp_file, args.doc_id_format)) for knp_file in knp_files]
+        for result in results:
+            result.get()
 
 
 if __name__ == "__main__":
