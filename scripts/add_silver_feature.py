@@ -106,6 +106,36 @@ def add_silver_features(orig_document: Document, knp: KNP) -> Document:
         if morpheme.conjtype == "ナ形容詞" and morpheme.conjform == "ダ列文語基本形":
             special_conjforms[morpheme.global_index] = (morpheme.conjform, morpheme.conjform_id)
             (morpheme.conjform, morpheme.conjform_id) = ("ダ列基本連体形", 3)
+        if morpheme.conjtype == "文語助動詞" and morpheme.conjform == "連体形":
+            special_conjtypes[morpheme.global_index] = (morpheme.conjtype, morpheme.conjtype_id)
+            (morpheme.conjtype, morpheme.conjtype_id) = ("子音動詞ラ行", 10)
+            special_conjforms[morpheme.global_index] = (morpheme.conjform, morpheme.conjform_id)
+            (morpheme.conjform, morpheme.conjform_id) = ("基本形", 2)
+        if morpheme.conjtype == "助動詞たり型" and morpheme.conjform == "文語連体形":
+            special_conjtypes[morpheme.global_index] = (morpheme.conjtype, morpheme.conjtype_id)
+            (morpheme.conjtype, morpheme.conjtype_id) = ("子音動詞ラ行", 10)
+            special_conjforms[morpheme.global_index] = (morpheme.conjform, morpheme.conjform_id)
+            (morpheme.conjform, morpheme.conjform_id) = ("基本形", 2)
+        if morpheme.conjtype == "助動詞たり文語" and morpheme.conjform == "連体形":
+            special_conjtypes[morpheme.global_index] = (morpheme.conjtype, morpheme.conjtype_id)
+            (morpheme.conjtype, morpheme.conjtype_id) = ("子音動詞ラ行", 10)
+            special_conjforms[morpheme.global_index] = (morpheme.conjform, morpheme.conjform_id)
+            (morpheme.conjform, morpheme.conjform_id) = ("基本形", 2)
+        if morpheme.conjtype == "助動詞たり" and morpheme.conjform == "文語連体形(たる)":
+            special_conjtypes[morpheme.global_index] = (morpheme.conjtype, morpheme.conjtype_id)
+            (morpheme.conjtype, morpheme.conjtype_id) = ("子音動詞ラ行", 10)
+            special_conjforms[morpheme.global_index] = (morpheme.conjform, morpheme.conjform_id)
+            (morpheme.conjform, morpheme.conjform_id) = ("基本形", 2)
+        if morpheme.conjtype == "助動詞たり" and morpheme.conjform == "文語連体形":
+            special_conjtypes[morpheme.global_index] = (morpheme.conjtype, morpheme.conjtype_id)
+            (morpheme.conjtype, morpheme.conjtype_id) = ("子音動詞ラ行", 10)
+            special_conjforms[morpheme.global_index] = (morpheme.conjform, morpheme.conjform_id)
+            (morpheme.conjform, morpheme.conjform_id) = ("基本形", 2)
+        if morpheme.conjtype == "文語" and morpheme.conjform == "連体形たる":
+            special_conjtypes[morpheme.global_index] = (morpheme.conjtype, morpheme.conjtype_id)
+            (morpheme.conjtype, morpheme.conjtype_id) = ("子音動詞ラ行", 10)
+            special_conjforms[morpheme.global_index] = (morpheme.conjform, morpheme.conjform_id)
+            (morpheme.conjform, morpheme.conjform_id) = ("基本形", 2)
         if morpheme.conjtype == "なり列" and morpheme.conjform == "古語基本形(なり)":
             special_conjtypes[morpheme.global_index] = (morpheme.conjtype, morpheme.conjtype_id)
             (morpheme.conjtype, morpheme.conjtype_id) = ("判定詞", 25)
