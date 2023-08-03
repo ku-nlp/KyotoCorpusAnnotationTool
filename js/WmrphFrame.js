@@ -500,18 +500,31 @@ let WmrphFrame = function () {
         const basePhraseHeadInput = document.createElement('input');
         basePhraseHeadInput.type = 'checkbox';
         basePhraseHeadInput.id = 'basePhraseHead-' + row.id;
-        if (myRelationFrame.mrph_data_all[m_num][12] != undefined) {
-            basePhraseHeadInput.checked = myRelationFrame.mrph_data_all[m_num][12] === '<基本句-主辞>';
+        if (myRelationFrame.mrph_data_all[m_num][12] !== undefined) {
+            basePhraseHeadInput.checked = myRelationFrame.mrph_data_all[m_num][12].includes('<基本句-主辞>');
         }
         basePhraseHead.appendChild(basePhraseHeadInput);
         const basePhraseHead_change = function (m_num) {
             return function () {
                 modify_flag = '*';
                 current_modify_flag = '*';
-                if (myRelationFrame.mrph_data_all[m_num][11] == undefined) {
+                if (myRelationFrame.mrph_data_all[m_num][11] === undefined) {
                     myRelationFrame.mrph_data_all[m_num][11] = 'NIL';
                 }
-                myRelationFrame.mrph_data_all[m_num][12] = this.checked ? '<基本句-主辞>' : '';
+                if (myRelationFrame.mrph_data_all[m_num][12] === undefined) {
+                    myRelationFrame.mrph_data_all[m_num][12] = this.checked ? '<基本句-主辞>' : '';
+                    return;
+                }
+                if (this.checked) {
+                    if (!myRelationFrame.mrph_data_all[m_num][12].includes('<基本句-主辞>')) {
+                        myRelationFrame.mrph_data_all[m_num][12] += '<基本句-主辞>';
+                    }
+                } else {
+                    myRelationFrame.mrph_data_all[m_num][12] = myRelationFrame.mrph_data_all[m_num][12].replace(
+                        /<基本句-主辞>/g,
+                        '',
+                    );
+                }
             };
         };
         $(basePhraseHeadInput).change(basePhraseHead_change(m_num));
