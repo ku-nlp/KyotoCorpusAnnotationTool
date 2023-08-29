@@ -43,6 +43,9 @@ for article_set_dir in "$tool_data_dir"/wiki*; do
     fi
 
     # merge article knp files, ensuring newline at the end of each file
-    awk 1 "$article_dir/contents/${article_name}"* > "${knp_dir}/${article_set_name}/${article_name}.knp"
+    knp_file="${knp_dir}/${article_set_name}/${article_name}.knp"
+    awk 1 "$article_dir/contents/${article_name}"* > "${knp_file}"
+    # remove erroneous word "undefined"
+    sed -i -e "s/undefined<NE/<NE/g" -e "s/NIL undefined/NIL/g" "${knp_file}"
   done
 done
