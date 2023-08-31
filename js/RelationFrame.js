@@ -1968,31 +1968,35 @@ var RelationFrame = function () {
 
     // 格追加
     this.add_col = function (title) {
-        let i;
-        let j;
-
         const table = document.getElementsByTagName('table')[0];
-        const col = table.rows[0].cells.length;
-        for (j = 0; j < col - 1; j++) {
-            if (table.rows[0].cells[j].textContent == title) {
+        const numCurrentCols = table.rows[0].cells.length;
+        for (let j = 0; j < numCurrentCols - 1; j++) {
+            // -1 for 素性
+            if (table.rows[0].cells[j].textContent === title) {
                 return;
             }
         }
-        this.caseName[this.caseName.length] = title;
+        // this.caseName[this.caseName.length] = title;
 
         // 格の数を更新する
         this.caseBoxNum += 1;
 
         // newCol must be inserted before Memo col if it's shown or before the tags col if it's not.
-        let newCol = col - 2;
-        if (table.rows[0].cells[newCol].textContent != 'メモ') newCol += 1;
-        const isMemo = title == 'メモ';
-        for (i = 0; i < table.rows.length; i++) {
+        let newCol;
+        if (table.rows[0].cells[numCurrentCols - 2].textContent === 'メモ') {
+            newCol = numCurrentCols - 2;
+            this.caseName.splice(-1, 0, title);
+        } else {
+            newCol = numCurrentCols - 1;
+            this.caseName.push(title);
+        }
+        const isMemo = title === 'メモ';
+        for (let i = 0; i < table.rows.length; i++) {
             // 全ての行に１列ずつ追加
             const newCell = table.rows[i].insertCell(newCol);
             newCell.align = 'center';
             // タイトル行
-            if (i == 0) {
+            if (i === 0) {
                 newCell.innerHTML = title;
             } else {
                 newCell.id = `tag${i - 1}_${newCol}`;

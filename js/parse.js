@@ -324,16 +324,14 @@ function parseString(strData) {
     if (typeof caseBox['ガ'] == 'undefined') {
         caseBox['ガ'] = 1;
     }
-    let caseBoxNum = 0;
-    const caseName = [];
-    const sorted_keys = Object.keys(caseBox).sort(function (a, b) {
+    const caseName = ['']; // '' for 構文木 column
+    const sortedCases = Object.keys(caseBox).sort(function (a, b) {
         return CaseOrder[b] - CaseOrder[a];
     }); // CaseBoxのkeyをCaseOrderのvalueにもとづいてソート
-    for (var i = 0; i < sorted_keys.length; i++) {
-        // CaseOrderの値が大きいものから0はじまりの連番をふる
-        caseBoxNum += 1;
-        caseBox[sorted_keys[i]] = caseBoxNum;
-        caseName[caseBox[sorted_keys[i]]] = sorted_keys[i];
+    for (let i = 0; i < sortedCases.length; i++) {
+        // CaseOrderの値が大きいものから1はじまりの連番をふる
+        caseBox[sortedCases[i]] = i + 1;
+        caseName.push(sortedCases[i]);
     }
 
     if (TREE_MODE == 'R') {
@@ -364,7 +362,7 @@ function parseString(strData) {
     inputDataList[sen_id].mrph_data_start = mrph_data_start;
     inputDataList[sen_id]['contextinfo'] = contextinfo;
     inputDataList[sen_id]['caseBox'] = caseBox;
-    inputDataList[sen_id]['caseBoxNum'] = caseBoxNum;
+    inputDataList[sen_id]['caseBoxNum'] = Object.keys(caseBox).length;
     inputDataList[sen_id]['caseName'] = caseName;
     inputDataList[sen_id].memo = memo;
     inputDataList[sen_id].fileInfo = fileInfo;
