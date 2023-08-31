@@ -104,6 +104,8 @@ var RelationFrame = function () {
         未定義語: '?',
     };
 
+    this.pos_mark_color = '#119911';
+
     this.currentShowIndex = '';
 
     // 文節画面初期化
@@ -624,7 +626,7 @@ var RelationFrame = function () {
                 //mark = "[" + this.pos_mark[label] + "]";
                 mark = `[${label.substring(0, 2)}]`;
             }
-            this.sentence_table[i - 1] += mark;
+            this.sentence_table[i - 1] += `<span style="color:${this.pos_mark_color};">${mark}</span>`;
         }
 
         const tree = new Tree();
@@ -822,7 +824,7 @@ var RelationFrame = function () {
                 label = this.mrph_data_all[m_num][5];
             }
             const mark = this.pos_mark[label];
-            sentence_table[i - 1] += mark;
+            sentence_table[i - 1] += `<span style="color:${this.pos_mark_color};">${mark}</span>`;
         }
 
         const cols = this.caseBoxNum;
@@ -1248,7 +1250,7 @@ var RelationFrame = function () {
                     label = mrph_data_all[m_num][5];
                 }
                 const mark = this.pos_mark[label];
-                sentence_table[j - 1] += this.pos_mark[label]; // 品詞マークをつける
+                sentence_table[j - 1] += `<span style="color:${this.pos_mark_color};">${mark}</span>`; // 品詞マークをつける
             }
             const table = document.createElement('table');
             table.className = 'prev_table';
@@ -1355,7 +1357,7 @@ var RelationFrame = function () {
                     //label = mrph_data_all[m_num][2];
                     mark = `[${label.substring(0, 2)}]`;
                 }
-                sentence_table[j - 1] += mark;
+                sentence_table[j - 1] += `<span style="color:${this.pos_mark_color};">${mark}</span>`;
 
                 // var label;
                 // //if (LANG == 'ja') {
