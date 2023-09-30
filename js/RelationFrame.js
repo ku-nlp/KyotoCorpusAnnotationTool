@@ -654,7 +654,7 @@ var RelationFrame = function () {
             } else if (j === 1) {
                 title = '構文木';
             } else {
-                title = this.caseName[j - 1]; // 格名
+                title = this.caseName[j - 2]; // 格名
             }
             td.appendChild(document.createTextNode(title));
             trHeader.appendChild(td);
@@ -663,8 +663,7 @@ var RelationFrame = function () {
         const tbody = document.createElement('tbody');
         for (let ti = 0; ti < this.bnst_num; ti++) {
             const tr = document.createElement('tr');
-            for (let j = 0; j <= cols; j++) {
-                const kaku = this.caseName[j];
+            for (let j = 0; j < cols + 1; j++) {
                 let td = document.createElement('td');
 
                 if (j === 0) {
@@ -693,24 +692,11 @@ var RelationFrame = function () {
 
                         //this.setBnstContextEvent(ti);
                     }
-                    // for(var t_i=1; t_i<this.bnst_num; t_i++) {
-                    //     var elem = document.createElement("div");
-                    //     elem.id = ti + "_" + t_i;
-
-                    //     if(t_i > ti) {
-                    //         elem.innerHTML = "　";
-                    //         elem.className = "tree";
-                    //     } else {
-                    //         elem.innerHTML = "";
-                    //         elem.className = "nil";
-                    //     }
-
-                    //     topElem.appendChild(elem);
-                    // }
                     td.appendChild(topElem);
                 } else {
                     let title = null;
-                    td.id = `tag${ti}_${j - 1}`;
+                    const kaku = this.caseName[j - 2];
+                    td.id = `tag${ti}_${j - 2}`;
                     td.setAttribute('align', 'center');
                     if (kaku === 'メモ') {
                         td.innerHTML =
@@ -722,9 +708,9 @@ var RelationFrame = function () {
                     }
 
                     let titleText = '';
-                    if (this.contextinfo[ti] && this.contextinfo[ti][this.caseName[j - 1]]) {
+                    if (this.contextinfo[ti] && this.contextinfo[ti][kaku]) {
                         // タグ
-                        titleText = this.make_string(ti, this.caseName[j - 1]);
+                        titleText = this.make_string(ti, kaku);
                         if (kaku === 'メモ') {
                             const tag = this.contextinfo[ti][kaku];
                             const val = tag ? tag.Data[0].data : '';
@@ -837,14 +823,14 @@ var RelationFrame = function () {
         const thead = document.createElement('thead');
         var tr = document.createElement('tr');
 
-        for (var j = 0; j <= cols; j++) {
+        for (let j = 0; j < cols + 1; j++) {
             var td = document.createElement('td');
             td.setAttribute('align', 'center');
             if (j == 0) {
                 var title = document.createTextNode('構文木');
             } else {
                 // 格名
-                var title = document.createTextNode(this.caseName[j]);
+                var title = document.createTextNode(this.caseName[j - 1]);
             }
             td.appendChild(title);
             tr.appendChild(td);
@@ -852,26 +838,26 @@ var RelationFrame = function () {
 
         let tdFeatureTags = document.createElement('td');
         tdFeatureTags.setAttribute('align', 'center');
-        tdFeatureTagsTitle = document.createTextNode('素性');
+        const tdFeatureTagsTitle = document.createTextNode('素性');
         tdFeatureTags.append(tdFeatureTagsTitle);
         tr.appendChild(tdFeatureTags);
 
         thead.appendChild(tr);
+
         const tbody = document.createElement('tbody');
         for (let ti = 0; ti < this.bnst_num; ti++) {
-            var tr = document.createElement('tr');
-            for (var j = 0; j <= cols; j++) {
-                const kaku = this.caseName[j];
-                var td = document.createElement('td');
-                td.className = 'rel-tree';
+            const tr = document.createElement('tr');
+            for (let j = 0; j < cols + 1; j++) {
+                const td = document.createElement('td');
 
-                if (j == 0) {
-                    var topElem = document.createElement('div');
+                if (j === 0) {
+                    td.className = 'rel-tree';
+                    const topElem = document.createElement('div');
                     //topElem.setAttribute("align", "right");
                     topElem.className = 'top ja';
 
                     if (sentence_table[ti]) {
-                        var title = document.createElement('div');
+                        const title = document.createElement('div');
                         title.className = 'title bnst';
                         title.id = `bnst${ti}`;
                         title.innerHTML = sentence_table[ti];
@@ -893,9 +879,11 @@ var RelationFrame = function () {
                     }
                     td.appendChild(topElem);
                 } else {
-                    td.id = `tag${ti}_${j}`;
+                    const kaku = this.caseName[j - 1];
+                    td.className = 'tag';
+                    td.id = `tag${ti}_${j - 1}`;
                     td.setAttribute('align', 'center');
-                    if (kaku == 'メモ') {
+                    if (kaku === 'メモ') {
                         var title = null;
                         td.innerHTML =
                             `<input type="text" name="name" id="${ti}` +
@@ -906,11 +894,11 @@ var RelationFrame = function () {
                     }
 
                     var titleText = '';
-                    if (this.contextinfo[ti] && this.contextinfo[ti][this.caseName[j]]) {
+                    if (this.contextinfo[ti] && this.contextinfo[ti][kaku]) {
                         // タグ
-                        titleText = this.make_string(ti, this.caseName[j]);
+                        titleText = this.make_string(ti, kaku);
 
-                        if (kaku == 'メモ') {
+                        if (kaku === 'メモ') {
                             var tag = this.contextinfo[ti][kaku];
                             var val = tag.Data[0].data;
 
@@ -924,14 +912,13 @@ var RelationFrame = function () {
                             title.innerHTML = titleText;
                         }
 
-                        if (kaku == 'NE') {
+                        if (kaku === 'NE') {
                             td.style.backgroundColor = ColorNE;
                         }
                     }
                     if (title != undefined) {
                         td.appendChild(title);
                     }
-                    td.className = 'tag';
 
                     if (title != undefined && title.style != undefined) {
                         color = this.check_have_extra_tag(this.contextinfo, ti, kaku) ? 'red' : 'black';
@@ -1969,38 +1956,39 @@ var RelationFrame = function () {
     // 格追加
     this.add_col = function (title) {
         const table = document.getElementsByTagName('table')[0];
-        const numCurrentCols = table.rows[0].cells.length;
-        for (let j = 0; j < numCurrentCols - 1; j++) {
-            // -1 for 素性
+        const numCurrentColsWithoutFeatures = table.rows[0].cells.length - 1;
+        for (let j = 0; j < numCurrentColsWithoutFeatures; j++) {
             if (table.rows[0].cells[j].textContent === title) {
-                return;
+                return; // The case already exists.
             }
         }
-        // this.caseName[this.caseName.length] = title;
 
         // 格の数を更新する
         this.caseBoxNum += 1;
 
         // newCol must be inserted before Memo col if it's shown or before the tags col if it's not.
-        let newCol;
-        if (table.rows[0].cells[numCurrentCols - 2].textContent === 'メモ') {
-            newCol = numCurrentCols - 2;
+        let newColIndex = numCurrentColsWithoutFeatures;
+        if (table.rows[0].cells[numCurrentColsWithoutFeatures - 1].textContent === 'メモ') {
+            newColIndex -= 1;
             this.caseName.splice(-1, 0, title);
+            for (let i = 1; i < table.rows.length; i++) {
+                const memoCell = table.rows[i].cells[numCurrentColsWithoutFeatures - 1];
+                memoCell.id = `tag${i - 1}_${newColIndex - 1 + 1}`;
+            }
         } else {
-            newCol = numCurrentCols - 1;
             this.caseName.push(title);
         }
         const isMemo = title === 'メモ';
         for (let i = 0; i < table.rows.length; i++) {
             // 全ての行に１列ずつ追加
-            const newCell = table.rows[i].insertCell(newCol);
-            newCell.align = 'center';
+            const newCell = table.rows[i].insertCell(newColIndex);
+            newCell['align'] = 'center';
             // タイトル行
             if (i === 0) {
                 newCell.innerHTML = title;
             } else {
-                newCell.id = `tag${i - 1}_${newCol}`;
-                newCell.setAttribute('class', 'tag');
+                newCell.id = `tag${i - 1}_${newColIndex - 1}`;
+                newCell.className = 'tag';
                 newCell.innerHTML = isMemo
                     ? `<input type="text" name="name" id="${i - 1}` +
                       '" style="width: 80%" class="memo_tag text ui-widget-content ui-corner-all" value="' +

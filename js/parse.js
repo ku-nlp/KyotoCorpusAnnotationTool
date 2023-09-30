@@ -324,14 +324,14 @@ function parseString(strData) {
     if (typeof caseBox['ガ'] == 'undefined') {
         caseBox['ガ'] = 1;
     }
-    const caseName = ['']; // '' for 構文木 column
+    const caseNames = [];
     const sortedCases = Object.keys(caseBox).sort(function (a, b) {
         return CaseOrder[b] - CaseOrder[a];
     }); // CaseBoxのkeyをCaseOrderのvalueにもとづいてソート
     for (let i = 0; i < sortedCases.length; i++) {
         // CaseOrderの値が大きいものから1はじまりの連番をふる
         caseBox[sortedCases[i]] = i + 1;
-        caseName.push(sortedCases[i]);
+        caseNames.push(sortedCases[i]);
     }
 
     if (TREE_MODE == 'R') {
@@ -363,7 +363,7 @@ function parseString(strData) {
     inputDataList[sen_id]['contextinfo'] = contextinfo;
     inputDataList[sen_id]['caseBox'] = caseBox;
     inputDataList[sen_id]['caseBoxNum'] = Object.keys(caseBox).length;
-    inputDataList[sen_id]['caseName'] = caseName;
+    inputDataList[sen_id]['caseName'] = caseNames;
     inputDataList[sen_id].memo = memo;
     inputDataList[sen_id].fileInfo = fileInfo;
     inputDataList[sen_id]['input_sentence'] = input_sentence;
