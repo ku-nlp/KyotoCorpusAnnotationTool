@@ -1991,7 +1991,7 @@ var RelationFrame = function () {
                 newCell.className = 'tag';
                 newCell.innerHTML = isMemo
                     ? `<input type="text" name="name" id="${i - 1}` +
-                      '" style="width: 80%" class="memo_tag text ui-widget-content ui-corner-all" value="' +
+                      '" style="width: 200px" class="memo_tag text ui-widget-content ui-corner-all" value="' +
                       '" onblur="memo_tag_blur(this)"/>'
                     : '<span></span>';
             }
