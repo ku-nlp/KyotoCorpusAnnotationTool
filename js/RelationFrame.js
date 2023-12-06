@@ -2418,11 +2418,10 @@ var RelationFrame = function () {
             // 開始点
             for (var a = start; a <= stop; a++) {
                 if (
-                    m_d_all[a][3] != '特殊' || // 特殊以外
-                    (m_d_all[a][5] == '記号' && // 特殊なら記号だけ可
-                        m_d_all[a][0] != '・')
+                    m_d_all[a][3] !== '特殊' || // 特殊以外
+                    (m_d_all[a][5] === '記号' && // 特殊なら記号だけ可
+                        m_d_all[a][0] !== '・') // ただし、"・"は除く
                 ) {
-                    // ただし、"・"は除く
                     start = a;
                     break;
                 }
