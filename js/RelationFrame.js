@@ -2245,8 +2245,10 @@ var RelationFrame = function () {
             mrph = this.mrph_data_all[my_mrph_num][0];
             re = new RegExp(`${escapeRegExp(mrph)}$`);
         }
-
-        this.mrph_data_all[my_mrph_num][12] += ne == mrph ? `<NE:${tag}:single>` : `<NE:${tag}:tail>`;
+        if (this.mrph_data_all[my_mrph_num][12] === undefined) {
+            this.mrph_data_all[my_mrph_num][12] = '';
+        }
+        this.mrph_data_all[my_mrph_num][12] += ne === mrph ? `<NE:${tag}:single>` : `<NE:${tag}:tail>`;
 
         if (my_mrph_num <= 0) {
             return;
@@ -2257,7 +2259,10 @@ var RelationFrame = function () {
         mrph = this.mrph_data_all[my_mrph_num][0];
 
         while (ne) {
-            this.mrph_data_all[my_mrph_num][12] += ne == mrph ? `<NE:${tag}:head>` : `<NE:${tag}:middle>`;
+            if (this.mrph_data_all[my_mrph_num][12] === undefined) {
+                this.mrph_data_all[my_mrph_num][12] = '';
+            }
+            this.mrph_data_all[my_mrph_num][12] += ne === mrph ? `<NE:${tag}:head>` : `<NE:${tag}:middle>`;
 
             re = new RegExp(`${escapeRegExp(mrph)}$`);
             ne = ne.replace(re, '');
