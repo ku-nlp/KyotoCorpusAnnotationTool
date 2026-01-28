@@ -5,8 +5,8 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--knp-file', type=Path, required=True)
-    parser.add_argument('--contents-dir', type=Path, required=True)
+    parser.add_argument("--knp-file", type=Path, required=True)
+    parser.add_argument("--contents-dir", type=Path, required=True)
     args = parser.parse_args()
 
     contents_dir: Path = args.contents_dir
@@ -14,24 +14,24 @@ def main():
 
     buff = ""
     sid = ""
-    for line in args.knp_file.read_text().splitlines():
+    for line in args.knp_file.read_text(encoding="utf-8").split("\n"):
         # 種々のエラーメッセージは取り除く
         if line.startswith(";;"):
             continue
         buff += line + "\n"
-        match = re.match(r'^# S-ID:([^ ]+)', line)
+        match = re.match(r"^# S-ID:([^ ]+)", line)
         if match:
             sid = match.group(1)
         elif line.strip() == "EOS":
-            contents_dir.joinpath(sid).write_text(buff)
+            contents_dir.joinpath(sid).write_text(buff, encoding="utf-8")
             buff = ""
 
     fileinfos = []
     for path in sorted([p for p in contents_dir.glob("*") if p.name != "fileinfos"]):
         if path.is_file():
-            with path.open() as f:
+            with path.open(encoding="utf-8") as f:
                 fileinfos.append(f.readline())
-    contents_dir.joinpath("fileinfos").write_text("".join(fileinfos))
+    contents_dir.joinpath("fileinfos").write_text("".join(fileinfos), encoding="utf-8")
 
 
 # def extract_sid(sid):
@@ -57,5 +57,5 @@ def main():
 #     else:
 #         return 0
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
