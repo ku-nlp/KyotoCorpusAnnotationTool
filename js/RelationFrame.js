@@ -2245,8 +2245,10 @@ var RelationFrame = function () {
             mrph = this.mrph_data_all[my_mrph_num][0];
             re = new RegExp(`${escapeRegExp(mrph)}$`);
         }
-
-        this.mrph_data_all[my_mrph_num][12] += ne == mrph ? `<NE:${tag}:single>` : `<NE:${tag}:tail>`;
+        if (this.mrph_data_all[my_mrph_num][12] === undefined) {
+            this.mrph_data_all[my_mrph_num][12] = '';
+        }
+        this.mrph_data_all[my_mrph_num][12] += ne === mrph ? `<NE:${tag}:single>` : `<NE:${tag}:tail>`;
 
         if (my_mrph_num <= 0) {
             return;
@@ -2257,7 +2259,10 @@ var RelationFrame = function () {
         mrph = this.mrph_data_all[my_mrph_num][0];
 
         while (ne) {
-            this.mrph_data_all[my_mrph_num][12] += ne == mrph ? `<NE:${tag}:head>` : `<NE:${tag}:middle>`;
+            if (this.mrph_data_all[my_mrph_num][12] === undefined) {
+                this.mrph_data_all[my_mrph_num][12] = '';
+            }
+            this.mrph_data_all[my_mrph_num][12] += ne === mrph ? `<NE:${tag}:head>` : `<NE:${tag}:middle>`;
 
             re = new RegExp(`${escapeRegExp(mrph)}$`);
             ne = ne.replace(re, '');
@@ -2418,11 +2423,10 @@ var RelationFrame = function () {
             // 開始点
             for (var a = start; a <= stop; a++) {
                 if (
-                    m_d_all[a][3] != '特殊' || // 特殊以外
-                    (m_d_all[a][5] == '記号' && // 特殊なら記号だけ可
-                        m_d_all[a][0] != '・')
+                    m_d_all[a][3] !== '特殊' || // 特殊以外
+                    (m_d_all[a][5] === '記号' && // 特殊なら記号だけ可
+                        m_d_all[a][0] !== '・') // ただし、"・"は除く
                 ) {
-                    // ただし、"・"は除く
                     start = a;
                     break;
                 }
